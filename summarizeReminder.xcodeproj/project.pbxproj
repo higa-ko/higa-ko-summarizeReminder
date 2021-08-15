@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8C12211C26C811A000655235 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C12211B26C811A000655235 /* CategoryTableViewCell.swift */; };
 		8C12211E26C8129700655235 /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C12211D26C8129700655235 /* Struct.swift */; };
+		8C2AAF6D26C95C5800B7D7CD /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */; };
 		8CAEF7F726C7E94F00F1168C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAEF7F626C7E94F00F1168C /* AppDelegate.swift */; };
 		8CAEF7F926C7E94F00F1168C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAEF7F826C7E94F00F1168C /* SceneDelegate.swift */; };
 		8CAEF7FB26C7E94F00F1168C /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAEF7FA26C7E94F00F1168C /* CategoryViewController.swift */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		8C12211B26C811A000655235 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		8C12211D26C8129700655235 /* Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; };
+		8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		8CAEF7F326C7E94F00F1168C /* summarizeReminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = summarizeReminder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAEF7F626C7E94F00F1168C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CAEF7F826C7E94F00F1168C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				8CAEF7FA26C7E94F00F1168C /* CategoryViewController.swift */,
+				8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */,
 				8C12211B26C811A000655235 /* CategoryTableViewCell.swift */,
 			);
 			path = Controller;
@@ -171,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C12211E26C8129700655235 /* Struct.swift in Sources */,
+				8C2AAF6D26C95C5800B7D7CD /* TaskViewController.swift in Sources */,
 				8C12211C26C811A000655235 /* CategoryTableViewCell.swift in Sources */,
 				8CAEF7FB26C7E94F00F1168C /* CategoryViewController.swift in Sources */,
 				8CAEF7F726C7E94F00F1168C /* AppDelegate.swift in Sources */,
@@ -325,6 +329,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6H7CM9RQ6P;
 				INFOPLIST_FILE = summarizeReminder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,7 +337,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.wangyuexing34.summarizeReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -344,6 +349,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6H7CM9RQ6P;
 				INFOPLIST_FILE = summarizeReminder/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -351,7 +357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.wangyuexing34.summarizeReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -10,5 +10,10 @@ struct K {
 
     struct CellIdentifier {
         static let CategoryCell = "CategoryCell"
+        static let TaskyCell = "TaskCell"
+    }
+    
+    struct SegueIdentifier {
+        static let CategoryToTask = "CategoryToTask"
     }
 }

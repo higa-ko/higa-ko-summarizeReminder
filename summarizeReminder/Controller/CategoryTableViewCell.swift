@@ -13,10 +13,17 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet private weak var alertLabel: UILabel!
     @IBOutlet private weak var numberLabel: UILabel!
     
+    //カテゴリービューに表示する用の関数
     func configure(item: Item) {
         categoryLabel.text = item.category
-        alertLabel.text = item.alert
-        numberLabel.text = item.number
+
+        if item.alert {
+            alertLabel.text = "アラートあり"
+        } else {
+            alertLabel.text = "アラートなし"
+        }
+        
+        numberLabel.text = String(item.task.count)
     }
     
     //あとで調べる

@@ -9,8 +9,8 @@ import UIKit
 
 struct Item {
     var category: String
-    var alert: String
-    var number: String
+    var task: [String]
+    var alert: Bool
 }
 
 //UITableViewController
@@ -18,17 +18,31 @@ struct Item {
 
 class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    private var index: Int?
+    
     //配列を定義
     private let itemArray: [Item] = [
-        Item(category: "今日やること", alert: "設定あり", number: "3"),
-        Item(category: "明日やること", alert: "設定なし", number: "1"),
-        Item(category: "今週やること", alert: "設定なし", number: "10"),
+        Item(category: "今日やること", task: ["腕立て","腹筋"], alert: true),
+        Item(category: "買い物", task: ["肉","魚","野菜"], alert: true),
+        Item(category: "明日やること", task: [], alert: false),
     ]
     
-    //画面実行時の処理
+    //【今の所削除予定】画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+    }
+    
+    //別画面へ数値の受け渡し
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == K.SegueIdentifier.CategoryToTask {
+            let taskVC = segue.destination as! TaskViewController
+            
+            if index != nil {
+                taskVC.categoryName = itemArray[index!].category
+                taskVC.taskArrey = itemArray[index!].task
+            }
+        }
     }
     
     //表示するセルの個数を設定
@@ -46,6 +60,14 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         cell.configure(item: itemArray[indexPath.row])
         
         return cell
+    }
+    
+    //セルを選択した時の処理
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        
+        index = indexPath.row
+
+        return indexPath
     }
 }
 
