@@ -75,8 +75,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="plus" catalog="system"/>
                                 <connections>
-                                    <action selector="actionButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XRo-CZ-hbG"/>
-                                    <segue destination="jb1-5H-zuR" kind="presentation" id="p84-aG-UFc"/>
+                                    <segue destination="jb1-5H-zuR" kind="presentation" id="sp3-fC-LfL"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -88,7 +87,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Item" id="zVD-2M-2Zd"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="underButton" destination="UOz-Nq-nO3" id="cXd-NL-N1R"/>
+                        <outlet property="underButton" destination="UOz-Nq-nO3" id="48O-9p-KvE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -99,7 +98,7 @@
         <scene sceneID="FOF-aR-XL3">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fv6-56-VQT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="ILb-Q3-Xsh" sceneMemberID="viewController">
+                <viewController id="ILb-Q3-Xsh" customClass="InputViewController" customModule="summarizeReminder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NHc-JZ-Z5L">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -109,7 +108,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewCategoryCheckCell" id="E1q-5n-ABm">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewCategoryCheckCell" id="E1q-5n-ABm" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="24.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E1q-5n-ABm" id="W2x-sn-sNx">
@@ -130,7 +129,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryInputCell" id="4d7-3e-emc">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryInputCell" id="4d7-3e-emc" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="68.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4d7-3e-emc" id="fLf-DJ-y8E">
@@ -146,7 +145,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategorySelectCell" textLabel="gfb-o4-vby" detailTextLabel="7by-pQ-dxp" style="IBUITableViewCellStyleValue1" id="9d2-U7-Cft">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategorySelectCell" textLabel="gfb-o4-vby" detailTextLabel="7by-pQ-dxp" style="IBUITableViewCellStyleValue1" id="9d2-U7-Cft" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="112.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9d2-U7-Cft" id="kHT-Fk-nh7">
@@ -170,7 +169,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoticeCheckCell" id="DdL-aW-F4h">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoticeCheckCell" id="DdL-aW-F4h" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="156.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DdL-aW-F4h" id="cEc-dr-YCd">
@@ -191,7 +190,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimeSelectCell" id="dKN-CY-NhX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimeSelectCell" id="dKN-CY-NhX" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="200.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dKN-CY-NhX" id="pzf-nF-3zK">
@@ -208,7 +207,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RepeatSelectCell" textLabel="kvF-eJ-l58" detailTextLabel="gjq-hN-p8C" style="IBUITableViewCellStyleValue1" id="1Ct-zT-XSb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RepeatSelectCell" textLabel="kvF-eJ-l58" detailTextLabel="gjq-hN-p8C" style="IBUITableViewCellStyleValue1" id="1Ct-zT-XSb" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="244.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Ct-zT-XSb" id="LcE-uZ-q0B">
@@ -232,7 +231,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TaskAddCell" textLabel="Iw4-vq-j5b" detailTextLabel="PLY-fZ-5Tu" style="IBUITableViewCellStyleValue1" id="E0R-mt-w1M">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TaskAddCell" textLabel="Iw4-vq-j5b" detailTextLabel="PLY-fZ-5Tu" style="IBUITableViewCellStyleValue1" id="E0R-mt-w1M" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="288.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E0R-mt-w1M" id="w8n-4L-pea">
@@ -268,7 +267,7 @@
                     </navigationItem>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3002.898550724638" y="458.70535714285711"/>
+            <point key="canvasLocation" x="3009" y="459"/>
         </scene>
         <!--タスク-->
         <scene sceneID="ezE-fP-Diz">

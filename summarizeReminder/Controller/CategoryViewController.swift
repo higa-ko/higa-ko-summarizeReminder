@@ -39,11 +39,6 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         Item(category: "明日やること", task: [], alert: false),
     ]
     
-    //下にあるボタンを押した時の処理
-    @IBAction func actionButton(_ sender: UIButton) {
-        //カテゴリー追加画面に推移
-    }
-    
     
     //別画面へ数値の受け渡し
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
