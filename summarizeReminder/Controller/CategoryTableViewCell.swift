@@ -22,7 +22,6 @@ class CategoryTableViewCell: UITableViewCell {
         } else {
             alertLabel.text = "アラートなし"
         }
-        
         numberLabel.text = String(item.task.count)
     }
     

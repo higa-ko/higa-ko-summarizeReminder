@@ -128,6 +128,9 @@
                                                 </switch>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="newCategoryCheckSwitch" destination="E1g-cO-JaK" id="jY6-c4-UQD"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryInputCell" id="4d7-3e-emc" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="68.5" width="414" height="44"/>
@@ -136,7 +139,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="カテゴリー" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="68o-Wj-HCY">
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="カテゴリー" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="68o-Wj-HCY">
                                                     <rect key="frame" x="22" y="5" width="366" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -144,6 +147,9 @@
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="categoryInputTextField" destination="68o-Wj-HCY" id="Tgg-Et-Iwz"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CategorySelectCell" textLabel="gfb-o4-vby" detailTextLabel="7by-pQ-dxp" style="IBUITableViewCellStyleValue1" id="9d2-U7-Cft" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="112.5" width="414" height="44"/>
@@ -189,6 +195,9 @@
                                                 </switch>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="noticeCheckSwitch" destination="YUZ-TY-5ZB" id="YSY-Zq-Spo"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimeSelectCell" id="dKN-CY-NhX" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="200.5" width="414" height="44"/>
@@ -255,7 +264,19 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlankCell" id="sO8-AG-lSf">
+                                        <rect key="frame" x="0.0" y="332.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sO8-AG-lSf" id="Rjv-0S-TE6">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="ILb-Q3-Xsh" id="60V-zo-d8N"/>
+                                    <outlet property="delegate" destination="ILb-Q3-Xsh" id="Nu5-ih-Ou9"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="FQB-An-6ST"/>

@@ -17,6 +17,7 @@ struct K {
         static let TimeSelectCell = "TimeSelectCell"
         static let RepeatSelectCell = "RepeatSelectCell"
         static let TaskAddCell = "TaskAddCell"
+        static let BlankCell = "BlankCell"
     }
     
     struct SegueIdentifier {
