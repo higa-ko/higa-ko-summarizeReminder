@@ -27,12 +27,6 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         Item(category: "明日やること", task: [], alert: false),
     ]
     
-    //【今の所削除予定】画面実行時の処理
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-    
     //別画面へ数値の受け渡し
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == K.SegueIdentifier.CategoryToTask {
