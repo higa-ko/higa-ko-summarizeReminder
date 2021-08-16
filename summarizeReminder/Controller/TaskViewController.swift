@@ -9,13 +9,21 @@ import UIKit
 
 class TaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet private weak var addButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
+    
     var categoryName: String?
     var taskArrey: [String] = []
+    private let shaer = Share()
     
     //画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //ボタンの書式を変更
+        shaer.buttonOutlet(button: addButton)
+        shaer.buttonOutlet(button: deleteButton)
+
         //ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = categoryName
     }

@@ -18,14 +18,32 @@ struct Item {
 
 class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    private var index: Int?
+    //下にあるボタン
+    @IBOutlet private weak var underButton: UIButton!
     
+    private var index: Int?
+    private let shaer = Share()
+
+    //画面実行時の処理
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        //ボタンの書式を変更
+        shaer.buttonOutlet(button: underButton)
+    }
+
     //配列を定義
     private let itemArray: [Item] = [
         Item(category: "今日やること", task: ["腕立て","腹筋"], alert: true),
         Item(category: "買い物", task: ["肉","魚","野菜"], alert: true),
         Item(category: "明日やること", task: [], alert: false),
     ]
+    
+    //下にあるボタンを押した時の処理
+    @IBAction func actionButton(_ sender: UIButton) {
+        //カテゴリー追加画面に推移
+    }
+    
     
     //別画面へ数値の受け渡し
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
