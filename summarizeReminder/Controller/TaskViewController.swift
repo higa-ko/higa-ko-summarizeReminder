@@ -23,7 +23,7 @@ class TaskViewController: UIViewController, UITableViewDelegate, UITableViewData
         //ボタンの書式を変更
         shaer.buttonOutlet(button: addButton)
         shaer.buttonOutlet(button: deleteButton)
-
+        
         //ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = categoryName
     }
@@ -44,4 +44,23 @@ class TaskViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
+    
+    //セルをタップした時の処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let identifier = K.CellIdentifier.TaskyCell
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        
+        let text =  NSMutableAttributedString(string: "テスト")
+        
+        //Value: 11など指定すると二重取消線になる
+        text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, text.length))
+        
+        cell.textLabel?.attributedText = text
+        
+        print("タスクセルタップ")
+        print(text)
+    }
+    
 }

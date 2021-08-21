@@ -61,7 +61,6 @@
                                             <outlet property="alertLabel" destination="Hii-rZ-7Bd" id="cvj-Rc-d7O"/>
                                             <outlet property="categoryLabel" destination="jbE-M7-L8B" id="zEN-ej-ZcO"/>
                                             <outlet property="numberLabel" destination="PH7-1D-QSd" id="9j5-EB-t6W"/>
-                                            <segue destination="1Eg-Ns-Csv" kind="show" identifier="CategoryToTask" id="KuX-ZJ-swc"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -88,6 +87,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="underButton" destination="UOz-Nq-nO3" id="48O-9p-KvE"/>
+                        <segue destination="1Eg-Ns-Csv" kind="show" identifier="CategoryToTask" id="seM-b6-OZA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -97,7 +97,6 @@
         <!--新規追加-->
         <scene sceneID="FOF-aR-XL3">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fv6-56-VQT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="ILb-Q3-Xsh" customClass="InputViewController" customModule="summarizeReminder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NHc-JZ-Z5L">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
@@ -143,7 +142,7 @@
                                                     <rect key="frame" x="22" y="5" width="366" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -283,10 +282,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" title="新規追加" id="iP2-Mv-Mfa">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="uYS-Lj-mAE"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="uYS-Lj-mAE">
+                            <connections>
+                                <segue destination="pES-63-ipq" kind="unwind" unwindAction="exitCancelWithSegue:" id="47L-m5-bhA"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="UbO-dw-0MM"/>
                     </navigationItem>
                 </viewController>
+                <exit id="pES-63-ipq" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fv6-56-VQT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3009" y="459"/>
         </scene>
@@ -378,7 +383,6 @@
         <!--Navigation Controller-->
         <scene sceneID="Ivf-pn-H22">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="m5f-sL-G0D" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jb1-5H-zuR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="egf-rY-wh9">
@@ -390,6 +394,7 @@
                         <segue destination="ILb-Q3-Xsh" kind="relationship" relationship="rootViewController" id="zlk-xQ-EVh"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m5f-sL-G0D" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2092.753623188406" y="458.70535714285711"/>
         </scene>

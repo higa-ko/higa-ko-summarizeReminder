@@ -11,6 +11,7 @@ struct Item {
     var category: String
     var task: [String]
     var alert: Bool
+    var taskCheck: Bool
 }
 
 //UITableViewController
@@ -23,33 +24,37 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     
     private var index: Int?
     private let shaer = Share()
-
+    
     //画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //ボタンの書式を変更
         shaer.buttonOutlet(button: underButton)
     }
-
+    
     //配列を定義
     private let itemArray: [Item] = [
-        Item(category: "今日やること", task: ["腕立て","腹筋"], alert: true),
-        Item(category: "買い物", task: ["肉","魚","野菜"], alert: true),
-        Item(category: "明日やること", task: [], alert: false),
+        Item(category: "今日やること", task: ["腕立て","腹筋"], alert: true, taskCheck: true),
+        Item(category: "買い物", task: ["肉","魚","野菜"], alert: true, taskCheck: true),
+        Item(category: "明日やること", task: [], alert: false, taskCheck: true),
     ]
     
-    
-    //別画面へ数値の受け渡し
+    //画面推移の時の処理
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //タスク画面へ数値の受け渡し
         if segue.identifier == K.SegueIdentifier.CategoryToTask {
             let taskVC = segue.destination as! TaskViewController
-            
+
             if index != nil {
                 taskVC.categoryName = itemArray[index!].category
                 taskVC.taskArrey = itemArray[index!].task
             }
         }
+    }
+    
+    //別画面からカテゴリー画面へ戻ってくる
+    @IBAction private func exitCancel(segue: UIStoryboardSegue) {
     }
     
     //表示するセルの個数を設定
@@ -70,11 +75,13 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //セルを選択した時の処理
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // セルの選択を解除
+        tableView.deselectRow(at: indexPath, animated: true)
         
         index = indexPath.row
-
-        return indexPath
+        
+        performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
     }
 }
-
