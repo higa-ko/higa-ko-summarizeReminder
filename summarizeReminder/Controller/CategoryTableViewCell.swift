@@ -12,7 +12,7 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet private weak var categoryLabel: UILabel!
     @IBOutlet private weak var alertLabel: UILabel!
     @IBOutlet private weak var numberLabel: UILabel!
-    
+
     //カテゴリービューに表示する用の関数
     func configure(item: Item) {
         categoryLabel.text = item.category

@@ -9,9 +9,24 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    //配列を定義
+    var itemArray: [Item] = [
+        Item(category: "今日やること", task: ["腕立て","腹筋"], taskCheck: [true, true] , alert: true),
+        Item(category: "買い物", task: ["肉","魚","野菜"], taskCheck: [true, true, true], alert: true),
+        Item(category: "明日やること", task: [], taskCheck: [], alert: false),
+    ]
 
-    //共通変数
-    var inputNumberCell: Int?
+    //選んだカテゴリーの番号
+    var categoryIndex: Int?
+
+    //新規カテゴリーかどうかの確認
+    var newCategoryCheck: Bool?
+
+    //プッシュ通知が必要かどうかの確認
+    var noticeCheck: Bool?
+
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

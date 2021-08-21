@@ -9,9 +9,6 @@ import UIKit
 
 class InputViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
-//    //デリゲードの呼び出し
-//    let delegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-
     //InputTableViewCellを呼び出し
     let InputTVC = InputTableViewCell()
 

@@ -10,14 +10,14 @@ import UIKit
 struct Item {
     var category: String
     var task: [String]
+    var taskCheck: [Bool]
     var alert: Bool
-    var taskCheck: Bool
 }
 
-//UITableViewController
-//UIViewController
-
 class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    //AppDelegateの呼び出し
+    private let delegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     //下にあるボタン
     @IBOutlet private weak var underButton: UIButton!
@@ -33,25 +33,20 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         shaer.buttonOutlet(button: underButton)
     }
     
-    //配列を定義
-    private let itemArray: [Item] = [
-        Item(category: "今日やること", task: ["腕立て","腹筋"], alert: true, taskCheck: true),
-        Item(category: "買い物", task: ["肉","魚","野菜"], alert: true, taskCheck: true),
-        Item(category: "明日やること", task: [], alert: false, taskCheck: true),
-    ]
-    
-    //画面推移の時の処理
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //タスク画面へ数値の受け渡し
-        if segue.identifier == K.SegueIdentifier.CategoryToTask {
-            let taskVC = segue.destination as! TaskViewController
-
-            if index != nil {
-                taskVC.categoryName = itemArray[index!].category
-                taskVC.taskArrey = itemArray[index!].task
-            }
-        }
-    }
+//    //画面推移の時の処理 【一旦無効化】
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //タスク画面へ数値の受け渡し
+//        if segue.identifier == K.SegueIdentifier.CategoryToTask {
+//            let taskVC = segue.destination as! TaskViewController
+//
+//            if index != nil {
+//                //タスクビューに　カテゴリー名・タスク一覧・タスクの選択状態を渡す
+//                taskVC.categoryName = itemArray[index!].category
+//                taskVC.taskArrey = itemArray[index!].task
+//                taskVC.taskCheck = itemArray[index!].taskCheck
+//            }
+//        }
+//    }
     
     //別画面からカテゴリー画面へ戻ってくる
     @IBAction private func exitCancel(segue: UIStoryboardSegue) {
@@ -59,17 +54,16 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     
     //表示するセルの個数を設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemArray.count
+        delegate.itemArray.count
     }
     
     //セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let identifier = K.CellIdentifier.CategoryCell
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! CategoryTableViewCell
         
-        cell.configure(item: itemArray[indexPath.row])
+        cell.configure(item: delegate.itemArray[indexPath.row])
         
         return cell
     }
@@ -80,7 +74,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         // セルの選択を解除
         tableView.deselectRow(at: indexPath, animated: true)
         
-        index = indexPath.row
+        delegate.categoryIndex = indexPath.row
         
         performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
     }
