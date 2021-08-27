@@ -10,7 +10,7 @@ import UIKit
 class TaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet private weak var addButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet private weak var deleteButton: UIButton!
     
     //AppDelegateの呼び出し
     private let delegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -63,8 +63,8 @@ class TaskViewController: UIViewController, UITableViewDelegate, UITableViewData
         //ボタンをタップした時にセルの選択除隊を逆転させる
         delegate.itemArray[delegate.categoryIndex!].taskCheck[indexPath.row] = !delegate.itemArray[delegate.categoryIndex!].taskCheck[indexPath.row]
         
+        //タップしたセルのみを更新
         let indexPaths = [IndexPath(row: indexPath.row, section: 0)]
-        
         tableView.reloadRows(at: indexPaths, with: .fade)
     }
 }

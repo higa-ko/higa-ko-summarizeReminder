@@ -62,8 +62,9 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         
         let identifier = K.CellIdentifier.CategoryCell
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! CategoryTableViewCell
+        let item = delegate.itemArray[indexPath.row]
         
-        cell.configure(item: delegate.itemArray[indexPath.row])
+        cell.configure(item: item)
         
         return cell
     }

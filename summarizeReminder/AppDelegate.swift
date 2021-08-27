@@ -10,6 +10,7 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    //ーーーーーーーーーー共通変数ーーーーーーーーーー
     //配列を定義
     var itemArray: [Item] = [
         Item(category: "今日やること", task: ["腕立て","腹筋"], taskCheck: [true, true] , alert: true),
@@ -20,13 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //選んだカテゴリーの番号
     var categoryIndex: Int?
 
-    //新規カテゴリーかどうかの確認
-    var newCategoryCheck: Bool?
+    //新規カテゴリーかどうかの確認 基本的には新規
+    var newCategoryCheck: Bool = true
 
-    //プッシュ通知が必要かどうかの確認
-    var noticeCheck: Bool?
-
+    //プッシュ通知が必要かどうかの確認 基本的には初回の通知はなし
+    var noticeCheck: Bool = false
     
+    //ーーーーーーーーーー共通変数ーーーーーーーーーー
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

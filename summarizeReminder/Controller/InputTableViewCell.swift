@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol CustomCellDelegate: AnyObject {
+    func newCategoryActionSwitch()
+    func noticeActionSwitch()
+}
+
 class InputTableViewCell: UITableViewCell {
     
     //新規カテゴリー確認セル
-    @IBOutlet private weak var newCategoryCheckSwitch: UISwitch!
+    @IBOutlet weak var newCategoryCheckSwitch: UISwitch!
     
     //新規カテゴリー入力セル
     @IBOutlet private weak var categoryInputTextField: UITextField!
@@ -19,20 +24,20 @@ class InputTableViewCell: UITableViewCell {
     @IBOutlet private weak var noticeCheckSwitch: UISwitch!
     
     //AppDelegateの呼び出し
-    private let delegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    private let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    //デリゲードの設定
+    weak var cellDegate: CustomCellDelegate?
+
     //新規カテゴリー確認セル
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
-        delegate.newCategoryCheck = newCategoryCheckSwitch.isOn
-        print(delegate.newCategoryCheck)
+        appDelegate.newCategoryCheck = newCategoryCheckSwitch.isOn
+        cellDegate?.newCategoryActionSwitch()
     }
-
 
     //プッシュ通知確認セル
     @IBAction func noticeActionSwitch(_ sender: UISwitch) {
-        delegate.noticeCheck = noticeCheckSwitch.isOn
-        print(delegate.noticeCheck)
+        appDelegate.noticeCheck = noticeCheckSwitch.isOn
+        cellDegate?.noticeActionSwitch()
     }
-
-    
 }
