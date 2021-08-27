@@ -15,7 +15,7 @@ protocol CustomCellDelegate: AnyObject {
 class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー確認セル
-    @IBOutlet weak var newCategoryCheckSwitch: UISwitch!
+    @IBOutlet private weak var newCategoryCheckSwitch: UISwitch!
 
     // 新規カテゴリー入力セル
     @IBOutlet private weak var categoryInputTextField: UITextField!

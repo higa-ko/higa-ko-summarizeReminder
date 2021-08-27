@@ -11,7 +11,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
-    //配列を定義
+    // 配列を定義
     var itemArray: [Item] = [
         Item(category: "今日やること", task: ["腕立て", "腹筋"], taskCheck: [true, true], alert: true),
         Item(category: "買い物", task: ["肉", "魚", "野菜"], taskCheck: [true, true, true], alert: true),

@@ -7,19 +7,29 @@
 
 import UIKit
 
-class InputViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
+class InputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
+    // インポートビュー表示時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.dataSource = self
+
+        // Switchの初期値を固定
+        appDelegate?.newCategoryCheck = true
+        appDelegate?.noticeCheck = false
+
         print("いんぽーとビュー起動")
     }
+}
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension InputViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 6 // 現時点のマックス行数を入れておく
@@ -72,7 +82,10 @@ class InputViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         return cell!
     }
+}
 
+// MARK: - CustomCellDelegate
+extension InputViewController: CustomCellDelegate {
     func newCategoryActionSwitch() {
         tableView.reloadData()
     }

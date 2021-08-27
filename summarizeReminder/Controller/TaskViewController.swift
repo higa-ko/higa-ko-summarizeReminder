@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TaskViewController: UIViewController {
 
     @IBOutlet private weak var addButton: UIButton!
     @IBOutlet private weak var deleteButton: UIButton!
@@ -29,7 +29,10 @@ class TaskViewController: UIViewController, UITableViewDelegate, UITableViewData
         // ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = appDelegate!.itemArray[appDelegate!.categoryIndex!].category
     }
+}
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数を設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appDelegate!.itemArray[appDelegate!.categoryIndex!].task.count
@@ -38,33 +41,40 @@ class TaskViewController: UIViewController, UITableViewDelegate, UITableViewData
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let identifier = K.CellIdentifier.TaskyCell
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        let text =  NSMutableAttributedString(string: appDelegate!.itemArray[appDelegate!.categoryIndex!].task[indexPath.row])
+        // appDelegateから参照しているカテゴリーのIndexを取り出す
+        let index =  appDelegate!.categoryIndex!
 
-        // タスクの選択状態を確認して処理を分岐
-        if appDelegate!.itemArray[appDelegate!.categoryIndex!].taskCheck[indexPath.row] {
-            // タスクに訂正線を消す
-            text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 0, range: NSMakeRange(0, text.length))
-            cell.textLabel?.attributedText = text
-            cell.imageView?.image = UIImage(systemName: "circle")
-        } else {
-            // タスクに訂正線を入れる
-            text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, text.length))
-            cell.textLabel?.attributedText = text
-            cell.imageView?.image = UIImage(systemName: "largecircle.fill.circle")
+            let identifier = K.CellIdentifier.TaskyCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+            let text =  NSMutableAttributedString(string: appDelegate!.itemArray[index].task[indexPath.row])
+
+            // タスクの選択状態を確認して処理を分岐
+            if appDelegate!.itemArray[index].taskCheck[indexPath.row] {
+                // タスクに訂正線を消す
+                text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 0, range: NSMakeRange(0, text.length))
+                cell.textLabel?.attributedText = text
+                cell.imageView?.image = UIImage(systemName: "circle")
+            } else {
+                // タスクに訂正線を入れる
+                text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, text.length))
+                cell.textLabel?.attributedText = text
+                cell.imageView?.image = UIImage(systemName: "largecircle.fill.circle")
+            }
+            return cell
         }
-        return cell
-    }
 
     // セルをタップした時の処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+        // appDelegateから参照しているカテゴリーのIndexを取り出す
+        let index =  appDelegate!.categoryIndex!
+
         // ボタンをタップした時にセルの選択除隊を逆転させる
-        appDelegate!.itemArray[appDelegate!.categoryIndex!].taskCheck[indexPath.row] = !appDelegate!.itemArray[appDelegate!.categoryIndex!].taskCheck[indexPath.row]
+        appDelegate!.itemArray[index].taskCheck[indexPath.row] = !appDelegate!.itemArray[index].taskCheck[indexPath.row]
 
         // タップしたセルのみを更新
         let indexPaths = [IndexPath(row: indexPath.row, section: 0)]
         tableView.reloadRows(at: indexPaths, with: .fade)
+        print("タスクタブのテーブル選択")
     }
 }

@@ -14,7 +14,7 @@ struct Item {
     var alert: Bool
 }
 
-class CategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CategoryViewController: UIViewController {
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -51,7 +51,10 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     // 別画面からカテゴリー画面へ戻ってくる
     @IBAction private func exitCancel(segue: UIStoryboardSegue) {
     }
+}
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数を設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         appDelegate!.itemArray.count
@@ -69,7 +72,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         return cell!
     }
 
-    // セルを選択した時の処理
+    // セルタップ処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         // セルの選択を解除
@@ -78,5 +81,6 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         appDelegate!.categoryIndex = indexPath.row
 
         performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
+        print("カテゴリータブの実行")
     }
 }
