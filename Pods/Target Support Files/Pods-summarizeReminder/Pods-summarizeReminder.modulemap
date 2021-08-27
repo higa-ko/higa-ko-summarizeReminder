@@ -1,0 +1,6 @@
+framework module Pods_summarizeReminder {
+  umbrella header "Pods-summarizeReminder-umbrella.h"
+
+  export *
+  module * { export * }
+}

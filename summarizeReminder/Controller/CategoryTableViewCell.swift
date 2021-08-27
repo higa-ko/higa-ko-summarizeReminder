@@ -8,12 +8,12 @@
 import UIKit
 
 class CategoryTableViewCell: UITableViewCell {
-    
+
     @IBOutlet private weak var categoryLabel: UILabel!
     @IBOutlet private weak var alertLabel: UILabel!
     @IBOutlet private weak var numberLabel: UILabel!
 
-    //カテゴリービューに表示する用の関数
+    // カテゴリービューに表示する用の関数
     func configure(item: Item) {
         categoryLabel.text = item.category
 
@@ -24,14 +24,14 @@ class CategoryTableViewCell: UITableViewCell {
         }
         numberLabel.text = String(item.task.count)
     }
-    
-    //あとで調べる
+
+    // あとで調べる
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    //あとで調べる
+    // あとで調べる
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

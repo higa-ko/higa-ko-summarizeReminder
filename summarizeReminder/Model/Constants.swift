@@ -19,7 +19,7 @@ struct K {
         static let TaskAddCell = "TaskAddCell"
         static let BlankCell = "BlankCell"
     }
-    
+
     struct SegueIdentifier {
         static let CategoryToTask = "CategoryToTask"
     }
