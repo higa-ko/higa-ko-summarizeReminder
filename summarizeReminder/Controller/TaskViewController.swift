@@ -16,15 +16,15 @@ class TaskViewController: UIViewController {
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     // 構造体の呼び出し
-    private let shaer = Share()
+    private let shaer = Buttonformat()
 
     // 画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // ボタンの書式を変更
-        shaer.buttonOutlet(button: addButton)
-        shaer.buttonOutlet(button: deleteButton)
+        shaer.underButtonformat(button: addButton)
+        shaer.underButtonformat(button: deleteButton)
 
         // ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = appDelegate!.itemArray[appDelegate!.categoryIndex!].category

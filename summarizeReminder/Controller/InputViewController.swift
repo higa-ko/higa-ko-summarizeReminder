@@ -24,6 +24,9 @@ class InputViewController: UIViewController {
         appDelegate?.newCategoryCheck = true
         appDelegate?.noticeCheck = false
 
+        // セルの選択を無効
+        self.tableView.allowsSelection = false
+
         print("いんぽーとビュー起動")
     }
 }

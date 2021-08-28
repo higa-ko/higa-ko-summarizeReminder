@@ -86,6 +86,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Item" id="zVD-2M-2Zd"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="tableView" destination="k8R-5Y-yYG" id="QaQ-OT-QAA"/>
                         <outlet property="underButton" destination="UOz-Nq-nO3" id="48O-9p-KvE"/>
                         <segue destination="1Eg-Ns-Csv" kind="show" identifier="CategoryToTask" id="seM-b6-OZA"/>
                     </connections>
@@ -146,6 +147,9 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="changedCategoryTextField:" destination="4d7-3e-emc" eventType="editingChanged" id="w48-ou-Lg6"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -293,7 +297,11 @@
                                 <segue destination="pES-63-ipq" kind="unwind" unwindAction="exitCancelWithSegue:" id="47L-m5-bhA"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="UbO-dw-0MM"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="UbO-dw-0MM">
+                            <connections>
+                                <segue destination="pES-63-ipq" kind="unwind" unwindAction="exitDoneWithSegue:" id="Rmh-k0-7RL"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="qKy-Ht-xfu" id="53w-We-NdB"/>

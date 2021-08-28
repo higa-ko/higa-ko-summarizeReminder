@@ -7,14 +7,9 @@
 
 import UIKit
 
-struct Item {
-    var category: String
-    var task: [String]
-    var taskCheck: [Bool]
-    var alert: Bool
-}
-
 class CategoryViewController: UIViewController {
+
+    @IBOutlet private weak var tableView: UITableView!
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -23,14 +18,16 @@ class CategoryViewController: UIViewController {
     @IBOutlet private weak var underButton: UIButton!
 
     private var index: Int?
-    private let shaer = Share()
+    private let shaer = Buttonformat()
 
     // 画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // ボタンの書式を変更
-        shaer.buttonOutlet(button: underButton)
+        shaer.underButtonformat(button: underButton)
+
+        print("カテゴリービューを表示")
     }
 
     //    //画面推移の時の処理 【一旦無効化】
@@ -48,8 +45,17 @@ class CategoryViewController: UIViewController {
     //        }
     //    }
 
-    // 別画面からカテゴリー画面へ戻ってくる
+    // キャンセルしてカテゴリー画面へ戻ってくる
     @IBAction private func exitCancel(segue: UIStoryboardSegue) {
+    }
+
+    // 完了してカテゴリー画面へ戻ってくる
+    @IBAction private func exitDone(segue: UIStoryboardSegue) {
+        // 配列への追加処理
+        ProcessArray().addCategory()
+
+        // テーブル更新
+        tableView.reloadData()
     }
 }
 
