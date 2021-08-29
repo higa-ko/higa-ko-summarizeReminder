@@ -356,6 +356,9 @@
                                 <rect key="frame" x="334" y="755" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="plus" catalog="system"/>
+                                <connections>
+                                    <action selector="addActionButton:" destination="1Eg-Ns-Csv" eventType="touchUpInside" id="u79-44-cPm"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3t-HK-ey3">
                                 <rect key="frame" x="20" y="756" width="60" height="60"/>
@@ -364,6 +367,9 @@
                                 <state key="normal">
                                     <imageReference key="image" image="trash" catalog="system" symbolScale="large"/>
                                 </state>
+                                <connections>
+                                    <action selector="deleteActionButton:" destination="1Eg-Ns-Csv" eventType="touchUpInside" id="Jge-NB-NuP"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZhP-B4-r5K"/>
@@ -373,6 +379,7 @@
                     <connections>
                         <outlet property="addButton" destination="7uo-qA-D7N" id="0U6-tr-Ec0"/>
                         <outlet property="deleteButton" destination="F3t-HK-ey3" id="Peo-Bz-scT"/>
+                        <outlet property="tableView" destination="5ZA-xn-jIF" id="cy8-lM-WMj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KxJ-JO-rw1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
