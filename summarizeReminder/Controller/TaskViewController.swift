@@ -65,7 +65,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         // appDelegateから参照しているカテゴリーのIndexを取り出す
         let index =  appDelegate!.categoryIndex!
 
-        let identifier = K.CellIdentifier.TaskyCell
+        let identifier = K.CellIdentifier.DisplayTaskyCell
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         let text =  NSMutableAttributedString(string: appDelegate!.itemArray[index].task[indexPath.row])
 
