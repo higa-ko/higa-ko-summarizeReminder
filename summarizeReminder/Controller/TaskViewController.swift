@@ -13,6 +13,8 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var deleteButton: UIButton!
     @IBOutlet private weak var addButton: UIButton!
 
+    private var optionCheck = true
+
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
@@ -31,6 +33,7 @@ class TaskViewController: UIViewController {
         self.navigationItem.title = appDelegate!.itemArray[appDelegate!.categoryIndex!].category
     }
 
+    // タスク削除ボタン
     @IBAction func deleteActionButton(_ sender: UIButton) {
         // アラート作成
         let alert = UIAlertController(title: "タスク削除", message: "チェックされているタスクを全て削除します", preferredStyle: .alert)
@@ -48,7 +51,13 @@ class TaskViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    // タスク追加ボタン
     @IBAction func addActionButton(_ sender: UIButton) {
+        optionCheck = !optionCheck
+        tableView.reloadData()
+
+        // 選択状態に合わせて削除ボタンの有効/無効
+        deleteButton.isEnabled = optionCheck ? true : false
     }
 }
 
@@ -56,32 +65,54 @@ class TaskViewController: UIViewController {
 extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数を設定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appDelegate!.itemArray[appDelegate!.categoryIndex!].task.count
+        // 選択状態に応じてセルの表示数を変更
+        let number = optionCheck ? 0 : 1
+        return appDelegate!.itemArray[appDelegate!.categoryIndex!].task.count + number
     }
 
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        // appDelegateから参照しているカテゴリーのIndexを取り出す
-        let index =  appDelegate!.categoryIndex!
+        if optionCheck {
+            // appDelegateから参照しているカテゴリーのIndexを取り出す
+            let index =  appDelegate!.categoryIndex!
 
-        let identifier = K.CellIdentifier.DisplayTaskyCell
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        let text =  NSMutableAttributedString(string: appDelegate!.itemArray[index].task[indexPath.row])
+            let identifier = K.CellIdentifier.DisplayTaskyCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
+            let text =  NSMutableAttributedString(string: appDelegate!.itemArray[index].task[indexPath.row])
+            let taskCheck = appDelegate!.itemArray[index].taskCheck[indexPath.row]
 
-        // タスクの選択状態を確認して処理を分岐
-        if appDelegate!.itemArray[index].taskCheck[indexPath.row] {
-            // タスクに訂正線を消す
-            text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 0, range: NSMakeRange(0, text.length))
-            cell.textLabel?.attributedText = text
-            cell.imageView?.image = UIImage(systemName: "circle")
+            // 表示用のセルを表示
+            cell?.configureDisplayTask(text: text, taskCheck: taskCheck)
+
+            return cell!
         } else {
-            // タスクに訂正線を入れる
-            text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, text.length))
-            cell.textLabel?.attributedText = text
-            cell.imageView?.image = UIImage(systemName: "largecircle.fill.circle")
+            // appDelegateから参照しているカテゴリーのIndexを取り出す
+            let index =  appDelegate!.categoryIndex!
+
+            let identifier = K.CellIdentifier.InputTaskCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
+            let max = appDelegate!.itemArray[appDelegate!.categoryIndex!].task.count
+
+            // 最後のセルのみ表示処理を変更
+            if max == indexPath.row {
+                cell?.configureInputTask(text: "")
+            } else {
+                let text = appDelegate?.itemArray[index].task[indexPath.row]
+                cell?.configureInputTask(text: text!)
+            }
+
+            return cell!
         }
-        return cell
+    }
+
+    // セルが選択されそうな時の処理
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if optionCheck {
+            return indexPath // セルを選択可能に変更
+        } else {
+            return nil // セルを選択不可に変更
+        }
     }
 
     // セルをタップした時の処理

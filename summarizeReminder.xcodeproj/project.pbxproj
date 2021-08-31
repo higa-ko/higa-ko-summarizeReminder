@@ -86,10 +86,10 @@
 			isa = PBXGroup;
 			children = (
 				8CAEF7FA26C7E94F00F1168C /* CategoryViewController.swift */,
-				8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */,
-				8C2AAF6E26CA60FA00B7D7CD /* InputViewController.swift */,
 				8C12211B26C811A000655235 /* CategoryTableViewCell.swift */,
+				8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */,
 				8C90EDE326DE15A50035870E /* TaskTableViewCell.swift */,
+				8C2AAF6E26CA60FA00B7D7CD /* InputViewController.swift */,
 				8C2AAF7026CA646900B7D7CD /* InputTableViewCell.swift */,
 			);
 			path = Controller;

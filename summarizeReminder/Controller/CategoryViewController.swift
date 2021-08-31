@@ -80,7 +80,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? CategoryTableViewCell
         let item = appDelegate!.itemArray[indexPath.row]
 
-        cell?.configure(item: item)
+        cell?.configureCategory(item: item)
 
         return cell!
     }
