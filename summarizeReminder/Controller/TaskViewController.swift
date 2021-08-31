@@ -32,37 +32,20 @@ class TaskViewController: UIViewController {
     }
 
     @IBAction func deleteActionButton(_ sender: UIButton) {
-        guard let index = appDelegate?.categoryIndex else { return } // カテゴリーが選択済か確認
-        guard appDelegate?.itemArray[index].task != [] else { return } // タスクがからの場合は処理をスキップ
-        guard let max = appDelegate?.itemArray[index].task.count else { return } // タスクの項目数を取得
-
         // アラート作成
-        let alert = UIAlertController(title: "タスク削除", message: "削除してもよろしいでしょうか？？", preferredStyle: .alert)
+        let alert = UIAlertController(title: "タスク削除", message: "チェックされているタスクを全て削除します", preferredStyle: .alert)
 
         // ボタンの作成、追加
-        let deleteButton = UIAlertAction(title: "削除", style: .default, handler: nil)
+        let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
+            ProcessArray().deleteTask() // タスクの削除処理
+            self.tableView.reloadData()
+        }
         alert.addAction(deleteButton)
-        let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel)
         alert.addAction(cancelButton)
 
         // アラートの表示
         present(alert, animated: true, completion: nil)
-
-        // swiftlint:disable identifier_name
-        for i in 0 ..< max {
-            guard let taskCheck = appDelegate?.itemArray[index].taskCheck[(max - 1) - i] else { return }
-
-            print("i：\(i)")
-            print("max - i：\((max - 1) - i)")
-            if taskCheck {
-            } else {
-                appDelegate?.itemArray[index].task.remove(at: (max - 1) - i)
-                appDelegate?.itemArray[index].taskCheck.remove(at: (max - 1) - i)
-            }
-        }
-
-        // swiftlint:enable identifier_name
-        tableView.reloadData()
     }
 
     @IBAction func addActionButton(_ sender: UIButton) {

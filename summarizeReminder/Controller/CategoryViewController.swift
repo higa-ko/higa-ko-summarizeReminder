@@ -30,6 +30,13 @@ class CategoryViewController: UIViewController {
         print("カテゴリービューを表示")
     }
 
+    // カテゴリー画面に戻ってきた時の処理
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+
+           tableView.reloadData()
+       }
+
     //    //画面推移の時の処理 【一旦無効化】
     //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     //        //タスク画面へ数値の受け渡し

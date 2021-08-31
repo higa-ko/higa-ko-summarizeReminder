@@ -29,6 +29,28 @@ struct ProcessArray {
         // 追加用変数の初期化
         appDelegate.addItem = Item(category: "", task: [], taskCheck: [], alert: false)
     }
+
+    func deleteTask() {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        guard let index = appDelegate.categoryIndex else { return } // カテゴリーが選択済か確認
+        guard appDelegate.itemArray[index].task != [] else { return } // タスクが空の場合は処理をスキップ
+
+        let max = appDelegate.itemArray[index].task.count // タスクの項目数を取得
+
+        // swiftlint:disable identifier_name
+        for i in 0 ..< max {
+        // swiftlint:enable identifier_name
+            let taskCheck = appDelegate.itemArray[index].taskCheck[(max - 1) - i]
+
+            if taskCheck {
+            } else {
+                appDelegate.itemArray[index].task.remove(at: (max - 1) - i)
+                appDelegate.itemArray[index].taskCheck.remove(at: (max - 1) - i)
+            }
+        }
+    }
 }
 
 struct Buttonformat {

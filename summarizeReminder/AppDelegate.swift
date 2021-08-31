@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // 配列を定義
     var itemArray: [Item] = [
-        Item(category: "今日やること", task: ["腕立て", "腹筋"], taskCheck: [true, true], alert: true),
-        Item(category: "買い物", task: ["肉", "魚", "野菜"], taskCheck: [true, true, true], alert: true),
+        Item(category: "今日やること", task: ["腕立て", "腹筋", "スクワット"], taskCheck: [true, true, true], alert: true),
+        Item(category: "買い物", task: ["肉", "魚", "野菜", "米", "塩"], taskCheck: [true, true, true, true, true], alert: true),
         Item(category: "明日やること", task: [], taskCheck: [], alert: false)
     ]
 

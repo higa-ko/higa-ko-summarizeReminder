@@ -5,7 +5,9 @@
 //  Created by 葡萄酒 on 2021/08/14.
 //
 
+// swiftlint:disable type_name
 struct K {
+// swiftlint:enable type_name
 
     struct CellIdentifier {
         static let CategoryCell = "CategoryCell"
