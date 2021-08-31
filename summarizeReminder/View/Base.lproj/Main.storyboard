@@ -404,10 +404,17 @@
                         <viewLayoutGuide key="safeArea" id="ZhP-B4-r5K"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="タスク" id="pTI-2m-ieb"/>
+                    <navigationItem key="navigationItem" title="タスク" id="pTI-2m-ieb">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="9kB-Zk-JxT">
+                            <connections>
+                                <action selector="doneActionButtonItem:" destination="1Eg-Ns-Csv" id="V3T-TE-ZUt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="7uo-qA-D7N" id="0U6-tr-Ec0"/>
                         <outlet property="deleteButton" destination="F3t-HK-ey3" id="Peo-Bz-scT"/>
+                        <outlet property="doneButtonItem" destination="9kB-Zk-JxT" id="rX0-vX-iot"/>
                         <outlet property="tableView" destination="5ZA-xn-jIF" id="cy8-lM-WMj"/>
                     </connections>
                 </viewController>

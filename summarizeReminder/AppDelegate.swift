@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // 配列への入力用変数
     var addItem: Item = Item(category: "", task: [], taskCheck: [], alert: false)
+    var addTaskItems: [String]?
 
     // 配列を定義
     var itemArray: [Item] = [

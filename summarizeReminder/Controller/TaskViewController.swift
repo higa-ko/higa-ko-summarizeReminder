@@ -10,6 +10,7 @@ import UIKit
 class TaskViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var doneButtonItem: UIBarButtonItem!
     @IBOutlet private weak var deleteButton: UIButton!
     @IBOutlet private weak var addButton: UIButton!
 
@@ -29,8 +30,14 @@ class TaskViewController: UIViewController {
         shaer.underButtonformat(button: deleteButton)
         shaer.underButtonformat(button: addButton)
 
+        doneButtonItem.isEnabled = false
+
         // ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = appDelegate!.itemArray[appDelegate!.categoryIndex!].category
+        print("タスクビューを表示")
+    }
+
+    @IBAction func doneActionButtonItem(_ sender: UIBarButtonItem) {
     }
 
     // タスク削除ボタン
@@ -56,8 +63,18 @@ class TaskViewController: UIViewController {
         optionCheck = !optionCheck
         tableView.reloadData()
 
-        // 選択状態に合わせて削除ボタンの有効/無効
-        deleteButton.isEnabled = optionCheck ? true : false
+        changeButtonStatus(check: optionCheck)
+    }
+
+    func changeButtonStatus(check: Bool) {
+        // 選択状態に合わせてボタンの有無を切り替え
+        if check {
+            deleteButton.isEnabled = true
+            doneButtonItem.isEnabled = false
+        } else {
+            deleteButton.isEnabled = false
+            doneButtonItem.isEnabled = true
+        }
     }
 }
 
@@ -100,8 +117,8 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 let text = appDelegate?.itemArray[index].task[indexPath.row]
                 cell?.configureInputTask(text: text!)
+                appDelegate?.addTaskItems?.append(text!) // 編集前のデータを配列に格納
             }
-
             return cell!
         }
     }

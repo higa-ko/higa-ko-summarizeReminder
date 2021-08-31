@@ -10,7 +10,6 @@ import UIKit
 class CategoryViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
-
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
@@ -94,6 +93,5 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         appDelegate!.categoryIndex = indexPath.row
 
         performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
-        print("カテゴリータブの実行")
     }
 }
