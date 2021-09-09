@@ -14,7 +14,7 @@ struct K {
 
         static let DisplayTaskyCell = "DisplayTaskCell"
         static let InputTaskCell = "InputTaskCell"
-        
+
         static let NewCategoryCheckCell = "NewCategoryCheckCell"
         static let CategoryInputCell = "CategoryInputCell"
         static let CategorySelectCell = "CategorySelectCell"

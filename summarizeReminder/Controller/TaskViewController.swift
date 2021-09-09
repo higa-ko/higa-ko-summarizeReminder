@@ -15,6 +15,7 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var addButton: UIButton!
 
     private var optionCheck = true
+    private var cellArray: [TaskTableViewCell] = []
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -26,10 +27,13 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.dataSource = self
+
         // ボタンの書式を変更
         shaer.underButtonformat(button: deleteButton)
         shaer.underButtonformat(button: addButton)
 
+        // バーボタンを無効化
         doneButtonItem.isEnabled = false
 
         // ナビゲーションバーのタイトルをカテゴリーに変更
@@ -37,7 +41,28 @@ class TaskViewController: UIViewController {
         print("タスクビューを表示")
     }
 
+    // バーボタン(完了)
     @IBAction func doneActionButtonItem(_ sender: UIBarButtonItem) {
+
+        print("-------バーボタン（完了）--------")
+        for number in 0 ..< cellArray.count {
+            let text = cellArray[number].taskText()
+            guard let elementCount = appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task.count else { return }
+
+            if elementCount > number {
+                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task[number] = text
+            } else {
+                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task.append(text)
+                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].isTaskCheck.append(true)
+            }
+            print(text)
+        }
+
+        cellArray = [] // Cell配列を初期化
+
+        optionCheck = true
+        changeButtonStatus(check: optionCheck)
+        tableView.reloadData()
     }
 
     // タスク削除ボタン
@@ -61,9 +86,8 @@ class TaskViewController: UIViewController {
     // タスク追加ボタン
     @IBAction func addActionButton(_ sender: UIButton) {
         optionCheck = !optionCheck
-        tableView.reloadData()
-
         changeButtonStatus(check: optionCheck)
+        tableView.reloadData()
     }
 
     func changeButtonStatus(check: Bool) {
@@ -90,6 +114,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        // 選択状態かで処理を分岐
         if optionCheck {
             // appDelegateから参照しているカテゴリーのIndexを取り出す
             let index =  appDelegate!.categoryIndex!
@@ -97,7 +122,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             let identifier = K.CellIdentifier.DisplayTaskyCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
             let text =  NSMutableAttributedString(string: appDelegate!.itemArray[index].task[indexPath.row])
-            let taskCheck = appDelegate!.itemArray[index].taskCheck[indexPath.row]
+            let taskCheck = appDelegate!.itemArray[index].isTaskCheck[indexPath.row]
 
             // 表示用のセルを表示
             cell?.configureDisplayTask(text: text, taskCheck: taskCheck)
@@ -114,10 +139,15 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             // 最後のセルのみ表示処理を変更
             if max == indexPath.row {
                 cell?.configureInputTask(text: "")
+                cellArray.append(cell!) // 表示しているセルを配列に入れる
             } else {
                 let text = appDelegate?.itemArray[index].task[indexPath.row]
                 cell?.configureInputTask(text: text!)
                 appDelegate?.addTaskItems?.append(text!) // 編集前のデータを配列に格納
+
+                cell?.taskTextFieldDelegate = self
+
+                cellArray.append(cell!) // 表示しているセルを配列に入れる
             }
             return cell!
         }
@@ -139,11 +169,18 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         guard let index = appDelegate!.categoryIndex else { return }
 
         // ボタンをタップした時にセルの選択除隊を逆転させる
-        appDelegate!.itemArray[index].taskCheck[indexPath.row] = !appDelegate!.itemArray[index].taskCheck[indexPath.row]
+        appDelegate!.itemArray[index].isTaskCheck[indexPath.row].toggle()
 
         // タップしたセルのみを更新
-        let indexPaths = [IndexPath(row: indexPath.row, section: 0)]
+        let indexPaths = [indexPath]
         tableView.reloadRows(at: indexPaths, with: .fade)
         print("タスクタブのテーブル選択")
+    }
+}
+
+// MARK: - TaskTextFieldDelegate
+extension TaskViewController: TaskTextFieldDelegate {
+    func changedTaskTextField() {
+        // 不要そうであれば消す
     }
 }

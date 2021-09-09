@@ -17,7 +17,7 @@ class CategoryTableViewCell: UITableViewCell {
     func configureCategory(item: Item) {
         categoryLabel.text = item.category
 
-        if item.alert {
+        if item.isAlert {
             alertLabel.text = "アラートあり"
         } else {
             alertLabel.text = "アラートなし"

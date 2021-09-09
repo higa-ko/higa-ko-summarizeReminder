@@ -87,8 +87,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     // セルタップ処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        // セルの選択を解除
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
         appDelegate!.categoryIndex = indexPath.row
 

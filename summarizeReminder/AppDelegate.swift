@@ -13,14 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
 
     // 配列への入力用変数
-    var addItem: Item = Item(category: "", task: [], taskCheck: [], alert: false)
+    var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     var addTaskItems: [String]?
 
     // 配列を定義
     var itemArray: [Item] = [
-        Item(category: "今日やること", task: ["腕立て", "腹筋", "スクワット"], taskCheck: [true, true, true], alert: true),
-        Item(category: "買い物", task: ["肉", "魚", "野菜", "米", "塩"], taskCheck: [true, true, true, true, true], alert: true),
-        Item(category: "明日やること", task: [], taskCheck: [], alert: false)
+        Item(category: "今日やること", task: ["腕立て", "腹筋", "スクワット"], isTaskCheck: [true, true, true], isAlert: true),
+        Item(category: "買い物", task: ["肉", "魚", "野菜", "米", "塩"], isTaskCheck: [true, true, true, true, true], isAlert: true),
+        Item(category: "明日やること", task: [], isTaskCheck: [], isAlert: false)
     ]
 
     // 選んだカテゴリーの番号

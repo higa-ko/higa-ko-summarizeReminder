@@ -10,8 +10,8 @@ import UIKit
 struct Item {
     var category: String
     var task: [String]
-    var taskCheck: [Bool]
-    var alert: Bool
+    var isTaskCheck: [Bool]
+    var isAlert: Bool
 }
 
 struct ProcessArray {
@@ -27,7 +27,7 @@ struct ProcessArray {
         appDelegate.itemArray.append(appDelegate.addItem)
 
         // 追加用変数の初期化
-        appDelegate.addItem = Item(category: "", task: [], taskCheck: [], alert: false)
+        appDelegate.addItem = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     }
 
     func deleteTask() {
@@ -42,12 +42,12 @@ struct ProcessArray {
         // swiftlint:disable identifier_name
         for i in 0 ..< max {
         // swiftlint:enable identifier_name
-            let taskCheck = appDelegate.itemArray[index].taskCheck[(max - 1) - i]
+            let taskCheck = appDelegate.itemArray[index].isTaskCheck[(max - 1) - i]
 
             if taskCheck {
             } else {
                 appDelegate.itemArray[index].task.remove(at: (max - 1) - i)
-                appDelegate.itemArray[index].taskCheck.remove(at: (max - 1) - i)
+                appDelegate.itemArray[index].isTaskCheck.remove(at: (max - 1) - i)
             }
         }
     }

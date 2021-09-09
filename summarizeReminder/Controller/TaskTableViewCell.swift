@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TaskTextFieldDelegate: AnyObject {
+    func changedTaskTextField()
+ }
+
 class TaskTableViewCell: UITableViewCell {
 
     @IBOutlet weak var displayTaskImage: UIImageView!
@@ -15,6 +19,10 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var inputTaskImage: UIImageView!
     @IBOutlet weak var inputTaskTextField: UITextField!
 
+    // デリゲートの設定
+    weak var taskTextFieldDelegate: TaskTextFieldDelegate?
+
+    // タスクビューのラベルに表示
     func configureDisplayTask(text: NSMutableAttributedString, taskCheck: Bool) {
         // タスクの選択状態を確認して処理を分岐
         if taskCheck {
@@ -30,8 +38,19 @@ class TaskTableViewCell: UITableViewCell {
         }
     }
 
+    // タスクビューのテキストフィールドに表示
     func configureInputTask(text: String) {
-        inputTaskTextField.borderStyle = .none
+        inputTaskTextField.borderStyle = .none // テキストフィールドの枠線を消す
         inputTaskTextField.text = text
     }
+
+    @IBAction func changedTaskTextField(_ sender: UITextField) {
+        taskTextFieldDelegate?.changedTaskTextField() // テキストフィールドを更新したらテーブルビューを更新する
+    }
+
+    func taskText() -> String {
+        let text = inputTaskTextField.text
+        return text!
+    }
+
 }
