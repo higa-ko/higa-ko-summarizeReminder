@@ -13,10 +13,10 @@ class CategoryViewController: UIViewController {
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
-    // 下にあるボタン
+    // 下にある+ボタン
     @IBOutlet private weak var underButton: UIButton!
 
-    private var index: Int?
+    private var categoryIndex: Int?
     private let shaer = Buttonformat()
 
     // 画面実行時の処理
@@ -36,20 +36,20 @@ class CategoryViewController: UIViewController {
            tableView.reloadData()
        }
 
-    //    //画面推移の時の処理 【一旦無効化】
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        //タスク画面へ数値の受け渡し
-    //        if segue.identifier == K.SegueIdentifier.CategoryToTask {
-    //            let taskVC = segue.destination as! TaskViewController
-    //
-    //            if index != nil {
-    //                //タスクビューに　カテゴリー名・タスク一覧・タスクの選択状態を渡す
-    //                taskVC.categoryName = itemArray[index!].category
-    //                taskVC.taskArrey = itemArray[index!].task
-    //                taskVC.taskCheck = itemArray[index!].taskCheck
-    //            }
-    //        }
-    //    }
+        // 画面推移の時の処理
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+            switch segue.identifier ?? "" {
+            case K.SegueIdentifier.CategoryToTask:
+                guard let taskVC = segue.destination as? TaskViewController else { return }
+                guard let categoryIndex = categoryIndex else { return }
+                taskVC.mode = .check(categoryIndex)
+
+            default:
+                print("存在しないidentifierが指定されている")
+            }
+
+        }
 
     // キャンセルしてカテゴリー画面へ戻ってくる
     @IBAction private func exitCancel(segue: UIStoryboardSegue) {
@@ -60,7 +60,6 @@ class CategoryViewController: UIViewController {
         // 配列への追加処理
         ProcessArray().addCategory()
 
-        // テーブル更新
         tableView.reloadData()
     }
 }
@@ -89,8 +88,9 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 
         tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
-        appDelegate!.categoryIndex = indexPath.row
+        categoryIndex = indexPath.row
 
+        // タスクビューへの推移
         performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
     }
 }

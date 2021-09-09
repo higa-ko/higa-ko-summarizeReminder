@@ -23,9 +23,9 @@ class TaskTableViewCell: UITableViewCell {
     weak var taskTextFieldDelegate: TaskTextFieldDelegate?
 
     // タスクビューのラベルに表示
-    func configureDisplayTask(text: NSMutableAttributedString, taskCheck: Bool) {
+    func configureDisplayTask(text: NSMutableAttributedString, isTaskCheck: Bool) {
         // タスクの選択状態を確認して処理を分岐
-        if taskCheck {
+        if isTaskCheck {
             // タスクに訂正線を消す
             text.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 0, range: NSMakeRange(0, text.length))
             displayTaskLable.attributedText = text

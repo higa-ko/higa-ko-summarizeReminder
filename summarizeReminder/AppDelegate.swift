@@ -27,10 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var categoryIndex: Int?
 
     // 新規カテゴリーかどうかの確認 基本的には新規
-    var newCategoryCheck: Bool = true
+    var isNewCategoryCheck: Bool = true
 
     // プッシュ通知が必要かどうかの確認 基本的には初回の通知はなし
-    var noticeCheck: Bool = false
+    var isNoticeCheck: Bool = false
 
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
 

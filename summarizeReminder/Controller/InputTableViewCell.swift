@@ -37,13 +37,13 @@ class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー確認セル
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
-        appDelegate!.newCategoryCheck = newCategoryCheckSwitch.isOn
+        appDelegate!.isNewCategoryCheck = newCategoryCheckSwitch.isOn
         cellDegate?.newCategoryActionSwitch()
     }
 
     // プッシュ通知確認セル
     @IBAction func noticeActionSwitch(_ sender: UISwitch) {
-        appDelegate!.noticeCheck = noticeCheckSwitch.isOn
+        appDelegate!.isNoticeCheck = noticeCheckSwitch.isOn
         cellDegate?.noticeActionSwitch()
     }
 }

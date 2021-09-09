@@ -21,8 +21,8 @@ class InputViewController: UIViewController {
         tableView.dataSource = self
 
         // Switchの初期値を固定
-        appDelegate?.newCategoryCheck = true
-        appDelegate?.noticeCheck = false
+        appDelegate?.isNewCategoryCheck = true
+        appDelegate?.isNoticeCheck = false
 
         // セルの選択を無効
         self.tableView.allowsSelection = false
@@ -50,7 +50,7 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             identifier = K.CellIdentifier.NewCategoryCheckCell
 
         case 1:
-            if appDelegate!.newCategoryCheck {
+            if appDelegate!.isNewCategoryCheck {
                 identifier = K.CellIdentifier.CategoryInputCell
             } else {
                 identifier = K.CellIdentifier.CategorySelectCell
@@ -60,14 +60,14 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             identifier = K.CellIdentifier.NoticeCheckCell
 
         case 3:
-            if appDelegate!.noticeCheck {
+            if appDelegate!.isNoticeCheck {
                 identifier = K.CellIdentifier.TimeSelectCell
             } else {
                 identifier = K.CellIdentifier.BlankCell
             }
 
         case 4:
-            if appDelegate!.noticeCheck {
+            if appDelegate!.isNoticeCheck {
                 identifier = K.CellIdentifier.RepeatSelectCell
             } else {
                 identifier = K.CellIdentifier.BlankCell
