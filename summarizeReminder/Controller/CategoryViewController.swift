@@ -45,7 +45,7 @@ class CategoryViewController: UIViewController {
                 taskVC.mode = .check(categoryIndex)
 
             default:
-                print("存在しないidentifierが指定されている")
+                break
             }
 
         }

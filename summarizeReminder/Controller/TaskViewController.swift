@@ -169,7 +169,6 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 let text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
                 cell?.configureInputTask(text: text!)
-                appDelegate?.addTaskItems?.append(text!) // 編集前のデータを配列に格納
 
                 cell?.taskTextFieldDelegate = self
 

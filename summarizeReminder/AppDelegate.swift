@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // 配列への入力用変数
     var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
-    var addTaskItems: [String]?
 
     // 配列を定義
     var itemArray: [Item] = [
@@ -22,9 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Item(category: "買い物", task: ["肉", "魚", "野菜", "米", "塩"], isTaskCheck: [true, true, true, true, true], isAlert: true),
         Item(category: "明日やること", task: [], isTaskCheck: [], isAlert: false)
     ]
-
-    // 選んだカテゴリーの番号
-    var categoryIndex: Int?
 
     // 新規カテゴリーかどうかの確認 基本的には新規
     var isNewCategoryCheck: Bool = true
