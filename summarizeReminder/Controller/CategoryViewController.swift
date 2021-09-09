@@ -17,14 +17,13 @@ class CategoryViewController: UIViewController {
     @IBOutlet private weak var underButton: UIButton!
 
     private var categoryIndex: Int?
-    private let shaer = Buttonformat()
 
     // 画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // ボタンの書式を変更
-        shaer.underButtonformat(button: underButton)
+        Buttonformat().underButtonformat(button: underButton)
 
         print("カテゴリービューを表示")
     }

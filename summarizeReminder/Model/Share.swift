@@ -15,6 +15,8 @@ struct Item {
 }
 
 struct ProcessArray {
+
+    // 新規カテゴリーを配列へ追加
     func addCategory() {
         // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -30,27 +32,45 @@ struct ProcessArray {
         appDelegate.addItem = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     }
 
-    func deleteTask() {
+    // タスクにチェックがついている場合配列の要素から削除
+    func deleteTaskCheck(categoryIndex: Int) {
         // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
-        guard let index = appDelegate.categoryIndex else { return } // カテゴリーが選択済か確認
-        guard appDelegate.itemArray[index].task != [] else { return } // タスクが空の場合は処理をスキップ
+        guard appDelegate.itemArray[categoryIndex].task != [] else { return } // タスクが空の場合は処理をスキップ
 
-        let max = appDelegate.itemArray[index].task.count // タスクの項目数を取得
+        let max = appDelegate.itemArray[categoryIndex].task.count // タスクの項目数を取得
 
         // swiftlint:disable identifier_name
         for i in 0 ..< max {
-        // swiftlint:enable identifier_name
-            let taskCheck = appDelegate.itemArray[index].isTaskCheck[(max - 1) - i]
+            // swiftlint:enable identifier_name
+            let taskCheck = appDelegate.itemArray[categoryIndex].isTaskCheck[(max - 1) - i]
 
             if taskCheck {
             } else {
-                appDelegate.itemArray[index].task.remove(at: (max - 1) - i)
-                appDelegate.itemArray[index].isTaskCheck.remove(at: (max - 1) - i)
+                appDelegate.itemArray[categoryIndex].task.remove(at: (max - 1) - i)
+                appDelegate.itemArray[categoryIndex].isTaskCheck.remove(at: (max - 1) - i)
             }
         }
     }
+
+    // タスクが空白になっている場合配列の要素から削除
+    func deleteTaskBlank(categoryIndex: Int) {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        let max = appDelegate.itemArray[categoryIndex].task.count // タスクの項目数を取得
+
+        // swiftlint:disable identifier_name
+        // タスクの配列の後ろからタスクが空白になっているものを削除
+        for i in 0 ..< max where appDelegate.itemArray[categoryIndex].task[(max - 1) - i] == ""{
+        // swiftlint:enable identifier_name
+
+            appDelegate.itemArray[categoryIndex].task.remove(at: (max - 1) - i)
+            appDelegate.itemArray[categoryIndex].isTaskCheck.remove(at: (max - 1) - i)
+        }
+    }
+
 }
 
 struct Buttonformat {

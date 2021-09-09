@@ -25,9 +25,6 @@ class TaskViewController: UIViewController {
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
-    // 構造体の呼び出し
-    private let shaer = Buttonformat()
-
     // 画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +32,8 @@ class TaskViewController: UIViewController {
         tableView.dataSource = self
 
         // ボタンの書式を変更
-        shaer.underButtonformat(button: deleteButton)
-        shaer.underButtonformat(button: addButton)
+        Buttonformat().underButtonformat(button: deleteButton)
+        Buttonformat().underButtonformat(button: addButton)
 
         // バーボタンを無効化
         doneButtonItem.isEnabled = false
@@ -58,22 +55,25 @@ class TaskViewController: UIViewController {
         print("-------バーボタン（完了）--------")
 
         // 配列の編集と新規追加
-        for number in 0 ..< cellArray.count {
-            let text = cellArray[number].taskText()
-            guard let elementCount = appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task.count else { return }
+        guard let mode = mode else { return }
+        if case .add(let categoryIndex) = mode {
+            guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
+            for newElementNumber in 0 ..< cellArray.count {
+                let text = cellArray[newElementNumber].taskText()
 
-            if elementCount > number {
-                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task[number] = text
-            } else {
-                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].task.append(text)
-                appDelegate?.itemArray[(appDelegate?.categoryIndex)!].isTaskCheck.append(true)
+                //  タスクの既存編集か新規追加かで処理を分岐
+                if existingCount > newElementNumber {
+                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = text
+                } else {
+                    appDelegate?.itemArray[categoryIndex].task.append(text)
+                    appDelegate?.itemArray[categoryIndex].isTaskCheck.append(true)
+                }
             }
-            print(text)
+            // タスクが空白になっているものを削除
+            ProcessArray().deleteTaskBlank(categoryIndex: categoryIndex)
         }
-
         cellArray = [] // Cell配列を初期化
 
-        guard let mode = mode else { return }
         changeMode(mode: mode)
         tableView.reloadData()
     }
@@ -85,10 +85,16 @@ class TaskViewController: UIViewController {
 
         // ボタンの作成、追加
         let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
-            ProcessArray().deleteTask() // タスクの削除処理
+
+            guard let mode = self.mode else { return }
+            if case .check(let categoryIndex) = mode {
+                ProcessArray().deleteTaskCheck(categoryIndex: categoryIndex) // タスクの削除処理
+            }
+
             self.tableView.reloadData()
         }
         alert.addAction(deleteButton)
+
         let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel)
         alert.addAction(cancelButton)
 
@@ -107,15 +113,15 @@ class TaskViewController: UIViewController {
         // 選択状態に合わせてボタンの有無を切り替え
         switch mode {
         case .check(let categoryIndex):
-            deleteButton.isEnabled = true
-            addButton.isEnabled = true
-            doneButtonItem.isEnabled = false
             self.mode = .add(categoryIndex)
-        case .add(let categoryIndex):
             deleteButton.isEnabled = false
             addButton.isEnabled = false
             doneButtonItem.isEnabled = true
+        case .add(let categoryIndex):
             self.mode = .check(categoryIndex)
+            deleteButton.isEnabled = true
+            addButton.isEnabled = true
+            doneButtonItem.isEnabled = false
         }
     }
 }
@@ -154,7 +160,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         case .add(let categoryIndex):
             let identifier = K.CellIdentifier.InputTaskCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
-            let max = appDelegate!.itemArray[appDelegate!.categoryIndex!].task.count
+            let max = appDelegate!.itemArray[categoryIndex].task.count
 
             // 最後のセルのみ表示処理を変更
             if max == indexPath.row {
@@ -195,12 +201,10 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルをタップした時の処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        switch mode {
-        case .check(let categoryIndex):
+        guard let mode = mode else { return }
+        if case .check(let categoryIndex) = mode {
             // ボタンをタップした時にセルの選択除隊を逆転させる
             appDelegate!.itemArray[categoryIndex].isTaskCheck[indexPath.row].toggle()
-        default:
-            print("check以外のモードが選択されている")
         }
 
         // タップしたセルのみを更新
