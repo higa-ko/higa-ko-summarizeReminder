@@ -210,6 +210,34 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.reloadRows(at: [indexPath], with: .fade)
         print("タスクタブのテーブル選択")
     }
+
+    // セルを削除(タスク削除)
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+
+        if editingStyle == .delete {
+            guard let mode = self.mode else { return }
+            if case .check(let categoryIndex) = mode {
+                appDelegate?.itemArray[categoryIndex].task.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
+
+    // セルの削除許可を設定
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+
+        switch mode {
+        case .check:
+            return true
+        case .add:
+            return false
+        case .none:
+            print("存在しないモードが選択されている")
+            return false
+        }
+    }
 }
 
 // MARK: - TaskTextFieldDelegate

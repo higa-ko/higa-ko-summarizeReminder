@@ -30,25 +30,25 @@ class CategoryViewController: UIViewController {
 
     // カテゴリー画面に戻ってきた時の処理
     override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
+        super.viewWillAppear(animated)
 
-           tableView.reloadData()
-       }
+        tableView.reloadData()
+    }
 
-        // 画面推移の時の処理
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // 画面推移の時の処理
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-            switch segue.identifier ?? "" {
-            case K.SegueIdentifier.CategoryToTask:
-                guard let taskVC = segue.destination as? TaskViewController else { return }
-                guard let categoryIndex = categoryIndex else { return }
-                taskVC.mode = .check(categoryIndex)
+        switch segue.identifier ?? "" {
+        case K.SegueIdentifier.CategoryToTask:
+            guard let taskVC = segue.destination as? TaskViewController else { return }
+            guard let categoryIndex = categoryIndex else { return }
+            taskVC.mode = .check(categoryIndex)
 
-            default:
-                break
-            }
-
+        default:
+            break
         }
+
+    }
 
     // キャンセルしてカテゴリー画面へ戻ってくる
     @IBAction private func exitCancel(segue: UIStoryboardSegue) {
@@ -91,5 +91,16 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 
         // タスクビューへの推移
         performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
+    }
+
+    // セルを削除(カテゴリー削除)
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+
+        if editingStyle == .delete {
+            appDelegate?.itemArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }
