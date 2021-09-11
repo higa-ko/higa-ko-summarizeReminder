@@ -19,6 +19,7 @@ class InputViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
 
         // Switchの初期値を固定
         appDelegate?.isNewCategoryCheck = true

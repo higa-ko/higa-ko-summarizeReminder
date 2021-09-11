@@ -30,6 +30,7 @@ class TaskViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
 
         // ボタンの書式を変更
         Buttonformat().underButtonformat(button: deleteButton)

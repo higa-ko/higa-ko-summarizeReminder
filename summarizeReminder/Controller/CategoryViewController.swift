@@ -22,6 +22,8 @@ class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
+
         // ボタンの書式を変更
         Buttonformat().underButtonformat(button: underButton)
 
