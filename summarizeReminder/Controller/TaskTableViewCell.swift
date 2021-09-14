@@ -8,7 +8,8 @@
 import UIKit
 
 protocol TaskTextFieldDelegate: AnyObject {
-    func changedTaskTextField()
+    func endActionTextField()
+    func changedTextField(cell: TaskTableViewCell)
  }
 
 class TaskTableViewCell: UITableViewCell {
@@ -38,16 +39,23 @@ class TaskTableViewCell: UITableViewCell {
         }
     }
 
+    // テキストフィールドを編集した時の処理
+    @IBAction func changedTextField(_ sender: UITextField) {
+        taskTextFieldDelegate?.changedTextField(cell: self)
+    }
+
+    // テキストフィールドを改行した時の処理
+    @IBAction func endActionTextField(_ sender: UITextField) {
+        taskTextFieldDelegate?.endActionTextField()
+    }
+
     // タスクビューのテキストフィールドに表示
     func configureInputTask(text: String) {
         inputTaskTextField.borderStyle = .none // テキストフィールドの枠線を消す
         inputTaskTextField.text = text
     }
 
-    @IBAction func changedTaskTextField(_ sender: UITextField) {
-        taskTextFieldDelegate?.changedTaskTextField() // テキストフィールドを更新したらテーブルビューを更新する
-    }
-
+    // テキストフィールド内の文字を返す
     func taskText() -> String {
         let text = inputTaskTextField.text
         return text!

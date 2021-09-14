@@ -368,7 +368,8 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="changedTaskTextField:" destination="XXx-G1-FqH" eventType="editingChanged" id="8t7-Zk-rUL"/>
+                                                        <action selector="changedTextField:" destination="XXx-G1-FqH" eventType="editingChanged" id="VnJ-Sj-UWC"/>
+                                                        <action selector="endActionTextField:" destination="XXx-G1-FqH" eventType="editingDidEndOnExit" id="RNK-CU-zKf"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>

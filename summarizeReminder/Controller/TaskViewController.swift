@@ -20,7 +20,8 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var addButton: UIButton!
 
     var mode: Mode?
-    private var cellArray: [TaskTableViewCell] = []
+    //    private var cellArray: [TaskTableViewCell?] = []
+    private var existingTaskArray: [String?] = []
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -44,6 +45,9 @@ class TaskViewController: UIViewController {
         case .check(let categoryIndex):
             // ナビゲーションバーのタイトルをカテゴリーに変更
             self.navigationItem.title = appDelegate!.itemArray[categoryIndex].category
+
+            // cellArrayの初期化
+            initializationTaskArray(categoryIndex: categoryIndex)
         default:
             print("Modeにcheck以外が指定されている")
         }
@@ -59,22 +63,23 @@ class TaskViewController: UIViewController {
         guard let mode = mode else { return }
         if case .add(let categoryIndex) = mode {
             guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
-            for newElementNumber in 0 ..< cellArray.count {
-                let text = cellArray[newElementNumber].taskText()
+            for newElementNumber in 0 ..< existingTaskArray.count where existingTaskArray[newElementNumber] != nil {
+                let text = existingTaskArray[newElementNumber]
 
                 //  タスクの既存編集か新規追加かで処理を分岐
                 if existingCount > newElementNumber {
-                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = text
+                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = text!
                 } else {
-                    appDelegate?.itemArray[categoryIndex].task.append(text)
+                    appDelegate?.itemArray[categoryIndex].task.append(text!)
                     appDelegate?.itemArray[categoryIndex].isTaskCheck.append(true)
                 }
             }
             // タスクが空白になっているものを削除
             ProcessArray().deleteTaskBlank(categoryIndex: categoryIndex)
-        }
-        cellArray = [] // Cell配列を初期化
 
+            // Cell配列を初期化
+            initializationTaskArray(categoryIndex: categoryIndex)
+        }
         changeMode(mode: mode)
         tableView.reloadData()
     }
@@ -90,6 +95,7 @@ class TaskViewController: UIViewController {
             guard let mode = self.mode else { return }
             if case .check(let categoryIndex) = mode {
                 ProcessArray().deleteTaskCheck(categoryIndex: categoryIndex) // タスクの削除処理
+                self.initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
             }
 
             self.tableView.reloadData()
@@ -110,7 +116,7 @@ class TaskViewController: UIViewController {
         tableView.reloadData()
     }
 
-    func changeMode(mode: Mode) {
+    private func changeMode(mode: Mode) {
         // 選択状態に合わせてボタンの有無を切り替え
         switch mode {
         case .check(let categoryIndex):
@@ -125,6 +131,16 @@ class TaskViewController: UIViewController {
             doneButtonItem.isEnabled = false
         }
     }
+
+    // existingTaskArray配列の初期化
+    private func initializationTaskArray(categoryIndex: Int) {
+        guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
+        existingTaskArray = []
+        // 要素の数+1分配列にnilを追加
+        for _ in 0 ... existingCount {
+            existingTaskArray.append(nil)
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -134,10 +150,10 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
         // 選択されているモードに合わせてセルの表示数を変更
         switch mode {
-        case .check(let categoryIndex):
-            return appDelegate!.itemArray[categoryIndex].task.count
-        case .add(let categoryIndex):
-            return appDelegate!.itemArray[categoryIndex].task.count + 1
+        case .check:
+            return existingTaskArray.count - 1
+        case .add:
+            return existingTaskArray.count
         default:
             print("存在しないモードが選択されている")
             return 0
@@ -146,7 +162,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // 選択されているモードに合わせてセルの表示数を変更
+        // 選択されているモードに合わせてセルの表示内容を変更
         switch mode {
         case .check(let categoryIndex):
             let identifier = K.CellIdentifier.DisplayTaskyCell
@@ -158,25 +174,35 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             cell?.configureDisplayTask(text: text, isTaskCheck: isTaskCheck)
 
             return cell!
+
         case .add(let categoryIndex):
             let identifier = K.CellIdentifier.InputTaskCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
-            let max = appDelegate!.itemArray[categoryIndex].task.count
+            let max = existingTaskArray.count
+            let text: String?
 
-            // 最後のセルのみ表示処理を変更
-            if max == indexPath.row {
-                cell?.configureInputTask(text: "")
-                cellArray.append(cell!) // 表示しているセルを配列に入れる
+            // セルが再利用のものか確認
+            if existingTaskArray[indexPath.row] == nil {
+
+                // 最後のセルのみ表示処理を変更
+                if max - 1 == indexPath.row {
+                    text = ""
+                    existingTaskArray[indexPath.row] = text
+                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
+                } else {
+                    text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
+                    existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
+                }
+
             } else {
-                let text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
-                cell?.configureInputTask(text: text!)
-
-                cell?.taskTextFieldDelegate = self
-
-                cellArray.append(cell!) // 表示しているセルを配列に入れる
+                text = existingTaskArray[indexPath.row]
             }
 
+            cell?.configureInputTask(text: text!)
+            cell?.taskTextFieldDelegate = self
+
             return cell!
+
         default:
             print("存在しないモードが選択されている")
             let identifier = K.CellIdentifier.InputTaskCell
@@ -191,6 +217,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         case .check:
             return indexPath // セルを選択可能に変更
         case .add:
+            print("\(indexPath.row)")
             return nil // セルを選択不可に変更
         default:
             print("存在しないモードが選択されている")
@@ -221,6 +248,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             guard let mode = self.mode else { return }
             if case .check(let categoryIndex) = mode {
                 appDelegate?.itemArray[categoryIndex].task.remove(at: indexPath.row)
+                initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
@@ -239,12 +267,18 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             return false
         }
     }
+
 }
 
 // MARK: - TaskTextFieldDelegate
-// たぶんテキストフィールド編集した時の処理
 extension TaskViewController: TaskTextFieldDelegate {
-    func changedTaskTextField() {
-        // 不要そうであれば消す
+    func changedTextField(cell: TaskTableViewCell) {
+        let indexPath = tableView.indexPath(for: cell)
+        let text = cell.inputTaskTextField.text
+        existingTaskArray[indexPath!.row] = text
+    }
+
+    func endActionTextField() {
+        print("改行が押された時")
     }
 }
