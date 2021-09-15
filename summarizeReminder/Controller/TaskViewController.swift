@@ -114,6 +114,14 @@ class TaskViewController: UIViewController {
         guard let mode = mode else { return }
         changeMode(mode: mode)
         tableView.reloadData()
+
+        // 一番下のセルまでスクロールする
+        let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
+        guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
+        cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+        print("スクロール完了")
     }
 
     private func changeMode(mode: Mode) {
@@ -188,7 +196,8 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 if max - 1 == indexPath.row {
                     text = ""
                     existingTaskArray[indexPath.row] = text
-                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
+//                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
+//                    print("最後のセル")
                 } else {
                     text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
                     existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
@@ -272,10 +281,12 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - TaskTextFieldDelegate
 extension TaskViewController: TaskTextFieldDelegate {
+
+    // テキストフィールドが編集された時の処理
     func changedTextField(cell: TaskTableViewCell) {
-        let indexPath = tableView.indexPath(for: cell)
-        let text = cell.inputTaskTextField.text
-        existingTaskArray[indexPath!.row] = text
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        guard let text = cell.inputTaskTextField.text  else { return }
+        existingTaskArray[indexPath.row] = text
     }
 
     func endActionTextField() {
