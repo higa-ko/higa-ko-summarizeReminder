@@ -196,8 +196,8 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 if max - 1 == indexPath.row {
                     text = ""
                     existingTaskArray[indexPath.row] = text
-//                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
-//                    print("最後のセル")
+                    //                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
+                    //                    print("最後のセル")
                 } else {
                     text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
                     existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
@@ -226,7 +226,6 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
         case .check:
             return indexPath // セルを選択可能に変更
         case .add:
-            print("\(indexPath.row)")
             return nil // セルを選択不可に変更
         default:
             print("存在しないモードが選択されている")
@@ -284,12 +283,34 @@ extension TaskViewController: TaskTextFieldDelegate {
 
     // テキストフィールドが編集された時の処理
     func changedTextField(cell: TaskTableViewCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        guard let text = cell.inputTaskTextField.text  else { return }
-        existingTaskArray[indexPath.row] = text
+        guard let mode = mode else { return }
+        if case .add = mode {
+
+            guard let indexPath = tableView.indexPath(for: cell) else { return }
+            guard let text = cell.inputTaskTextField.text  else { return }
+            existingTaskArray[indexPath.row] = text
+        }
     }
 
+    // 改行が押された時の処理
     func endActionTextField() {
-        print("改行が押された時")
+        // 編集用の配列の最後が空白かどうかで処理を分岐
+        guard let mode = mode else { return }
+        if case .add = mode {
+
+            if existingTaskArray.last! != "" {
+                existingTaskArray.append("")
+                tableView.reloadData()
+
+                // 一番下のセルまでスクロールする
+                let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
+                tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
+                guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
+                cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+                print("改行")
+            }
+        }
     }
+
 }
