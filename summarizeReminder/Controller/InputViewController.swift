@@ -25,8 +25,8 @@ class InputViewController: UIViewController {
         appDelegate?.isNewCategoryCheck = true
         appDelegate?.isNoticeCheck = false
 
-        // セルの選択を無効
-        self.tableView.allowsSelection = false
+        // セルの選択を有効
+        self.tableView.allowsSelection = true
 
         print("いんぽーとビュー起動")
     }
@@ -86,6 +86,27 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
 
         return cell!
     }
+
+    // セルタップ処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
+
+        // 詳細設定のビューへ移動
+        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil)
+    }
+
+    // セルが選択されそうな時の処理
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row)
+        // 表示されているセルに合わせて選択の可否を指定
+        if isDisplayCheck {
+            return indexPath // セルを選択可能に変更
+        } else {
+            return nil // セルを選択不可に変更
+        }
+    }
+
 }
 
 // MARK: - CustomCellDelegate

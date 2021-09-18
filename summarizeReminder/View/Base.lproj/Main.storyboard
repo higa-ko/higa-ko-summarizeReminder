@@ -306,12 +306,29 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="qKy-Ht-xfu" id="53w-We-NdB"/>
+                        <segue destination="ZAF-fy-QNI" kind="show" identifier="InputToSelect" id="hIE-qu-VGY"/>
                     </connections>
                 </viewController>
                 <exit id="pES-63-ipq" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fv6-56-VQT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3009" y="459"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="xGU-LL-4BE">
+            <objects>
+                <viewController id="ZAF-fy-QNI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tvz-Se-fdj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="28F-uU-tr8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="7xm-Oo-ZmI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0bm-3A-4ly" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3975" y="459"/>
         </scene>
         <!--タスク-->
         <scene sceneID="ezE-fP-Diz">

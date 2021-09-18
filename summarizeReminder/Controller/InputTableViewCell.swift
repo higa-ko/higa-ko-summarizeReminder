@@ -46,4 +46,45 @@ class InputTableViewCell: UITableViewCell {
         appDelegate!.isNoticeCheck = noticeCheckSwitch.isOn
         cellDegate?.noticeActionSwitch()
     }
+
+    // セルのidentifierを確認してセルが選択可能にするかを返す
+    func selectCell(row: Int) -> Bool {
+        // 行数によってセルを選択できるか確認
+        switch row {
+
+        case 0:
+            return false
+
+        case 1:
+            if appDelegate!.isNewCategoryCheck {
+                return false
+            } else {
+                return true
+            }
+
+        case 2:
+            return false
+
+        case 3:
+            if appDelegate!.isNoticeCheck {
+                return false
+            } else {
+                return false
+            }
+
+        case 4:
+            if appDelegate!.isNoticeCheck {
+                return true
+            } else {
+                return false
+            }
+
+        case 5:
+            return true
+
+        default:
+            print("指定のセルが存在しない")
+            return false
+        }
+    }
 }
