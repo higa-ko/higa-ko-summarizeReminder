@@ -9,6 +9,7 @@ import UIKit
 
 class CategoryTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var alertImage: UIImageView!
     @IBOutlet private weak var categoryLabel: UILabel!
     @IBOutlet private weak var alertLabel: UILabel!
     @IBOutlet private weak var numberLabel: UILabel!
@@ -19,8 +20,10 @@ class CategoryTableViewCell: UITableViewCell {
 
         if item.isAlert {
             alertLabel.text = "アラートあり"
+            alertImage.image = UIImage(systemName: "bell")
         } else {
             alertLabel.text = "アラートなし"
+            alertImage.image = UIImage(systemName: "bell.slash")
         }
         numberLabel.text = String(item.task.count)
     }

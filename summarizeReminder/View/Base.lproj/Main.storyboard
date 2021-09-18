@@ -58,6 +58,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="alertImage" destination="hKW-OR-Pej" id="akn-Q8-nJl"/>
                                             <outlet property="alertLabel" destination="Hii-rZ-7Bd" id="cvj-Rc-d7O"/>
                                             <outlet property="categoryLabel" destination="jbE-M7-L8B" id="zEN-ej-ZcO"/>
                                             <outlet property="numberLabel" destination="PH7-1D-QSd" id="9j5-EB-t6W"/>
