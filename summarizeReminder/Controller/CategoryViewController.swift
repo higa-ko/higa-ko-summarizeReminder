@@ -58,10 +58,17 @@ class CategoryViewController: UIViewController {
 
     // 完了してカテゴリー画面へ戻ってくる
     @IBAction private func exitDone(segue: UIStoryboardSegue) {
+
+        guard let inputVC = segue.source as? InputViewController else { return }
+
+        let addItem = inputVC.addItem
+
         // 配列への追加処理
-        ProcessArray().addCategory()
+        ProcessArray().addCategory(item: addItem)
 
         tableView.reloadData()
+
+        print("配列への追加処理完了")
     }
 }
 

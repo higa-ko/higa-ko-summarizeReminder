@@ -12,6 +12,8 @@ class InputViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     private var detailInputMode: DetailInputMode?
+    private(set) var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
+    private(set) var editItem: Item?
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -105,7 +107,7 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier!, for: indexPath) as? InputTableViewCell
-        cell!.cellDegate = self
+        cell?.cellDegate = self
 
         return cell!
     }
@@ -146,6 +148,12 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - CustomCellDelegate
 extension InputViewController: CustomCellDelegate {
+    func changedCategoryTextField(cell: InputTableViewCell) {
+
+        guard let category = cell.categoryInputTextField.text else { return }
+        addItem.category = category
+    }
+
     func newCategoryActionSwitch() {
         tableView.reloadData()
     }

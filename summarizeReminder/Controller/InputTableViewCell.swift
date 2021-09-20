@@ -10,6 +10,7 @@ import UIKit
 protocol CustomCellDelegate: AnyObject {
     func newCategoryActionSwitch()
     func noticeActionSwitch()
+    func changedCategoryTextField(cell: InputTableViewCell)
 }
 
 class InputTableViewCell: UITableViewCell {
@@ -31,8 +32,7 @@ class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー名が入力された時
     @IBAction func changedCategoryTextField(_ sender: UITextField) {
-        guard let newCategory = categoryInputTextField.text else { return }
-        appDelegate?.addItem.category = newCategory
+        cellDegate?.changedCategoryTextField(cell: self)
     }
 
     // 新規カテゴリー確認セル

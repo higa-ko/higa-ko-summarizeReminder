@@ -286,8 +286,8 @@ extension TaskViewController: TaskTextFieldDelegate {
         if case .add = mode {
 
             guard let indexPath = tableView.indexPath(for: cell) else { return }
-            guard let text = cell.inputTaskTextField.text  else { return }
-            existingTaskArray[indexPath.row] = text
+            guard let task = cell.inputTaskTextField.text  else { return }
+            existingTaskArray[indexPath.row] = task
         }
     }
 

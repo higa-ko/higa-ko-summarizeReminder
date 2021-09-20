@@ -14,9 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
 
-    // 配列への入力用変数
-    var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
-
     // 配列を定義
     var itemArray: [Item] = [
         Item(category: "今日やること", task: ["腕立て", "腹筋", "スクワット"], isTaskCheck: [true, true, true], isAlert: true),
