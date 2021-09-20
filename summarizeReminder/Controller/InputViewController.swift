@@ -11,6 +11,8 @@ class InputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    private var detailInputMode: DetailInputMode?
+
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
@@ -29,6 +31,27 @@ class InputViewController: UIViewController {
         self.tableView.allowsSelection = true
 
         print("いんぽーとビュー起動")
+    }
+
+    // Input画面に戻ってきた時の処理
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tableView.reloadData()
+    }
+
+    // 画面推移の時の処理
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        switch segue.identifier ?? "" {
+        case K.SegueIdentifier.InputToSelect:
+            guard let detailInputVC = segue.destination as? DetailInputViewController else { return }
+            detailInputVC.detailInputMode = detailInputMode
+
+        default:
+            break
+        }
+
     }
 }
 
@@ -91,6 +114,18 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
+
+        switch indexPath.row {
+        case 1:
+            detailInputMode = .categorySelect
+        case 4:
+            detailInputMode = .repeatSelect
+        case 5:
+            detailInputMode = .taskSelect
+        default:
+            detailInputMode = .none
+            print("指定外のindexPathが指定された")
+        }
 
         // 詳細設定のビューへ移動
         performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil)

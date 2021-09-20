@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Mode {
+enum TaskMode {
     case check(Int)
     case add(Int)
 }
@@ -19,8 +19,7 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var deleteButton: UIButton!
     @IBOutlet private weak var addButton: UIButton!
 
-    var mode: Mode?
-    //    private var cellArray: [TaskTableViewCell?] = []
+    var taskMode: TaskMode?
     private var existingTaskArray: [String?] = []
 
     // AppDelegateの呼び出し
@@ -40,8 +39,8 @@ class TaskViewController: UIViewController {
         // バーボタンを無効化
         doneButtonItem.isEnabled = false
 
-        guard let mode = mode else { return }
-        switch mode {
+        guard let taskMode = taskMode else { return }
+        switch taskMode {
         case .check(let categoryIndex):
             // ナビゲーションバーのタイトルをカテゴリーに変更
             self.navigationItem.title = appDelegate!.itemArray[categoryIndex].category
@@ -60,7 +59,7 @@ class TaskViewController: UIViewController {
         print("-------バーボタン（完了）--------")
 
         // 配列の編集と新規追加
-        guard let mode = mode else { return }
+        guard let mode = taskMode else { return }
         if case .add(let categoryIndex) = mode {
             guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
             for newElementNumber in 0 ..< existingTaskArray.count where existingTaskArray[newElementNumber] != nil {
@@ -92,7 +91,7 @@ class TaskViewController: UIViewController {
         // ボタンの作成、追加
         let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
 
-            guard let mode = self.mode else { return }
+            guard let mode = self.taskMode else { return }
             if case .check(let categoryIndex) = mode {
                 ProcessArray().deleteTaskCheck(categoryIndex: categoryIndex) // タスクの削除処理
                 self.initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
@@ -111,7 +110,7 @@ class TaskViewController: UIViewController {
 
     // タスク追加ボタン
     @IBAction func addActionButton(_ sender: UIButton) {
-        guard let mode = mode else { return }
+        guard let mode = taskMode else { return }
         changeMode(mode: mode)
         tableView.reloadData()
 
@@ -124,16 +123,16 @@ class TaskViewController: UIViewController {
         print("スクロール完了")
     }
 
-    private func changeMode(mode: Mode) {
+    private func changeMode(mode: TaskMode) {
         // 選択状態に合わせてボタンの有無を切り替え
         switch mode {
         case .check(let categoryIndex):
-            self.mode = .add(categoryIndex)
+            self.taskMode = .add(categoryIndex)
             deleteButton.isEnabled = false
             addButton.isEnabled = false
             doneButtonItem.isEnabled = true
         case .add(let categoryIndex):
-            self.mode = .check(categoryIndex)
+            self.taskMode = .check(categoryIndex)
             deleteButton.isEnabled = true
             addButton.isEnabled = true
             doneButtonItem.isEnabled = false
@@ -157,7 +156,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         // 選択されているモードに合わせてセルの表示数を変更
-        switch mode {
+        switch taskMode {
         case .check:
             return existingTaskArray.count - 1
         case .add:
@@ -171,7 +170,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 選択されているモードに合わせてセルの表示内容を変更
-        switch mode {
+        switch taskMode {
         case .check(let categoryIndex):
             let identifier = K.CellIdentifier.DisplayTaskyCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
@@ -222,7 +221,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        switch mode {
+        switch taskMode {
         case .check:
             return indexPath // セルを選択可能に変更
         case .add:
@@ -236,7 +235,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルをタップした時の処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        guard let mode = mode else { return }
+        guard let mode = taskMode else { return }
         if case .check(let categoryIndex) = mode {
             // ボタンをタップした時にセルの選択除隊を逆転させる
             appDelegate!.itemArray[categoryIndex].isTaskCheck[indexPath.row].toggle()
@@ -253,7 +252,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
-            guard let mode = self.mode else { return }
+            guard let mode = self.taskMode else { return }
             if case .check(let categoryIndex) = mode {
                 appDelegate?.itemArray[categoryIndex].task.remove(at: indexPath.row)
                 initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
@@ -265,7 +264,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルの削除許可を設定
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 
-        switch mode {
+        switch taskMode {
         case .check:
             return true
         case .add:
@@ -283,7 +282,7 @@ extension TaskViewController: TaskTextFieldDelegate {
 
     // テキストフィールドが編集された時の処理
     func changedTextField(cell: TaskTableViewCell) {
-        guard let mode = mode else { return }
+        guard let mode = taskMode else { return }
         if case .add = mode {
 
             guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -295,7 +294,7 @@ extension TaskViewController: TaskTextFieldDelegate {
     // 改行が押された時の処理
     func endActionTextField() {
         // 編集用の配列の最後が空白かどうかで処理を分岐
-        guard let mode = mode else { return }
+        guard let mode = taskMode else { return }
         if case .add = mode {
 
             if existingTaskArray.last! != "" {

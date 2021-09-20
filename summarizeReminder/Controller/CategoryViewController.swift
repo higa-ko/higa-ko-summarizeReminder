@@ -44,7 +44,7 @@ class CategoryViewController: UIViewController {
         case K.SegueIdentifier.CategoryToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
             guard let categoryIndex = categoryIndex else { return }
-            taskVC.mode = .check(categoryIndex)
+            taskVC.taskMode = .check(categoryIndex)
 
         default:
             break
