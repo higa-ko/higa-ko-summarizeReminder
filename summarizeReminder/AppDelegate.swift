@@ -25,12 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              isAlert: false)
     ]
 
-    // 新規カテゴリーかどうかの確認 基本的には新規
-    var isNewCategoryCheck: Bool = true
-
-    // プッシュ通知が必要かどうかの確認 基本的には初回の通知はなし
-    var isNoticeCheck: Bool = false
-
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

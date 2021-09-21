@@ -22,14 +22,10 @@ struct ProcessArray {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // 新規追加のパターン以外を弾く
-        guard appDelegate.isNewCategoryCheck else { return } // 新規追加のスイッチがオフの場合処理を終了
         guard item.category != "" else { return } // カテゴリー名が記載されてない場合処理を終了
 
         // アイテム配列へのカテゴリー追加
         appDelegate.itemArray.append(item)
-
-//        // 追加用変数の初期化
-//        appDelegate.addItem = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     }
 
     // タスクにチェックがついている場合配列の要素から削除

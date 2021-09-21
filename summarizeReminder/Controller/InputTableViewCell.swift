@@ -8,21 +8,21 @@
 import UIKit
 
 protocol CustomCellDelegate: AnyObject {
-    func newCategoryActionSwitch()
-    func noticeActionSwitch()
+    func newCategoryActionSwitch(cell: InputTableViewCell)
+    func noticeActionSwitch(cell: InputTableViewCell)
     func changedCategoryTextField(cell: InputTableViewCell)
 }
 
 class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー確認セル
-    @IBOutlet private weak var newCategoryCheckSwitch: UISwitch!
+    @IBOutlet private(set) weak var newCategoryCheckSwitch: UISwitch!
 
     // 新規カテゴリー入力セル
-    @IBOutlet /*private*/ weak var categoryInputTextField: UITextField!
+    @IBOutlet private(set) weak var categoryInputTextField: UITextField!
 
     // プッシュ通知確認セル
-    @IBOutlet private weak var noticeCheckSwitch: UISwitch!
+    @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -37,43 +37,33 @@ class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー確認セル
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
-        appDelegate!.isNewCategoryCheck = newCategoryCheckSwitch.isOn
-        cellDegate?.newCategoryActionSwitch()
+//        appDelegate!.isNewCategoryCheck = newCategoryCheckSwitch.isOn
+        cellDegate?.newCategoryActionSwitch(cell: self)
     }
 
     // プッシュ通知確認セル
     @IBAction func noticeActionSwitch(_ sender: UISwitch) {
-        appDelegate!.isNoticeCheck = noticeCheckSwitch.isOn
-        cellDegate?.noticeActionSwitch()
+        cellDegate?.noticeActionSwitch(cell: self)
     }
 
     // セルのidentifierを確認してセルが選択可能にするかを返す
-    func selectCell(row: Int) -> Bool {
+    func selectCell(row: Int, inputMode: InputMode, isNoticeCheck: Bool) -> Bool {
         // 行数によってセルを選択できるか確認
         switch row {
 
-        case 0:
+        case 0, 2, 3:
             return false
 
         case 1:
-            if appDelegate!.isNewCategoryCheck {
+            switch inputMode {
+            case .add:
                 return false
-            } else {
+            case .edit:
                 return true
             }
 
-        case 2:
-            return false
-
-        case 3:
-            if appDelegate!.isNoticeCheck {
-                return false
-            } else {
-                return false
-            }
-
         case 4:
-            if appDelegate!.isNoticeCheck {
+            if isNoticeCheck {
                 return true
             } else {
                 return false

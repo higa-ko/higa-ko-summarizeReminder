@@ -7,13 +7,35 @@
 
 import UIKit
 
+enum InputMode {
+    case add
+    case edit
+}
+
 class InputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    private var inputMode: InputMode = .add
+
+    private var isNoticeCheck = false
+
     private var detailInputMode: DetailInputMode?
+
     private(set) var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     private(set) var editItem: Item?
+
+    private var categoryIndex: Int?
+
+    // 表示するセル(初期値はaddモード)
+    private var identifierArray = [
+        K.CellIdentifier.NewCategoryCheckCell,
+        K.CellIdentifier.CategoryInputCell,
+        K.CellIdentifier.NoticeCheckCell,
+        K.CellIdentifier.BlankCell,
+        K.CellIdentifier.BlankCell,
+        K.CellIdentifier.TaskAddCell
+    ]
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -24,10 +46,6 @@ class InputViewController: UIViewController {
 
         tableView.dataSource = self
         tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
-
-        // Switchの初期値を固定
-        appDelegate?.isNewCategoryCheck = true
-        appDelegate?.isNoticeCheck = false
 
         // セルの選択を有効
         self.tableView.allowsSelection = true
@@ -53,8 +71,8 @@ class InputViewController: UIViewController {
         default:
             break
         }
-
     }
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -67,46 +85,8 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
     // セルに表示する内容
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        var identifier: String?
-
-        // 行数によって表示するセルを設定
-        switch indexPath.row {
-
-        case 0:
-            identifier = K.CellIdentifier.NewCategoryCheckCell
-
-        case 1:
-            if appDelegate!.isNewCategoryCheck {
-                identifier = K.CellIdentifier.CategoryInputCell
-            } else {
-                identifier = K.CellIdentifier.CategorySelectCell
-            }
-
-        case 2:
-            identifier = K.CellIdentifier.NoticeCheckCell
-
-        case 3:
-            if appDelegate!.isNoticeCheck {
-                identifier = K.CellIdentifier.TimeSelectCell
-            } else {
-                identifier = K.CellIdentifier.BlankCell
-            }
-
-        case 4:
-            if appDelegate!.isNoticeCheck {
-                identifier = K.CellIdentifier.RepeatSelectCell
-            } else {
-                identifier = K.CellIdentifier.BlankCell
-            }
-
-        case 5:
-            identifier = K.CellIdentifier.TaskAddCell
-
-        default:
-            print("エラー")
-        }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier!, for: indexPath) as? InputTableViewCell
+        let identifier = identifierArray[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? InputTableViewCell
         cell?.cellDegate = self
 
         return cell!
@@ -135,7 +115,9 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row)
+        let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
+                                                             inputMode: inputMode,
+                                                             isNoticeCheck: isNoticeCheck)
         // 表示されているセルに合わせて選択の可否を指定
         if isDisplayCheck {
             return indexPath // セルを選択可能に変更
@@ -154,11 +136,46 @@ extension InputViewController: CustomCellDelegate {
         addItem.category = category
     }
 
-    func newCategoryActionSwitch() {
+    func newCategoryActionSwitch(cell: InputTableViewCell) {
+
+        if cell.newCategoryCheckSwitch.isOn {
+            inputMode = .add
+
+            // モードに合わせて表示するセルを変更
+            identifierArray[1] = K.CellIdentifier.CategoryInputCell
+
+        } else {
+            inputMode = .edit
+
+            // モードに合わせて表示するセルを変更
+            identifierArray[1] = K.CellIdentifier.CategorySelectCell
+        }
+
         tableView.reloadData()
     }
 
-    func noticeActionSwitch() {
+    func noticeActionSwitch(cell: InputTableViewCell) {
+
+        isNoticeCheck = cell.noticeCheckSwitch.isOn
+
+        // アラートを使用するかのチェック
+        switch inputMode {
+        case .add:
+            addItem.isAlert = isNoticeCheck
+        case .edit:
+            editItem?.isAlert = isNoticeCheck
+        }
+
+        if isNoticeCheck {
+            // switchの選択状態に合わせて表示するセルを選択
+            identifierArray[3] = K.CellIdentifier.TimeSelectCell
+            identifierArray[4] = K.CellIdentifier.RepeatSelectCell
+        } else {
+            // switchの選択状態に合わせて表示するセルを選択
+            identifierArray[3] = K.CellIdentifier.BlankCell
+            identifierArray[4] = K.CellIdentifier.BlankCell
+        }
+
         tableView.reloadData()
     }
 }
