@@ -19,6 +19,15 @@ class DetailInputViewController: UIViewController {
 
     var detailInputMode: DetailInputMode?
 
+    private let weekArray = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
+
+    private var taskArray: String?
+
+    var categoryIndex: Int?
+
+    // AppDelegateの呼び出し
+    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +46,6 @@ class DetailInputViewController: UIViewController {
             self.navigationItem.title = "タスク"
         }
         print("入力詳細画面を表示")
-
     }
 
 }
@@ -46,7 +54,18 @@ class DetailInputViewController: UIViewController {
 extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3 // テスト用
+
+        switch detailInputMode {
+        case .categorySelect:
+            return (appDelegate?.itemArray.count)!
+        case .repeatSelect:
+            return weekArray.count
+        case .taskSelect:
+            return 1
+        default:
+            print("存在しないモードが指定されている")
+            return 0
+        }
     }
 
     // セルに表示する内容
@@ -58,12 +77,22 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                      for: indexPath) as? DetailInputTableViewCell
 
+            cell?.detailInputLabel?.text = appDelegate?.itemArray[indexPath.row].category
+
+            if indexPath.row == categoryIndex {
+                cell?.detailInputImage.tintColor = .orange
+            } else {
+                cell?.detailInputImage.tintColor = .white
+            }
+
             return cell!
 
         case .repeatSelect:
             let identifier = K.CellIdentifier.DetailInputLabelCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                      for: indexPath) as? DetailInputTableViewCell
+
+            cell?.detailInputLabel?.text = weekArray[indexPath.row]
 
             return cell!
 
@@ -84,6 +113,30 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
             return cell!
         }
+    }
+
+    // セルをタップした時の処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
+
+        guard let detailInputMode = detailInputMode else { return }
+        switch detailInputMode {
+        case .categorySelect:
+            categoryIndex = indexPath.row
+
+            // InputViewControllerに値を渡す
+            guard let navigation = self.navigationController else { return }
+            guard let inputVC = navigation.viewControllers[0] as? InputViewController else { return }
+            inputVC.categoryIndex = categoryIndex
+
+        case .repeatSelect:
+            print("リピートの時の処理")
+
+        case .taskSelect:
+            print("タスクの時の処理　今のところ使わない")
+        }
+        tableView.reloadData()
     }
 
     // セルが選択されそうな時の処理

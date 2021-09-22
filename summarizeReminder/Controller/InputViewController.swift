@@ -25,7 +25,7 @@ class InputViewController: UIViewController {
     private(set) var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
     private(set) var editItem: Item?
 
-    private var categoryIndex: Int?
+    var categoryIndex: Int?
 
     // 表示するセル(初期値はaddモード)
     private var identifierArray = [
@@ -57,6 +57,8 @@ class InputViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        print("インポートビューに戻ってきた")
+
         tableView.reloadData()
     }
 
@@ -67,6 +69,7 @@ class InputViewController: UIViewController {
         case K.SegueIdentifier.InputToSelect:
             guard let detailInputVC = segue.destination as? DetailInputViewController else { return }
             detailInputVC.detailInputMode = detailInputMode
+            detailInputVC.categoryIndex = categoryIndex
 
         default:
             break
@@ -88,6 +91,20 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         let identifier = identifierArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? InputTableViewCell
         cell?.cellDegate = self
+
+        // 特定のセルのみ表示を変更
+        switch identifier {
+        case K.CellIdentifier.CategorySelectCell:
+            if let categoryIndex = categoryIndex {
+                cell?.categoryNameLabel.text = appDelegate?.itemArray[categoryIndex].category
+                cell?.categoryChoice.text = ""
+            } else {
+                cell?.categoryNameLabel.text = "カテゴリーを選ぶ"
+                cell?.categoryChoice.text = "未選択"
+            }
+        default:
+            break
+        }
 
         return cell!
     }

@@ -21,6 +21,9 @@ class InputTableViewCell: UITableViewCell {
     // 新規カテゴリー入力セル
     @IBOutlet private(set) weak var categoryInputTextField: UITextField!
 
+    @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var categoryChoice: UILabel!
+
     // プッシュ通知確認セル
     @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
 

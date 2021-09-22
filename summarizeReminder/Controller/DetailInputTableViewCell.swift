@@ -10,6 +10,7 @@ import UIKit
 class DetailInputTableViewCell: UITableViewCell {
 
     @IBOutlet weak var detailInputLabel: UILabel!
+    @IBOutlet weak var detailInputImage: UIImageView!
     @IBOutlet weak var detailInputTextField: UITextField!
 
 }

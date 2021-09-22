@@ -63,13 +63,13 @@ class TaskViewController: UIViewController {
         if case .add(let categoryIndex) = mode {
             guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
             for newElementNumber in 0 ..< existingTaskArray.count where existingTaskArray[newElementNumber] != nil {
-                let text = existingTaskArray[newElementNumber]
+                let task = existingTaskArray[newElementNumber]
 
                 //  タスクの既存編集か新規追加かで処理を分岐
                 if existingCount > newElementNumber {
-                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = text!
+                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = task!
                 } else {
-                    appDelegate?.itemArray[categoryIndex].task.append(text!)
+                    appDelegate?.itemArray[categoryIndex].task.append(task!)
                     appDelegate?.itemArray[categoryIndex].isTaskCheck.append(true)
                 }
             }
