@@ -27,6 +27,8 @@ class InputTableViewCell: UITableViewCell {
     // プッシュ通知確認セル
     @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
 
+    @IBOutlet weak var weekLabel: UILabel!
+
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 

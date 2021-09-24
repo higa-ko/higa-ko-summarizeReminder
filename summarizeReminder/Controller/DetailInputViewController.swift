@@ -13,17 +13,24 @@ enum DetailInputMode {
     case taskSelect
 }
 
+struct Week {
+    var dayOfWeek: [String]
+    var isWeekCheck: [Bool]
+}
+
 class DetailInputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
     var detailInputMode: DetailInputMode?
 
-    private let weekArray = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
-
     private var taskArray: String?
 
     var categoryIndex: Int?
+
+    var weekArray: Week = Week(
+        dayOfWeek: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+        isWeekCheck: [false, false, false, false, false, false, false])
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -59,7 +66,7 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
         case .categorySelect:
             return (appDelegate?.itemArray.count)!
         case .repeatSelect:
-            return weekArray.count
+            return weekArray.dayOfWeek.count
         case .taskSelect:
             return 1
         default:
@@ -92,7 +99,13 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                      for: indexPath) as? DetailInputTableViewCell
 
-            cell?.detailInputLabel?.text = weekArray[indexPath.row]
+            cell?.detailInputLabel?.text = weekArray.dayOfWeek[indexPath.row]
+
+            if weekArray.isWeekCheck[indexPath.row] {
+                cell?.detailInputImage.tintColor = .orange
+            } else {
+                cell?.detailInputImage.tintColor = .white
+            }
 
             return cell!
 
@@ -129,10 +142,23 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             guard let navigation = self.navigationController else { return }
             guard let inputVC = navigation.viewControllers[0] as? InputViewController else { return }
             inputVC.categoryIndex = categoryIndex
+            inputVC.editItem = appDelegate?.itemArray[categoryIndex!] // editItemの初期化
+            print("editItemの初期化")
 
         case .repeatSelect:
-            print("リピートの時の処理")
 
+            weekArray.isWeekCheck[indexPath.row].toggle()
+
+            // InputViewControllerに値を渡す
+            guard let navigation = self.navigationController else { return }
+            guard let inputVC = navigation.viewControllers[0] as? InputViewController else { return }
+
+            switch inputVC.inputMode {
+            case .add:
+                inputVC.addItem.isWeekCheck = weekArray.isWeekCheck
+            case .edit:
+                inputVC.editItem?.isWeekCheck = weekArray.isWeekCheck
+            }
         case .taskSelect:
             print("タスクの時の処理　今のところ使わない")
         }
@@ -143,7 +169,13 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         switch detailInputMode {
         case .categorySelect:
-            return indexPath // セルを選択可能に変更
+            // 選択済のカテゴリーの場合は選択不可にする
+            if indexPath.row == categoryIndex {
+                return nil // セルを選択不可に変更
+            } else {
+                return indexPath // セルを選択可能に変更
+            }
+
         case .repeatSelect:
             return indexPath // セルを選択可能に変更
         case .taskSelect:

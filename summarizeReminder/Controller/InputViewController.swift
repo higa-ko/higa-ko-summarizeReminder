@@ -16,14 +16,18 @@ class InputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    private var inputMode: InputMode = .add
+    private(set) var inputMode: InputMode = .add
 
     private var isNoticeCheck = false
 
     private var detailInputMode: DetailInputMode?
 
-    private(set) var addItem: Item = Item(category: "", task: [], isTaskCheck: [], isAlert: false)
-    private(set) var editItem: Item?
+    var addItem: Item = Item(category: "",
+                                          task: [],
+                                          isTaskCheck: [],
+                                          isAlert: false,
+                                          isWeekCheck: [false, false, false, false, false, false, false])
+    var editItem: Item?
 
     var categoryIndex: Int?
 
@@ -36,6 +40,8 @@ class InputViewController: UIViewController {
         K.CellIdentifier.BlankCell,
         K.CellIdentifier.TaskAddCell
     ]
+
+    private let weeks = ["日", "月", "火", "水", "木", "金", "土"]
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -71,6 +77,14 @@ class InputViewController: UIViewController {
             detailInputVC.detailInputMode = detailInputMode
             detailInputVC.categoryIndex = categoryIndex
 
+            switch inputMode {
+            case .add:
+                detailInputVC.weekArray.isWeekCheck = addItem.isWeekCheck
+            case .edit:
+                detailInputVC.weekArray.isWeekCheck = editItem?.isWeekCheck ??
+                [false, false, false, false, false, false, false]
+            }
+
         default:
             break
         }
@@ -102,6 +116,27 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
                 cell?.categoryNameLabel.text = "カテゴリーを選ぶ"
                 cell?.categoryChoice.text = "未選択"
             }
+
+        case K.CellIdentifier.RepeatSelectCell:
+            let isWeekCheck: [Bool]
+            var weekValue = ""
+            switch inputMode {
+            case .add:
+                isWeekCheck = addItem.isWeekCheck
+            case .edit:
+                isWeekCheck = editItem?.isWeekCheck ?? [false, false, false, false, false, false, false]
+            }
+
+            // isWeekCheck の内容に合わせて日付を表示　どこにもチェックがない場合は"未選択"で表示
+            for weekNumber in 0 ..< isWeekCheck.count where isWeekCheck[weekNumber] {
+                weekValue += weeks[weekNumber] + " "
+            }
+            if weekValue == "" {
+                weekValue = "未選択"
+            }
+
+            cell?.weekLabel.text = weekValue
+
         default:
             break
         }

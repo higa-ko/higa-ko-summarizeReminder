@@ -12,6 +12,7 @@ struct Item {
     var task: [String]
     var isTaskCheck: [Bool]
     var isAlert: Bool
+    var isWeekCheck: [Bool]
 }
 
 struct ProcessArray {

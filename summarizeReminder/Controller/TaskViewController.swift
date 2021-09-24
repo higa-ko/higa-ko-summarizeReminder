@@ -195,8 +195,6 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 if max - 1 == indexPath.row {
                     text = ""
                     existingTaskArray[indexPath.row] = text
-                    //                    cell?.inputTaskTextField.becomeFirstResponder() // 最後のテキストフィールドにフォーカス
-                    //                    print("最後のセル")
                 } else {
                     text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
                     existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
