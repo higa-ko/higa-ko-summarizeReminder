@@ -34,8 +34,8 @@ class InputViewController: UIViewController {
         K.CellIdentifier.NewCategoryCheckCell,
         K.CellIdentifier.CategoryInputCell,
         K.CellIdentifier.NoticeCheckCell,
-        K.CellIdentifier.BlankCell,
-        K.CellIdentifier.BlankCell,
+        K.CellIdentifier.TimeSelectCell,
+        K.CellIdentifier.RepeatSelectCell,
         K.CellIdentifier.TaskAddCell
     ]
 
@@ -62,13 +62,6 @@ class InputViewController: UIViewController {
         super.viewWillAppear(animated)
 
         print("インポートビューに戻ってきた")
-
-        switch inputMode {
-        case .add:
-            break
-        case .edit:
-            break
-        }
 
         tableView.reloadData()
     }
@@ -105,26 +98,13 @@ class InputViewController: UIViewController {
         }
     }
 
-    // スイッチのステータスに合わせてidentifierを変更
-    func changeNoticeIdentifier(isNoticeCheck: Bool) {
-        if isNoticeCheck {
-            // switchの選択状態に合わせて表示するセルを選択
-            identifierArray[3] = K.CellIdentifier.TimeSelectCell
-            identifierArray[4] = K.CellIdentifier.RepeatSelectCell
-        } else {
-            // switchの選択状態に合わせて表示するセルを選択
-            identifierArray[3] = K.CellIdentifier.BlankCell
-            identifierArray[4] = K.CellIdentifier.BlankCell
-        }
-    }
-
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension InputViewController: UITableViewDataSource, UITableViewDelegate {
     // 表示するセルの個数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6 // 現時点のマックス行数を入れておく
+        return identifierArray.count
     }
 
     // セルに表示する内容
@@ -133,6 +113,20 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         let identifier = identifierArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? InputTableViewCell
         cell?.cellDegate = self
+
+        let isNoticeCheck: Bool
+        let isWeekCheck: [Bool]
+        var weekValue = ""
+
+        // モードに合わせて配列から情報を取得
+        switch inputMode {
+        case .add:
+            isNoticeCheck = addItem.isNoticeCheck
+            isWeekCheck = addItem.isWeekCheck
+        case .edit:
+            isNoticeCheck = editItem?.isNoticeCheck ?? false
+            isWeekCheck = editItem?.isWeekCheck ?? [false, false, false, false, false, false, false]
+        }
 
         // 特定のセルのみ表示を変更
         switch identifier {
@@ -146,29 +140,16 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
         case K.CellIdentifier.NoticeCheckCell:
-            let isNoticeCheck: Bool
-            switch inputMode {
-            case .add:
-                isNoticeCheck = addItem.isNoticeCheck
-            case .edit:
-                isNoticeCheck = editItem?.isNoticeCheck ?? false
-            }
-
             cell?.noticeCheckSwitch.isOn = isNoticeCheck
 
-            // スイッチのステータスに合わせてIdentifierを変更
-            changeNoticeIdentifier(isNoticeCheck: isNoticeCheck)
-
-        case K.CellIdentifier.RepeatSelectCell:
-            let isWeekCheck: [Bool]
-            var weekValue = ""
-            switch inputMode {
-            case .add:
-                isWeekCheck = addItem.isWeekCheck
-            case .edit:
-                isWeekCheck = editItem?.isWeekCheck ?? [false, false, false, false, false, false, false]
+        case K.CellIdentifier.TimeSelectCell:
+            if isNoticeCheck {
+                cell?.timeLabel.alpha = 1
+            } else {
+                cell?.timeLabel.alpha = 0.5
             }
 
+        case K.CellIdentifier.RepeatSelectCell:
             // isWeekCheck の内容に合わせて日付を表示　どこにもチェックがない場合は"未選択"で表示
             for weekNumber in 0 ..< isWeekCheck.count where isWeekCheck[weekNumber] {
                 weekValue += weeks[weekNumber] + " "
@@ -178,6 +159,14 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
             cell?.weekLabel.text = weekValue
+
+            if isNoticeCheck {
+                cell?.repeatLabel.alpha = 1
+                cell?.weekLabel.alpha = 1
+            } else {
+                cell?.repeatLabel.alpha = 0.5
+                cell?.weekLabel.alpha = 0.5
+            }
 
         default:
             break
@@ -216,6 +205,7 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         case .edit:
             isNoticeCheck = editItem?.isNoticeCheck ?? false
         }
+
         let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
                                                              inputMode: inputMode,
                                                              isNoticeCheck: isNoticeCheck)
@@ -265,9 +255,6 @@ extension InputViewController: CustomCellDelegate {
         case .edit:
             editItem?.isNoticeCheck = isNoticeCheck
         }
-
-        // スイッチのステータスに合わせてIdentifierを変更
-        changeNoticeIdentifier(isNoticeCheck: isNoticeCheck)
 
         tableView.reloadData()
     }

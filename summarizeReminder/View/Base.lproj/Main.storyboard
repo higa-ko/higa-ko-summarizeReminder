@@ -229,6 +229,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="timeLabel" destination="QeP-AV-0LY" id="s37-cm-4O8"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RepeatSelectCell" textLabel="kvF-eJ-l58" detailTextLabel="gjq-hN-p8C" style="IBUITableViewCellStyleValue1" id="1Ct-zT-XSb" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="262" width="414" height="43.5"/>
@@ -254,6 +257,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="repeatLabel" destination="kvF-eJ-l58" id="TeY-08-ovT"/>
                                             <outlet property="weekLabel" destination="gjq-hN-p8C" id="a6E-F0-XzN"/>
                                         </connections>
                                     </tableViewCell>
@@ -279,14 +283,6 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlankCell" id="sO8-AG-lSf" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="349" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sO8-AG-lSf" id="Rjv-0S-TE6">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>

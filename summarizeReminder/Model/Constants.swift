@@ -22,7 +22,6 @@ struct K {
         static let TimeSelectCell = "TimeSelectCell"
         static let RepeatSelectCell = "RepeatSelectCell"
         static let TaskAddCell = "TaskAddCell"
-        static let BlankCell = "BlankCell"
 
         static let DetailInputLabelCell = "DetailInputLabelCell"
         static let DetailInputTextFieldCell = "DetailInputTextFieldCell"

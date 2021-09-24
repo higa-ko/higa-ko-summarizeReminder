@@ -27,11 +27,6 @@ class InputTableViewCell: UITableViewCell {
     // プッシュ通知確認セル
     @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
 
-    @IBOutlet weak var weekLabel: UILabel!
-
-    // AppDelegateの呼び出し
-    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
-
     // デリゲートの設定
     weak var cellDegate: CustomCellDelegate?
 
@@ -49,6 +44,14 @@ class InputTableViewCell: UITableViewCell {
     @IBAction func noticeActionSwitch(_ sender: UISwitch) {
         cellDegate?.noticeActionSwitch(cell: self)
     }
+
+    @IBOutlet weak var timeLabel: UILabel!
+
+    @IBOutlet weak var repeatLabel: UILabel!
+
+    @IBOutlet weak var weekLabel: UILabel!
+    // AppDelegateの呼び出し
+    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     func selectNoticeCheckSwitch(isNoticeCheck: Bool) {
         noticeCheckSwitch.isOn = isNoticeCheck
