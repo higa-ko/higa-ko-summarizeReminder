@@ -18,15 +18,13 @@ class InputViewController: UIViewController {
 
     private(set) var inputMode: InputMode = .add
 
-    private var isNoticeCheck = false
-
     private var detailInputMode: DetailInputMode?
 
     var addItem: Item = Item(category: "",
-                                          task: [],
-                                          isTaskCheck: [],
-                                          isAlert: false,
-                                          isWeekCheck: [false, false, false, false, false, false, false])
+                             task: [],
+                             isTaskCheck: [],
+                             isNoticeCheck: false,
+                             isWeekCheck: [false, false, false, false, false, false, false])
     var editItem: Item?
 
     var categoryIndex: Int?
@@ -65,6 +63,13 @@ class InputViewController: UIViewController {
 
         print("インポートビューに戻ってきた")
 
+        switch inputMode {
+        case .add:
+            break
+        case .edit:
+            break
+        }
+
         tableView.reloadData()
     }
 
@@ -87,6 +92,29 @@ class InputViewController: UIViewController {
 
         default:
             break
+        }
+    }
+
+    // スイッチのステータスに合わせてidentifierを変更
+    func changeNewCategoryIdentifier(isNewCategoryCheck: Bool) {
+
+        if isNewCategoryCheck {
+            identifierArray[1] = K.CellIdentifier.CategoryInputCell
+        } else {
+            identifierArray[1] = K.CellIdentifier.CategorySelectCell
+        }
+    }
+
+    // スイッチのステータスに合わせてidentifierを変更
+    func changeNoticeIdentifier(isNoticeCheck: Bool) {
+        if isNoticeCheck {
+            // switchの選択状態に合わせて表示するセルを選択
+            identifierArray[3] = K.CellIdentifier.TimeSelectCell
+            identifierArray[4] = K.CellIdentifier.RepeatSelectCell
+        } else {
+            // switchの選択状態に合わせて表示するセルを選択
+            identifierArray[3] = K.CellIdentifier.BlankCell
+            identifierArray[4] = K.CellIdentifier.BlankCell
         }
     }
 
@@ -116,6 +144,20 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
                 cell?.categoryNameLabel.text = "カテゴリーを選ぶ"
                 cell?.categoryChoice.text = "未選択"
             }
+
+        case K.CellIdentifier.NoticeCheckCell:
+            let isNoticeCheck: Bool
+            switch inputMode {
+            case .add:
+                isNoticeCheck = addItem.isNoticeCheck
+            case .edit:
+                isNoticeCheck = editItem?.isNoticeCheck ?? false
+            }
+
+            cell?.noticeCheckSwitch.isOn = isNoticeCheck
+
+            // スイッチのステータスに合わせてIdentifierを変更
+            changeNoticeIdentifier(isNoticeCheck: isNoticeCheck)
 
         case K.CellIdentifier.RepeatSelectCell:
             let isWeekCheck: [Bool]
@@ -167,6 +209,13 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let isNoticeCheck: Bool
+        switch inputMode {
+        case .add:
+            isNoticeCheck = addItem.isNoticeCheck
+        case .edit:
+            isNoticeCheck = editItem?.isNoticeCheck ?? false
+        }
         let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
                                                              inputMode: inputMode,
                                                              isNoticeCheck: isNoticeCheck)
@@ -190,43 +239,35 @@ extension InputViewController: CustomCellDelegate {
 
     func newCategoryActionSwitch(cell: InputTableViewCell) {
 
-        if cell.newCategoryCheckSwitch.isOn {
+        let isNewCategoryCheck = cell.newCategoryCheckSwitch.isOn
+
+        // スイッチのステータスに合わせてモードを変更
+        if isNewCategoryCheck {
             inputMode = .add
-
-            // モードに合わせて表示するセルを変更
-            identifierArray[1] = K.CellIdentifier.CategoryInputCell
-
         } else {
             inputMode = .edit
-
-            // モードに合わせて表示するセルを変更
-            identifierArray[1] = K.CellIdentifier.CategorySelectCell
         }
+
+        // スイッチのステータスに合わせてIdentifierを変更
+        changeNewCategoryIdentifier(isNewCategoryCheck: isNewCategoryCheck)
 
         tableView.reloadData()
     }
 
     func noticeActionSwitch(cell: InputTableViewCell) {
 
-        isNoticeCheck = cell.noticeCheckSwitch.isOn
+        let isNoticeCheck = cell.noticeCheckSwitch.isOn
 
-        // アラートを使用するかのチェック
+        // アラートの通知設定を変更
         switch inputMode {
         case .add:
-            addItem.isAlert = isNoticeCheck
+            addItem.isNoticeCheck = isNoticeCheck
         case .edit:
-            editItem?.isAlert = isNoticeCheck
+            editItem?.isNoticeCheck = isNoticeCheck
         }
 
-        if isNoticeCheck {
-            // switchの選択状態に合わせて表示するセルを選択
-            identifierArray[3] = K.CellIdentifier.TimeSelectCell
-            identifierArray[4] = K.CellIdentifier.RepeatSelectCell
-        } else {
-            // switchの選択状態に合わせて表示するセルを選択
-            identifierArray[3] = K.CellIdentifier.BlankCell
-            identifierArray[4] = K.CellIdentifier.BlankCell
-        }
+        // スイッチのステータスに合わせてIdentifierを変更
+        changeNoticeIdentifier(isNoticeCheck: isNoticeCheck)
 
         tableView.reloadData()
     }

@@ -61,10 +61,17 @@ class CategoryViewController: UIViewController {
 
         guard let inputVC = segue.source as? InputViewController else { return }
 
-        let addItem = inputVC.addItem
+        switch inputVC.inputMode {
+        case .add:
+            let addItem = inputVC.addItem
 
-        // 配列への追加処理
-        ProcessArray().addCategory(item: addItem)
+            ProcessArray().addCategory(item: addItem)
+        case .edit:
+            guard let editItem = inputVC.editItem else { return }
+            guard let categoryIndex = inputVC.categoryIndex else { return }
+
+            ProcessArray().editCategory(item: editItem, categoryIndex: categoryIndex)
+        }
 
         tableView.reloadData()
 

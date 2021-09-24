@@ -42,13 +42,16 @@ class InputTableViewCell: UITableViewCell {
 
     // 新規カテゴリー確認セル
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
-//        appDelegate!.isNewCategoryCheck = newCategoryCheckSwitch.isOn
         cellDegate?.newCategoryActionSwitch(cell: self)
     }
 
     // プッシュ通知確認セル
     @IBAction func noticeActionSwitch(_ sender: UISwitch) {
         cellDegate?.noticeActionSwitch(cell: self)
+    }
+
+    func selectNoticeCheckSwitch(isNoticeCheck: Bool) {
+        noticeCheckSwitch.isOn = isNoticeCheck
     }
 
     // セルのidentifierを確認してセルが選択可能にするかを返す

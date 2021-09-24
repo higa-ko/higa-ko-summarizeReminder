@@ -11,7 +11,7 @@ struct Item {
     var category: String
     var task: [String]
     var isTaskCheck: [Bool]
-    var isAlert: Bool
+    var isNoticeCheck: Bool
     var isWeekCheck: [Bool]
 }
 
@@ -27,6 +27,17 @@ struct ProcessArray {
 
         // アイテム配列へのカテゴリー追加
         appDelegate.itemArray.append(item)
+    }
+
+    func editCategory(item: Item, categoryIndex: Int) {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        // 新規追加のパターン以外を弾く
+        guard item.category != "" else { return } // カテゴリー名が記載されてない場合処理を終了
+
+        // アイテム配列へのカテゴリー追加
+        appDelegate.itemArray[categoryIndex] = item
     }
 
     // タスクにチェックがついている場合配列の要素から削除

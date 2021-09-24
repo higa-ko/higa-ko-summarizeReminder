@@ -18,7 +18,7 @@ class CategoryTableViewCell: UITableViewCell {
     func configureCategory(item: Item) {
         categoryLabel.text = item.category
 
-        if item.isAlert {
+        if item.isNoticeCheck {
             alertLabel.text = "アラートあり"
             alertImage.image = UIImage(systemName: "bell")
         } else {
