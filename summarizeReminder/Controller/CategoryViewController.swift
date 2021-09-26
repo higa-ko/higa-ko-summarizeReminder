@@ -10,11 +10,12 @@ import UIKit
 class CategoryViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
-    // AppDelegateの呼び出し
-    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     // 下にある+ボタン
     @IBOutlet private weak var underButton: UIButton!
+
+    // AppDelegateの呼び出し
+    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     private var categoryIndex: Int?
 
@@ -28,6 +29,10 @@ class CategoryViewController: UIViewController {
         Buttonformat().underButtonformat(button: underButton)
 
         print("カテゴリービューを表示")
+    }
+
+    @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
+        print("イメージが押された")
     }
 
     // カテゴリー画面に戻ってきた時の処理
