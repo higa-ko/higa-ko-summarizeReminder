@@ -83,6 +83,18 @@ class InputViewController: UIViewController {
                 [false, false, false, false, false, false, false]
             }
 
+        case K.SegueIdentifier.InputToTask:
+            guard let taskVC = segue.destination as? TaskViewController else { return }
+            taskVC.taskMode = .add
+            taskVC.categoryIndex = categoryIndex
+
+            switch inputMode {
+            case .add:
+                taskVC.beforeExistingItem = addItem
+            case .edit:
+                taskVC.beforeExistingItem = editItem
+            }
+
         default:
             break
         }
@@ -183,17 +195,18 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
         case 1:
             detailInputMode = .categorySelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
         case 4:
             detailInputMode = .repeatSelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
         case 5:
             detailInputMode = .taskSelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
         default:
             detailInputMode = .none
             print("指定外のindexPathが指定された")
         }
 
-        // 詳細設定のビューへ移動
-        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil)
     }
 
     // セルが選択されそうな時の処理

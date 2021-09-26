@@ -8,8 +8,8 @@
 import UIKit
 
 enum TaskMode {
-    case check(Int)
-    case add(Int)
+    case check
+    case add
 }
 
 class TaskViewController: UIViewController {
@@ -20,10 +20,13 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var addButton: UIButton!
 
     var taskMode: TaskMode?
-    private var existingTaskArray: [String?] = []
+
+    var beforeExistingItem: Item?
+    private var existingTaskArray: [String?] = [] // タスクの編集内容を格納する配列　編集対象のタスク数+1の要素数
+    var categoryIndex: Int?
 
     // AppDelegateの呼び出し
-    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+//    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     // 画面実行時の処理
     override func viewDidLoad() {
@@ -36,20 +39,26 @@ class TaskViewController: UIViewController {
         Buttonformat().underButtonformat(button: deleteButton)
         Buttonformat().underButtonformat(button: addButton)
 
-        // バーボタンを無効化
-        doneButtonItem.isEnabled = false
-
-        guard let taskMode = taskMode else { return }
+        // 選択状態に合わせてボタンの有無を切り替え
         switch taskMode {
-        case .check(let categoryIndex):
-            // ナビゲーションバーのタイトルをカテゴリーに変更
-            self.navigationItem.title = appDelegate!.itemArray[categoryIndex].category
-
-            // cellArrayの初期化
-            initializationTaskArray(categoryIndex: categoryIndex)
-        default:
-            print("Modeにcheck以外が指定されている")
+        case .check:
+            deleteButton.isEnabled = true
+            addButton.isEnabled = true
+            doneButtonItem.isEnabled = false
+        case .add:
+            deleteButton.isEnabled = false
+            addButton.isEnabled = false
+            doneButtonItem.isEnabled = true
+        case .none:
+            print("存在しないモードが選択されている")
         }
+
+        // ナビゲーションバーのタイトルをカテゴリーに変更
+        self.navigationItem.title = beforeExistingItem?.category
+
+        // cellArrayの初期化
+        initializationTaskArray()
+
         print("タスクビューを表示")
     }
 
@@ -60,24 +69,26 @@ class TaskViewController: UIViewController {
 
         // 配列の編集と新規追加
         guard let mode = taskMode else { return }
-        if case .add(let categoryIndex) = mode {
-            guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
+        if case .add = mode {
+            guard let existingCount = beforeExistingItem?.task.count else { return }
             for newElementNumber in 0 ..< existingTaskArray.count where existingTaskArray[newElementNumber] != nil {
                 let task = existingTaskArray[newElementNumber]
 
                 //  タスクの既存編集か新規追加かで処理を分岐
                 if existingCount > newElementNumber {
-                    appDelegate?.itemArray[categoryIndex].task[newElementNumber] = task!
+                    beforeExistingItem!.task[newElementNumber] = task!
                 } else {
-                    appDelegate?.itemArray[categoryIndex].task.append(task!)
-                    appDelegate?.itemArray[categoryIndex].isTaskCheck.append(true)
+                    beforeExistingItem!.task.append(task!)
+                    beforeExistingItem!.isTaskCheck.append(true)
                 }
             }
             // タスクが空白になっているものを削除
-            ProcessArray().deleteTaskBlank(categoryIndex: categoryIndex)
+            beforeExistingItem = deleteTaskBlank(item: beforeExistingItem!)
 
             // Cell配列を初期化
-            initializationTaskArray(categoryIndex: categoryIndex)
+            initializationTaskArray()
+            // 共有配列と同期
+            ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex!)
         }
         changeMode(mode: mode)
         tableView.reloadData()
@@ -92,11 +103,14 @@ class TaskViewController: UIViewController {
         let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
 
             guard let mode = self.taskMode else { return }
-            if case .check(let categoryIndex) = mode {
-                ProcessArray().deleteTaskCheck(categoryIndex: categoryIndex) // タスクの削除処理
-                self.initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
-            }
+            if case .check = mode {
+                print("削除実行開始")
 
+                self.beforeExistingItem = self.deleteTaskCheck(item: self.beforeExistingItem!) // タスクの削除処理
+                self.initializationTaskArray() // cellArrayの初期化
+                ProcessArray().editCategory(item: self.beforeExistingItem!,
+                                            categoryIndex: self.categoryIndex!) // 共有配列と同期
+            }
             self.tableView.reloadData()
         }
         alert.addAction(deleteButton)
@@ -126,28 +140,66 @@ class TaskViewController: UIViewController {
     private func changeMode(mode: TaskMode) {
         // 選択状態に合わせてボタンの有無を切り替え
         switch mode {
-        case .check(let categoryIndex):
-            self.taskMode = .add(categoryIndex)
+        case .check:
+            self.taskMode = .add
             deleteButton.isEnabled = false
             addButton.isEnabled = false
             doneButtonItem.isEnabled = true
-        case .add(let categoryIndex):
-            self.taskMode = .check(categoryIndex)
+        case .add:
+            self.taskMode = .check
             deleteButton.isEnabled = true
             addButton.isEnabled = true
             doneButtonItem.isEnabled = false
         }
     }
 
+    // タスクにチェックがついている場合配列の要素から削除
+    private func deleteTaskCheck(item: Item) -> Item {
+        var deleteItem = item
+
+        let max = deleteItem.task.count // タスクの項目数を取得
+
+        // swiftlint:disable identifier_name
+        for i in 0 ..< max {
+            // swiftlint:enable identifier_name
+            let taskCheck = item.isTaskCheck[(max - 1) - i]
+
+            if taskCheck {
+            } else {
+                deleteItem.task.remove(at: (max - 1) - i)
+                deleteItem.isTaskCheck.remove(at: (max - 1) - i)
+            }
+        }
+        return deleteItem
+    }
+
+    // タスクが空白になっている場合配列の要素から削除
+    private func deleteTaskBlank(item: Item) -> Item {
+        var deleteItem = item
+        let max = deleteItem.task.count // タスクの項目数を取得
+
+        // swiftlint:disable identifier_name
+        // タスクの配列の後ろからタスクが空白になっているものを削除
+        for i in 0 ..< max where item.task[(max - 1) - i] == ""{
+        // swiftlint:enable identifier_name
+
+            deleteItem.task.remove(at: (max - 1) - i)
+            deleteItem.isTaskCheck.remove(at: (max - 1) - i)
+        }
+        return deleteItem
+    }
+
     // existingTaskArray配列の初期化
-    private func initializationTaskArray(categoryIndex: Int) {
-        guard let existingCount = appDelegate?.itemArray[categoryIndex].task.count else { return }
+    private func initializationTaskArray() {
+        guard let existingCount = beforeExistingItem?.task.count else { return }
         existingTaskArray = []
         // 要素の数+1分配列にnilを追加
-        for _ in 0 ... existingCount {
+        for aaaaaa in 0 ... existingCount {
             existingTaskArray.append(nil)
+            print("初期化：\(aaaaaa)")
         }
     }
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -165,24 +217,25 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             print("存在しないモードが選択されている")
             return 0
         }
+
     }
 
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 選択されているモードに合わせてセルの表示内容を変更
         switch taskMode {
-        case .check(let categoryIndex):
+        case .check:
             let identifier = K.CellIdentifier.DisplayTaskyCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
-            let text =  NSMutableAttributedString(string: appDelegate!.itemArray[categoryIndex].task[indexPath.row])
-            let isTaskCheck = appDelegate!.itemArray[categoryIndex].isTaskCheck[indexPath.row]
+            let text =  NSMutableAttributedString(string: beforeExistingItem!.task[indexPath.row])
+            let isTaskCheck = beforeExistingItem!.isTaskCheck[indexPath.row]
 
             // 表示用のセルを表示
             cell?.configureDisplayTask(text: text, isTaskCheck: isTaskCheck)
 
             return cell!
 
-        case .add(let categoryIndex):
+        case .add:
             let identifier = K.CellIdentifier.InputTaskCell
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
             let max = existingTaskArray.count
@@ -196,7 +249,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                     text = ""
                     existingTaskArray[indexPath.row] = text
                 } else {
-                    text = appDelegate?.itemArray[categoryIndex].task[indexPath.row]
+                    text = beforeExistingItem!.task[indexPath.row]
                     existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
                 }
 
@@ -234,9 +287,10 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         guard let mode = taskMode else { return }
-        if case .check(let categoryIndex) = mode {
+        if case .check = mode {
             // ボタンをタップした時にセルの選択除隊を逆転させる
-            appDelegate!.itemArray[categoryIndex].isTaskCheck[indexPath.row].toggle()
+            beforeExistingItem!.isTaskCheck[indexPath.row].toggle()
+            ProcessArray().editCategory(item: self.beforeExistingItem!, categoryIndex: categoryIndex!)
         }
 
         // タップしたセルのみを更新
@@ -251,9 +305,9 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
         if editingStyle == .delete {
             guard let mode = self.taskMode else { return }
-            if case .check(let categoryIndex) = mode {
-                appDelegate?.itemArray[categoryIndex].task.remove(at: indexPath.row)
-                initializationTaskArray(categoryIndex: categoryIndex) // cellArrayの初期化
+            if case .check = mode {
+                beforeExistingItem!.task.remove(at: indexPath.row)
+                initializationTaskArray() // cellArrayの初期化
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }

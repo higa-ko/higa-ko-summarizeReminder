@@ -49,7 +49,9 @@ class CategoryViewController: UIViewController {
         case K.SegueIdentifier.CategoryToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
             guard let categoryIndex = categoryIndex else { return }
-            taskVC.taskMode = .check(categoryIndex)
+            taskVC.beforeExistingItem = appDelegate?.itemArray[categoryIndex]
+            taskVC.taskMode = .check
+            taskVC.categoryIndex = categoryIndex
 
         default:
             break
@@ -124,4 +126,5 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
+
 }
