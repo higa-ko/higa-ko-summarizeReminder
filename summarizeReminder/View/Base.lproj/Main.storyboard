@@ -191,7 +191,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="categoryChoice" destination="7by-pQ-dxp" id="tyT-1B-k0q"/>
+                                            <outlet property="categoryChoiceLabel" destination="7by-pQ-dxp" id="tyT-1B-k0q"/>
                                             <outlet property="categoryNameLabel" destination="gfb-o4-vby" id="lzG-C0-FSc"/>
                                         </connections>
                                     </tableViewCell>
@@ -293,6 +293,10 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="taskLabel" destination="Iw4-vq-j5b" id="mjb-yt-vQ2"/>
+                                            <outlet property="taskNumberLabel" destination="PLY-fZ-5Tu" id="PXj-TV-Rz5"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

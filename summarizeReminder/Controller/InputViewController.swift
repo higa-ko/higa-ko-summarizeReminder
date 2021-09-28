@@ -86,13 +86,15 @@ class InputViewController: UIViewController {
         case K.SegueIdentifier.InputToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
             taskVC.taskMode = .add
-            taskVC.categoryIndex = categoryIndex
 
             switch inputMode {
             case .add:
                 taskVC.beforeExistingItem = addItem
+                taskVC.transitionSource = .inputAdd
             case .edit:
+                guard let categoryIndex = categoryIndex else { return }
                 taskVC.beforeExistingItem = editItem
+                taskVC.transitionSource = .inputEdit(categoryIndex)
             }
 
         default:
@@ -129,15 +131,21 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         let isNoticeCheck: Bool
         let isWeekCheck: [Bool]
         var weekValue = ""
+        let isTaskAlphaCheck: Bool
+        let taskNumber: Int
 
         // モードに合わせて配列から情報を取得
         switch inputMode {
         case .add:
             isNoticeCheck = addItem.isNoticeCheck
             isWeekCheck = addItem.isWeekCheck
+            isTaskAlphaCheck = true
+            taskNumber = addItem.task.count
         case .edit:
             isNoticeCheck = editItem?.isNoticeCheck ?? false
             isWeekCheck = editItem?.isWeekCheck ?? [false, false, false, false, false, false, false]
+            isTaskAlphaCheck = editItem == nil ? false : true
+            taskNumber = editItem?.task.count ?? 0
         }
 
         // 特定のセルのみ表示を変更
@@ -145,10 +153,10 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         case K.CellIdentifier.CategorySelectCell:
             if let categoryIndex = categoryIndex {
                 cell?.categoryNameLabel.text = appDelegate?.itemArray[categoryIndex].category
-                cell?.categoryChoice.text = ""
+                cell?.categoryChoiceLabel.text = ""
             } else {
                 cell?.categoryNameLabel.text = "カテゴリーを選ぶ"
-                cell?.categoryChoice.text = "未選択"
+                cell?.categoryChoiceLabel.text = "未選択"
             }
 
         case K.CellIdentifier.NoticeCheckCell:
@@ -178,6 +186,17 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 cell?.repeatLabel.alpha = 0.5
                 cell?.weekLabel.alpha = 0.5
+            }
+
+        case K.CellIdentifier.TaskAddCell:
+            cell?.taskNumberLabel.text = String(taskNumber)
+
+            if isTaskAlphaCheck {
+                cell?.taskLabel.alpha = 1
+                cell?.taskNumberLabel.alpha = 1
+            } else {
+                cell?.taskLabel.alpha = 0.5
+                cell?.taskNumberLabel.alpha = 0.5
             }
 
         default:
@@ -211,12 +230,12 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let isNoticeCheck: Bool
+        let isNoticeCheck: Bool?
         switch inputMode {
         case .add:
             isNoticeCheck = addItem.isNoticeCheck
         case .edit:
-            isNoticeCheck = editItem?.isNoticeCheck ?? false
+            isNoticeCheck = editItem?.isNoticeCheck
         }
 
         let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,

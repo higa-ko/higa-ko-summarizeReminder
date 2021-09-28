@@ -12,6 +12,12 @@ enum TaskMode {
     case add
 }
 
+enum TransitionSource {
+    case categoryEdit(Int)
+    case inputEdit(Int)
+    case inputAdd
+}
+
 class TaskViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -20,10 +26,11 @@ class TaskViewController: UIViewController {
     @IBOutlet private weak var addButton: UIButton!
 
     var taskMode: TaskMode?
+    var transitionSource: TransitionSource?
 
     var beforeExistingItem: Item?
     private var existingTaskArray: [String?] = [] // タスクの編集内容を格納する配列　編集対象のタスク数+1の要素数
-    var categoryIndex: Int?
+//    var categoryIndex: Int?
 
     // AppDelegateの呼び出し
 //    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
@@ -32,6 +39,7 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
 
@@ -87,8 +95,13 @@ class TaskViewController: UIViewController {
 
             // Cell配列を初期化
             initializationTaskArray()
-            // 共有配列と同期
-            ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex!)
+            // 既存の配列への設定変更の場合のみ処理を実行
+            switch transitionSource {
+            case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
+                ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
+            default:
+                break
+            }
         }
         changeMode(mode: mode)
         tableView.reloadData()
@@ -108,8 +121,14 @@ class TaskViewController: UIViewController {
 
                 self.beforeExistingItem = self.deleteTaskCheck(item: self.beforeExistingItem!) // タスクの削除処理
                 self.initializationTaskArray() // cellArrayの初期化
-                ProcessArray().editCategory(item: self.beforeExistingItem!,
-                                            categoryIndex: self.categoryIndex!) // 共有配列と同期
+
+                // 既存の配列への設定変更の場合のみ処理を実行
+                switch self.transitionSource {
+                case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
+                    ProcessArray().editCategory(item: self.beforeExistingItem!, categoryIndex: categoryIndex)
+                default:
+                    break
+                }
             }
             self.tableView.reloadData()
         }
@@ -194,9 +213,8 @@ class TaskViewController: UIViewController {
         guard let existingCount = beforeExistingItem?.task.count else { return }
         existingTaskArray = []
         // 要素の数+1分配列にnilを追加
-        for aaaaaa in 0 ... existingCount {
+        for _ in 0 ... existingCount {
             existingTaskArray.append(nil)
-            print("初期化：\(aaaaaa)")
         }
     }
 
@@ -286,11 +304,18 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルをタップした時の処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        guard let mode = taskMode else { return }
-        if case .check = mode {
+        guard let taskMode = taskMode else { return }
+        if case .check = taskMode {
             // ボタンをタップした時にセルの選択除隊を逆転させる
             beforeExistingItem!.isTaskCheck[indexPath.row].toggle()
-            ProcessArray().editCategory(item: self.beforeExistingItem!, categoryIndex: categoryIndex!)
+
+            // 既存の配列への設定変更の場合のみ処理を実行
+            switch transitionSource {
+            case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
+                ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
+            default:
+                break
+            }
         }
 
         // タップしたセルのみを更新
@@ -361,6 +386,18 @@ extension TaskViewController: TaskTextFieldDelegate {
                 cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
                 print("改行")
             }
+        }
+    }
+
+}
+
+// MARK: - UINavigationControllerDelegate
+extension TaskViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController,
+                              willShow viewController: UIViewController,
+                              animated: Bool) {
+        if viewController is InputViewController {
+            print("タスクビューからインポートビューの戻るを検知")
         }
     }
 

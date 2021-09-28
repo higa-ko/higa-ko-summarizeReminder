@@ -51,7 +51,7 @@ class CategoryViewController: UIViewController {
             guard let categoryIndex = categoryIndex else { return }
             taskVC.beforeExistingItem = appDelegate?.itemArray[categoryIndex]
             taskVC.taskMode = .check
-            taskVC.categoryIndex = categoryIndex
+            taskVC.transitionSource = .categoryEdit(categoryIndex)
 
         default:
             break

@@ -22,7 +22,10 @@ class InputTableViewCell: UITableViewCell {
     @IBOutlet private(set) weak var categoryInputTextField: UITextField!
 
     @IBOutlet weak var categoryNameLabel: UILabel!
-    @IBOutlet weak var categoryChoice: UILabel!
+    @IBOutlet weak var categoryChoiceLabel: UILabel!
+
+    @IBOutlet weak var taskLabel: UILabel!
+    @IBOutlet weak var taskNumberLabel: UILabel!
 
     // プッシュ通知確認セル
     @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
@@ -58,7 +61,7 @@ class InputTableViewCell: UITableViewCell {
     }
 
     // セルのidentifierを確認してセルが選択可能にするかを返す
-    func selectCell(row: Int, inputMode: InputMode, isNoticeCheck: Bool) -> Bool {
+    func selectCell(row: Int, inputMode: InputMode, isNoticeCheck: Bool?) -> Bool {
         // 行数によってセルを選択できるか確認
         switch row {
 
@@ -74,14 +77,19 @@ class InputTableViewCell: UITableViewCell {
             }
 
         case 4:
-            if isNoticeCheck {
+            if isNoticeCheck ?? false {
                 return true
             } else {
                 return false
             }
 
+            // 既存変更のカテゴリー未設定の場合のみセルを選択できないようにする
         case 5:
-            return true
+            if isNoticeCheck == nil {
+                return false
+            } else {
+                return true
+            }
 
         default:
             print("指定のセルが存在しない")
