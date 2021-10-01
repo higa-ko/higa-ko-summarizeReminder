@@ -178,6 +178,7 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
         case .repeatSelect:
             return indexPath // セルを選択可能に変更
+
         case .taskSelect:
             return nil // セルを選択不可に変更
         default:

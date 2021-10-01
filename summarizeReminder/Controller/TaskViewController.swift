@@ -30,10 +30,9 @@ class TaskViewController: UIViewController {
 
     var beforeExistingItem: Item?
     private var existingTaskArray: [String?] = [] // タスクの編集内容を格納する配列　編集対象のタスク数+1の要素数
-//    var categoryIndex: Int?
 
     // AppDelegateの呼び出し
-//    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+    private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     // 画面実行時の処理
     override func viewDidLoad() {
@@ -64,7 +63,7 @@ class TaskViewController: UIViewController {
         // ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = beforeExistingItem?.category
 
-        // cellArrayの初期化
+        // existingTaskArrayの初期化
         initializationTaskArray()
 
         print("タスクビューを表示")
@@ -93,7 +92,7 @@ class TaskViewController: UIViewController {
             // タスクが空白になっているものを削除
             beforeExistingItem = deleteTaskBlank(item: beforeExistingItem!)
 
-            // Cell配列を初期化
+            // existingTaskArray配列を初期化
             initializationTaskArray()
             // 既存の配列への設定変更の場合のみ処理を実行
             switch transitionSource {
@@ -120,7 +119,7 @@ class TaskViewController: UIViewController {
                 print("削除実行開始")
 
                 self.beforeExistingItem = self.deleteTaskCheck(item: self.beforeExistingItem!) // タスクの削除処理
-                self.initializationTaskArray() // cellArrayの初期化
+                self.initializationTaskArray() // existingTaskArrayの初期化
 
                 // 既存の配列への設定変更の場合のみ処理を実行
                 switch self.transitionSource {
@@ -332,7 +331,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             guard let mode = self.taskMode else { return }
             if case .check = mode {
                 beforeExistingItem!.task.remove(at: indexPath.row)
-                initializationTaskArray() // cellArrayの初期化
+                initializationTaskArray() // existingTaskArrayの初期化
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
@@ -398,6 +397,15 @@ extension TaskViewController: UINavigationControllerDelegate {
                               animated: Bool) {
         if viewController is InputViewController {
             print("タスクビューからインポートビューの戻るを検知")
+            let inputVC = viewController as? InputViewController
+            switch transitionSource {
+            case .inputAdd:
+                inputVC?.addItem = beforeExistingItem!
+            case .inputEdit:
+                inputVC?.editItem = beforeExistingItem
+            default:
+                break
+            }
         }
     }
 
