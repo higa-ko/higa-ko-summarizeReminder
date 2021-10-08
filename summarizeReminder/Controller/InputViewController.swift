@@ -24,7 +24,10 @@ class InputViewController: UIViewController {
                              task: [],
                              isTaskCheck: [],
                              isNoticeCheck: false,
-                             isWeekCheck: [false, false, false, false, false, false, false])
+                             isWeekCheck: [false, false, false, false, false, false, false],
+                             hour: 0,
+                             minute: 0)
+
     var editItem: Item?
 
     var categoryIndex: Int?
@@ -85,14 +88,15 @@ class InputViewController: UIViewController {
 
         case K.SegueIdentifier.InputToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
-            taskVC.taskMode = .add
 
             switch inputMode {
             case .add:
+                taskVC.taskMode = .add
                 taskVC.beforeExistingItem = addItem
                 taskVC.transitionSource = .inputAdd
             case .edit:
                 guard let categoryIndex = categoryIndex else { return }
+                taskVC.taskMode = .check
                 taskVC.beforeExistingItem = editItem
                 taskVC.transitionSource = .inputEdit(categoryIndex)
             }
@@ -122,7 +126,7 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     // セルに表示する内容
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let identifier = identifierArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? InputTableViewCell
@@ -133,6 +137,8 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         var weekValue = ""
         let isTaskAlphaCheck: Bool
         let taskNumber: Int
+        let hour: Int
+        let minute: Int
 
         // モードに合わせて配列から情報を取得
         switch inputMode {
@@ -141,11 +147,15 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             isWeekCheck = addItem.isWeekCheck
             isTaskAlphaCheck = true
             taskNumber = addItem.task.count
+            hour = addItem.hour
+            minute = addItem.minute
         case .edit:
             isNoticeCheck = editItem?.isNoticeCheck ?? false
             isWeekCheck = editItem?.isWeekCheck ?? [false, false, false, false, false, false, false]
             isTaskAlphaCheck = editItem == nil ? false : true
             taskNumber = editItem?.task.count ?? 0
+            hour = editItem?.hour ?? 0
+            minute = editItem?.minute ?? 0
         }
 
         // 特定のセルのみ表示を変更
@@ -163,10 +173,18 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
             cell?.noticeCheckSwitch.isOn = isNoticeCheck
 
         case K.CellIdentifier.TimeSelectCell:
+
+            // ピッカービューの初期値を設定
+            cell?.defaultSelectRow(hour: hour, minute: minute)
+
             if isNoticeCheck {
                 cell?.timeLabel.alpha = 1
+                cell?.timePickerView.alpha = 1
+                cell?.timePickerView.isUserInteractionEnabled = true // 選択化
             } else {
                 cell?.timeLabel.alpha = 0.5
+                cell?.timePickerView.alpha = 0.5
+                cell?.timePickerView.isUserInteractionEnabled = false // 選択不可
             }
 
         case K.CellIdentifier.RepeatSelectCell:
@@ -202,52 +220,51 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             break
         }
-
         return cell!
     }
 
-    // セルタップ処理
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+// セルタップ処理
+func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
+    tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
-        switch indexPath.row {
-        case 1:
-            detailInputMode = .categorySelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-        case 4:
-            detailInputMode = .repeatSelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-        case 5:
-            detailInputMode = .taskSelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
-        default:
-            detailInputMode = .none
-            print("指定外のindexPathが指定された")
-        }
-
+    switch indexPath.row {
+    case 1:
+        detailInputMode = .categorySelect
+        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+    case 4:
+        detailInputMode = .repeatSelect
+        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+    case 5:
+        detailInputMode = .taskSelect
+        performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
+    default:
+        detailInputMode = .none
+        print("指定外のindexPathが指定された")
     }
 
-    // セルが選択されそうな時の処理
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let isNoticeCheck: Bool?
-        switch inputMode {
-        case .add:
-            isNoticeCheck = addItem.isNoticeCheck
-        case .edit:
-            isNoticeCheck = editItem?.isNoticeCheck
-        }
+}
 
-        let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
-                                                             inputMode: inputMode,
-                                                             isNoticeCheck: isNoticeCheck)
-        // 表示されているセルに合わせて選択の可否を指定
-        if isDisplayCheck {
-            return indexPath // セルを選択可能に変更
-        } else {
-            return nil // セルを選択不可に変更
-        }
+// セルが選択されそうな時の処理
+func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    let isNoticeCheck: Bool?
+    switch inputMode {
+    case .add:
+        isNoticeCheck = addItem.isNoticeCheck
+    case .edit:
+        isNoticeCheck = editItem?.isNoticeCheck
     }
+
+    let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
+                                                         inputMode: inputMode,
+                                                         isNoticeCheck: isNoticeCheck)
+    // 表示されているセルに合わせて選択の可否を指定
+    if isDisplayCheck {
+        return indexPath // セルを選択可能に変更
+    } else {
+        return nil // セルを選択不可に変更
+    }
+}
 
 }
 

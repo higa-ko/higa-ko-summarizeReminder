@@ -13,6 +13,8 @@ struct Item {
     var isTaskCheck: [Bool]
     var isNoticeCheck: Bool
     var isWeekCheck: [Bool]
+    var hour: Int
+    var minute: Int
 }
 
 struct ProcessArray {

@@ -30,6 +30,8 @@ class InputTableViewCell: UITableViewCell {
     // プッシュ通知確認セル
     @IBOutlet private(set) weak var noticeCheckSwitch: UISwitch!
 
+    @IBOutlet weak var timePickerView: UIPickerView!
+
     // デリゲートの設定
     weak var cellDegate: CustomCellDelegate?
 
@@ -53,6 +55,13 @@ class InputTableViewCell: UITableViewCell {
     @IBOutlet weak var repeatLabel: UILabel!
 
     @IBOutlet weak var weekLabel: UILabel!
+
+    let hours: [Int] = Array(0...23)
+
+    let minutes: [Int] = Array(0...59)
+
+    private let max = 100
+
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
@@ -96,4 +105,66 @@ class InputTableViewCell: UITableViewCell {
             return false
         }
     }
+
+    // ピッカービューの初期値を設定
+    func defaultSelectRow(hour: Int, minute: Int) {
+        timePickerView.selectRow(hour + hours.count * max / 2, inComponent: 0, animated: false)
+        timePickerView.selectRow(minute + minutes.count * max / 2, inComponent: 1, animated: false)
+    }
+
+}
+
+// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
+extension InputTableViewCell: UIPickerViewDataSource, UIPickerViewDelegate {
+    // 表示列数
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+
+    // 列ごとの行数
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch component {
+        case 0:
+            return hours.count * max
+        case 1:
+            return minutes.count * max
+        default:
+            print("存在しない列が指定されている(行数)")
+            return hours.count
+        }
+    }
+
+    // 列ごとの表示内容
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+
+        switch component {
+        case 0:
+            return String(hours[row % hours.count])
+        case 1:
+            return String(minutes[row % minutes.count])
+        default:
+            print("存在しない列が指定されている(表示内容)")
+            return String(hours[row])
+        }
+    }
+
+    // UIPickerViewのRowが選択された時の挙動
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+
+        //        switch component {
+        //        case 0:
+        //            time.hour = hours[row % hours.count]
+        //            self.pickerView.selectRow(time.hour + hours.count * max / 2, inComponent: 0, animated: false)
+        //
+        //        case 1:
+        //            time.minute = minutes[row % minutes.count]
+        //            self.pickerView.selectRow(time.minute + minutes.count * max / 2, inComponent: 1, animated: false)
+        //
+        //        default:
+        //            print("存在しない列が指定されている(選択された時の挙動)")
+        //        }
+    }
+
 }

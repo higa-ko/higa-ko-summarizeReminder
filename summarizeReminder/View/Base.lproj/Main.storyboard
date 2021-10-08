@@ -236,10 +236,19 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VOa-gZ-l1l">
+                                                    <rect key="frame" x="261" y="-10" width="153" height="54"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <outlet property="dataSource" destination="dKN-CY-NhX" id="JBD-sy-Ris"/>
+                                                        <outlet property="delegate" destination="dKN-CY-NhX" id="3tl-9n-XSF"/>
+                                                    </connections>
+                                                </pickerView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="timeLabel" destination="QeP-AV-0LY" id="s37-cm-4O8"/>
+                                            <outlet property="timePickerView" destination="VOa-gZ-l1l" id="PnF-we-IOn"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RepeatSelectCell" textLabel="kvF-eJ-l58" detailTextLabel="gjq-hN-p8C" style="IBUITableViewCellStyleValue1" id="1Ct-zT-XSb" customClass="InputTableViewCell" customModule="summarizeReminder" customModuleProvider="target">
@@ -329,7 +338,7 @@
                 <exit id="pES-63-ipq" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fv6-56-VQT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3009" y="459"/>
+            <point key="canvasLocation" x="3008.6956521739135" y="458.70535714285711"/>
         </scene>
         <!--Detail Input View Controller-->
         <scene sceneID="xGU-LL-4BE">
