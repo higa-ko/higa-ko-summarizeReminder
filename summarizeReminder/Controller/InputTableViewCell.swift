@@ -153,18 +153,18 @@ extension InputTableViewCell: UIPickerViewDataSource, UIPickerViewDelegate {
                     didSelectRow row: Int,
                     inComponent component: Int) {
 
-        //        switch component {
-        //        case 0:
-        //            time.hour = hours[row % hours.count]
-        //            self.pickerView.selectRow(time.hour + hours.count * max / 2, inComponent: 0, animated: false)
-        //
-        //        case 1:
-        //            time.minute = minutes[row % minutes.count]
-        //            self.pickerView.selectRow(time.minute + minutes.count * max / 2, inComponent: 1, animated: false)
-        //
-        //        default:
-        //            print("存在しない列が指定されている(選択された時の挙動)")
-        //        }
+//                switch component {
+//                case 0:
+//                    time.hour = hours[row % hours.count]
+//                    self.pickerView.selectRow(time.hour + hours.count * max / 2, inComponent: 0, animated: false)
+//
+//                case 1:
+//                    time.minute = minutes[row % minutes.count]
+//                    self.pickerView.selectRow(time.minute + minutes.count * max / 2, inComponent: 1, animated: false)
+//
+//                default:
+//                    print("存在しない列が指定されている(選択された時の挙動)")
+//                }
     }
 
 }

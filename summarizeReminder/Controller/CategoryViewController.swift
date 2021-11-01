@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AppTrackingTransparency  // トラッキングの許可
+import AdSupport    // トラッキングの許可
 
 class CategoryViewController: UIViewController {
 
@@ -29,6 +31,23 @@ class CategoryViewController: UIViewController {
         Buttonformat().underButtonformat(button: underButton)
 
         print("カテゴリービューを表示")
+
+        // トラッキングの許可
+        if #available(iOS 14, *) {
+           ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+              switch status {
+              case .authorized:
+                 // IDFA取得
+                 print("IDFA: \(ASIdentifierManager.shared().advertisingIdentifier)")
+                 print("success")
+              case .denied, .restricted, .notDetermined:
+                 print("failure")
+              @unknown default:
+                 fatalError()
+              }
+           })
+        }
+
     }
 
     @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
@@ -66,16 +85,16 @@ class CategoryViewController: UIViewController {
     // 完了してカテゴリー画面へ戻ってくる
     @IBAction private func exitDone(segue: UIStoryboardSegue) {
 
-        guard let inputVC = segue.source as? InputViewController else { return }
+        guard let inputTVC = segue.source as? InputTableViewController else { return }
 
-        switch inputVC.inputMode {
+        switch inputTVC.inputMode {
         case .add:
-            let addItem = inputVC.addItem
+            let addItem = inputTVC.addItem
 
             ProcessArray().addCategory(item: addItem)
         case .edit:
-            guard let editItem = inputVC.editItem else { return }
-            guard let categoryIndex = inputVC.categoryIndex else { return }
+            guard let editItem = inputTVC.editItem else { return }
+            guard let categoryIndex = inputTVC.categoryIndex else { return }
 
             ProcessArray().editCategory(item: editItem, categoryIndex: categoryIndex)
         }

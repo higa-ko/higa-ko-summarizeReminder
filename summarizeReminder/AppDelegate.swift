@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              task: ["腕立て", "腹筋", "スクワット"],
              isTaskCheck: [true, true, true],
              isNoticeCheck: true,
-             isWeekCheck: [false, false, false, false, false, false, false],
+             isWeekCheck: [true, true, false, false, false, false, false],
              hour: 0,
              minute: 0),
 

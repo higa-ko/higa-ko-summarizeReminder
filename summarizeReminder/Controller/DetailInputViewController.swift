@@ -140,9 +140,9 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
             // InputViewControllerに値を渡す
             guard let navigation = self.navigationController else { return }
-            guard let inputVC = navigation.viewControllers[0] as? InputViewController else { return }
-            inputVC.categoryIndex = categoryIndex
-            inputVC.editItem = appDelegate?.itemArray[categoryIndex!] // editItemの初期化
+            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
+            inputTVC.categoryIndex = categoryIndex
+            inputTVC.editItem = appDelegate?.itemArray[categoryIndex!] // editItemの初期化
             print("editItemの初期化")
 
         case .repeatSelect:
@@ -151,14 +151,17 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
             // InputViewControllerに値を渡す
             guard let navigation = self.navigationController else { return }
-            guard let inputVC = navigation.viewControllers[0] as? InputViewController else { return }
+            guard let inputVC = navigation.viewControllers[0] as? InputTableViewController else { return }
 
             switch inputVC.inputMode {
             case .add:
                 inputVC.addItem.isWeekCheck = weekArray.isWeekCheck
+                print("add")
             case .edit:
                 inputVC.editItem?.isWeekCheck = weekArray.isWeekCheck
+                print("edit")
             }
+
         case .taskSelect:
             print("タスクの時の処理　今のところ使わない")
         }

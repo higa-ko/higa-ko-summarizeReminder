@@ -38,7 +38,7 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.delegate = self
+//        navigationController?.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
 
@@ -334,6 +334,13 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 initializationTaskArray() // existingTaskArrayの初期化
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
+        }
+        // 既存の配列への設定変更の場合のみ処理を実行
+        switch transitionSource {
+        case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
+            ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
+        default:
+            break
         }
     }
 

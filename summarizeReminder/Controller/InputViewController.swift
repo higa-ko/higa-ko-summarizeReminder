@@ -7,10 +7,10 @@
 
 import UIKit
 
-enum InputMode {
-    case add
-    case edit
-}
+//enum InputMode {
+//    case add
+//    case edit
+//}
 
 class InputViewController: UIViewController {
 
@@ -116,6 +116,16 @@ class InputViewController: UIViewController {
         }
     }
 
+    func xxx(hour: Int, minute: Int) {
+        switch inputMode {
+        case .add:
+            addItem.hour = hour
+            addItem.minute = minute
+        case .edit:
+            editItem?.hour = hour
+            editItem?.minute = minute
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -223,48 +233,48 @@ extension InputViewController: UITableViewDataSource, UITableViewDelegate {
         return cell!
     }
 
-// セルタップ処理
-func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // セルタップ処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-    tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
+        tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
-    switch indexPath.row {
-    case 1:
-        detailInputMode = .categorySelect
-        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-    case 4:
-        detailInputMode = .repeatSelect
-        performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-    case 5:
-        detailInputMode = .taskSelect
-        performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
-    default:
-        detailInputMode = .none
-        print("指定外のindexPathが指定された")
+        switch indexPath.row {
+        case 1:
+            detailInputMode = .categorySelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+        case 4:
+            detailInputMode = .repeatSelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+        case 5:
+            detailInputMode = .taskSelect
+            performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
+        default:
+            detailInputMode = .none
+            print("指定外のindexPathが指定された")
+        }
+
     }
 
-}
+    // セルが選択されそうな時の処理
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let isNoticeCheck: Bool?
+        switch inputMode {
+        case .add:
+            isNoticeCheck = addItem.isNoticeCheck
+        case .edit:
+            isNoticeCheck = editItem?.isNoticeCheck
+        }
 
-// セルが選択されそうな時の処理
-func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    let isNoticeCheck: Bool?
-    switch inputMode {
-    case .add:
-        isNoticeCheck = addItem.isNoticeCheck
-    case .edit:
-        isNoticeCheck = editItem?.isNoticeCheck
+        let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
+                                                             inputMode: inputMode,
+                                                             isNoticeCheck: isNoticeCheck)
+        // 表示されているセルに合わせて選択の可否を指定
+        if isDisplayCheck {
+            return indexPath // セルを選択可能に変更
+        } else {
+            return nil // セルを選択不可に変更
+        }
     }
-
-    let isDisplayCheck = InputTableViewCell().selectCell(row: indexPath.row,
-                                                         inputMode: inputMode,
-                                                         isNoticeCheck: isNoticeCheck)
-    // 表示されているセルに合わせて選択の可否を指定
-    if isDisplayCheck {
-        return indexPath // セルを選択可能に変更
-    } else {
-        return nil // セルを選択不可に変更
-    }
-}
 
 }
 
