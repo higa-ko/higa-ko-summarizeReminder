@@ -149,16 +149,16 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
             weekArray.isWeekCheck[indexPath.row].toggle()
 
-            // InputViewControllerに値を渡す
+            // InputTableViewControllerに値を渡す
             guard let navigation = self.navigationController else { return }
-            guard let inputVC = navigation.viewControllers[0] as? InputTableViewController else { return }
+            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
 
-            switch inputVC.inputMode {
+            switch inputTVC.inputMode {
             case .add:
-                inputVC.addItem.isWeekCheck = weekArray.isWeekCheck
+                inputTVC.addItem.isWeekCheck = weekArray.isWeekCheck
                 print("add")
             case .edit:
-                inputVC.editItem?.isWeekCheck = weekArray.isWeekCheck
+                inputTVC.editItem?.isWeekCheck = weekArray.isWeekCheck
                 print("edit")
             }
 

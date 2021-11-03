@@ -58,6 +58,7 @@ class CategoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        print("カテゴリーに戻ってきた※タスク数が変化しているか確認")
         tableView.reloadData()
     }
 

@@ -15,6 +15,7 @@ enum InputMode {
 class InputTableViewController: UITableViewController {
 
     @IBOutlet weak var newCategoryCheckSwitch: UISwitch!
+    @IBOutlet weak var categoryCell: UITableViewCell!
     @IBOutlet weak var categoryChangeTextField: UITextField!
     @IBOutlet weak var categoryChoiceLabel: UILabel!
     @IBOutlet weak var noticeCheckSwitch: UISwitch!

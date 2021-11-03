@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Wth-Do-T0N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Wth-Do-T0N">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -346,7 +346,7 @@
             <objects>
                 <tableViewController id="P6m-Au-SVj" customClass="InputTableViewController" customModule="summarizeReminder" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="7Kn-d5-r19">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -518,6 +518,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="categoryCell" destination="3ux-9Q-P2i" id="pre-Hv-RvA"/>
                         <outlet property="categoryChangeTextField" destination="IWt-e4-Res" id="C59-IP-nRX"/>
                         <outlet property="categoryChoiceLabel" destination="cLy-g2-n6y" id="wCP-2V-gPK"/>
                         <outlet property="newCategoryCheckSwitch" destination="tiK-JG-MOj" id="gtI-f6-NXj"/>
@@ -766,11 +767,11 @@
         <!--Navigation Controller-->
         <scene sceneID="5ua-GZ-6f5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2Am-kZ-Zmt" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="2Am-kZ-Zmt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="cm8-On-OYd"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="knk-FY-xdG">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -784,8 +785,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="u2Z-cT-co1"/>
-        <segue reference="hIE-qu-VGY"/>
+        <segue reference="vEE-SQ-g9t"/>
+        <segue reference="hYE-kM-4uE"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bell" catalog="system" width="128" height="124"/>

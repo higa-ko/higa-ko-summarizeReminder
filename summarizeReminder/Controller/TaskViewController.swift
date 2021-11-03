@@ -89,18 +89,12 @@ class TaskViewController: UIViewController {
                     beforeExistingItem!.isTaskCheck.append(true)
                 }
             }
-            // タスクが空白になっているものを削除
-            beforeExistingItem = deleteTaskBlank(item: beforeExistingItem!)
+            beforeExistingItem = deleteTaskBlank(item: beforeExistingItem!) // タスクが空白になっているものを削除
 
-            // existingTaskArray配列を初期化
-            initializationTaskArray()
-            // 既存の配列への設定変更の場合のみ処理を実行
-            switch transitionSource {
-            case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
-                ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
-            default:
-                break
-            }
+            initializationTaskArray() // existingTaskArray配列を初期化
+            guard let item = self.beforeExistingItem else { return }
+            guard let transitionSource = self.transitionSource else { return }
+            shareItem(item: item, transitionSource: transitionSource)
         }
         changeMode(mode: mode)
         tableView.reloadData()
@@ -116,18 +110,12 @@ class TaskViewController: UIViewController {
 
             guard let mode = self.taskMode else { return }
             if case .check = mode {
-                print("削除実行開始")
-
                 self.beforeExistingItem = self.deleteTaskCheck(item: self.beforeExistingItem!) // タスクの削除処理
                 self.initializationTaskArray() // existingTaskArrayの初期化
 
-                // 既存の配列への設定変更の場合のみ処理を実行
-                switch self.transitionSource {
-                case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
-                    ProcessArray().editCategory(item: self.beforeExistingItem!, categoryIndex: categoryIndex)
-                default:
-                    break
-                }
+                guard let item = self.beforeExistingItem else { return }
+                guard let transitionSource = self.transitionSource else { return }
+                self.shareItem(item: item, transitionSource: transitionSource)
             }
             self.tableView.reloadData()
         }
@@ -217,6 +205,32 @@ class TaskViewController: UIViewController {
         }
     }
 
+    // 更新したタスクの情報をAppDelegateと元のビューコントローラに通知
+    private func shareItem(item: Item, transitionSource: TransitionSource) {
+        switch transitionSource {
+        case .categoryEdit(let categoryIndex):
+            // 既存の配列への設定変更の場合のみ処理を実行
+            ProcessArray().editCategory(item: item, categoryIndex: categoryIndex) // 関数呼び出し
+            print("共有のアイテム更新完了")
+
+        case .inputAdd:
+            // InputTableViewControllerに値を渡す
+            guard let navigation = self.navigationController else { return }
+            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
+            print("テーブルビュー生成成功")
+            inputTVC.addItem = item
+            print("元のデータに変更完了")
+
+        case .inputEdit:
+            // InputTableViewControllerに値を渡す
+            guard let navigation = self.navigationController else { return }
+            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
+            print("テーブルビュー生成成功")
+            inputTVC.editItem = item
+            print("元のデータに変更完了")
+        }
+    }
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -234,7 +248,6 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             print("存在しないモードが選択されている")
             return 0
         }
-
     }
 
     // セルに表示するデータを指定
@@ -308,13 +321,9 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             // ボタンをタップした時にセルの選択除隊を逆転させる
             beforeExistingItem!.isTaskCheck[indexPath.row].toggle()
 
-            // 既存の配列への設定変更の場合のみ処理を実行
-            switch transitionSource {
-            case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
-                ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
-            default:
-                break
-            }
+            guard let item = self.beforeExistingItem else { return }
+            guard let transitionSource = self.transitionSource else { return }
+            shareItem(item: item, transitionSource: transitionSource)
         }
 
         // タップしたセルのみを更新
@@ -331,17 +340,14 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             guard let mode = self.taskMode else { return }
             if case .check = mode {
                 beforeExistingItem!.task.remove(at: indexPath.row)
+                beforeExistingItem!.isTaskCheck.remove(at: indexPath.row)
                 initializationTaskArray() // existingTaskArrayの初期化
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
-        // 既存の配列への設定変更の場合のみ処理を実行
-        switch transitionSource {
-        case .categoryEdit(let categoryIndex), .inputEdit(let categoryIndex):
-            ProcessArray().editCategory(item: beforeExistingItem!, categoryIndex: categoryIndex)
-        default:
-            break
-        }
+        guard let item = self.beforeExistingItem else { return }
+        guard let transitionSource = self.transitionSource else { return }
+        shareItem(item: item, transitionSource: transitionSource)
     }
 
     // セルの削除許可を設定
@@ -391,27 +397,6 @@ extension TaskViewController: TaskTextFieldDelegate {
                 guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
                 cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
                 print("改行")
-            }
-        }
-    }
-
-}
-
-// MARK: - UINavigationControllerDelegate
-extension TaskViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController,
-                              willShow viewController: UIViewController,
-                              animated: Bool) {
-        if viewController is InputViewController {
-            print("タスクビューからインポートビューの戻るを検知")
-            let inputVC = viewController as? InputViewController
-            switch transitionSource {
-            case .inputAdd:
-                inputVC?.addItem = beforeExistingItem!
-            case .inputEdit:
-                inputVC?.editItem = beforeExistingItem
-            default:
-                break
             }
         }
     }
