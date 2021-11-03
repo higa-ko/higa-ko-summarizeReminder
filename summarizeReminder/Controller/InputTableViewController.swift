@@ -21,8 +21,10 @@ class InputTableViewController: UITableViewController {
     @IBOutlet weak var noticeCheckSwitch: UISwitch!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var timePickerView: UIPickerView!
+    @IBOutlet weak var repeatCell: UITableViewCell!
     @IBOutlet weak var repeatLabel: UILabel!
     @IBOutlet weak var weekLabel: UILabel!
+    @IBOutlet weak var taskCell: UITableViewCell!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var taskNumberLabel: UILabel!
 
@@ -44,8 +46,8 @@ class InputTableViewController: UITableViewController {
 
     private let weeks = ["日", "月", "火", "水", "木", "金", "土"]
 
-    let hours = [Int](0...23)
-    let minutes = [Int](0...59)
+    private let hours = [Int](0...23)
+    private let minutes = [Int](0...59)
 
     private let max = 100
 
@@ -55,18 +57,11 @@ class InputTableViewController: UITableViewController {
         timePickerView.dataSource = self
         timePickerView.delegate = self
 
-        switch inputMode {
-        case .add:
-            setUpItem(item: addItem)
-        case .edit:
-            setUpItem(item: editItem)
-        }
-
         print("いんぽーとビュー起動")
 
     }
 
-    // Input画面に戻ってきた時の処理
+    // Input画面に戻ってきた時の処理（初回表示も含む）
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -74,19 +69,19 @@ class InputTableViewController: UITableViewController {
 
         switch inputMode {
         case .add:
-            setUpItem(item: addItem)
+            setUpCell(item: addItem, inputMode: inputMode)
         case .edit:
-            setUpItem(item: editItem)
+            setUpCell(item: editItem, inputMode: inputMode)
         }
     }
 
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
         if newCategoryCheckSwitch.isOn {
             inputMode = .add
-            setUpItem(item: addItem)
+            setUpCell(item: addItem, inputMode: inputMode)
         } else {
             inputMode = .edit
-            setUpItem(item: editItem)
+            setUpCell(item: editItem, inputMode: inputMode)
         }
     }
 
@@ -153,7 +148,7 @@ class InputTableViewController: UITableViewController {
     }
 
     // アイテムの情報をテーブルビューへ反映
-    private func setUpItem(item: Item?) {
+    private func setUpCell(item: Item?, inputMode: InputMode) {
         // 未設定の場合デフォルトの値を入れる
         let setItem = item ?? Item(category: "",
                                    task: [],
@@ -165,13 +160,24 @@ class InputTableViewController: UITableViewController {
 
         var weekValue = ""
 
+        switch inputMode {
+        case .add:
+            categoryCell.accessoryType = .none
+        case .edit:
+            categoryCell.accessoryType = .disclosureIndicator
+        }
+
         // 未設定かどうかで処理を変える部分
         if item == nil {
             categoryChoiceLabel.text = "未選択"
             timePickerView.isUserInteractionEnabled = false
+            repeatCell.accessoryType = .none
+            taskCell.accessoryType = .none
         } else {
             categoryChoiceLabel.text = ""
             timePickerView.isUserInteractionEnabled = true
+            repeatCell.accessoryType = .disclosureIndicator
+            taskCell.accessoryType = .disclosureIndicator
         }
 
         // カテゴリー名
@@ -198,10 +204,20 @@ class InputTableViewController: UITableViewController {
         taskNumberLabel.text = String(setItem.task.count)
     }
 
+    private func changeAccessoryType(isStatus: Bool) {
+        if isStatus {
+            repeatCell.accessoryType = .disclosureIndicator
+            taskCell.accessoryType = .disclosureIndicator
+        } else {
+            repeatCell.accessoryType = .none
+            taskCell.accessoryType = .none
+        }
+//        tableView.reloadData()
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -242,12 +258,15 @@ class InputTableViewController: UITableViewController {
         case 4, 5:
             switch inputMode {
             case .add:
+                changeAccessoryType(isStatus: true)
                 return indexPath
 
             case .edit:
                 if editItem == nil {
+                    changeAccessoryType(isStatus: false)
                     return nil
                 } else {
+                    changeAccessoryType(isStatus: true)
                     return indexPath
                 }
             }
