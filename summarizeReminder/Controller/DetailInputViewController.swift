@@ -10,7 +10,6 @@ import UIKit
 enum DetailInputMode {
     case categorySelect
     case repeatSelect
-    case taskSelect
 }
 
 struct Week {
@@ -49,8 +48,6 @@ class DetailInputViewController: UIViewController {
         case .repeatSelect:
             self.navigationItem.title = "繰り返し設定"
 
-        case .taskSelect:
-            self.navigationItem.title = "タスク"
         }
         print("入力詳細画面を表示")
     }
@@ -67,8 +64,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             return (appDelegate?.itemArray.count)!
         case .repeatSelect:
             return weekArray.dayOfWeek.count
-        case .taskSelect:
-            return 1
         default:
             print("存在しないモードが指定されている")
             return 0
@@ -77,12 +72,15 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
     // セルに表示する内容
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let identifier = K.CellIdentifier.DetailInputLabelCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
+                                                 for: indexPath) as? DetailInputTableViewCell
+
         // 選択されているモードに合わせてセルの表示内容を変更
+        guard let detailInputMode = detailInputMode else { return cell!}
         switch detailInputMode {
         case .categorySelect:
-            let identifier = K.CellIdentifier.DetailInputLabelCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
-                                                     for: indexPath) as? DetailInputTableViewCell
 
             cell?.detailInputLabel?.text = appDelegate?.itemArray[indexPath.row].category
 
@@ -95,9 +93,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             return cell!
 
         case .repeatSelect:
-            let identifier = K.CellIdentifier.DetailInputLabelCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
-                                                     for: indexPath) as? DetailInputTableViewCell
 
             cell?.detailInputLabel?.text = weekArray.dayOfWeek[indexPath.row]
 
@@ -106,23 +101,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             } else {
                 cell?.detailInputImage.tintColor = .white
             }
-
-            return cell!
-
-        case .taskSelect:
-            let identifier = K.CellIdentifier.DetailInputTextFieldCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
-                                                     for: indexPath) as? DetailInputTableViewCell
-
-            return cell!
-
-        default:
-            print("存在しないモードが選択されている")
-            let identifier = K.CellIdentifier.DetailInputLabelCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
-                                                     for: indexPath) as? DetailInputTableViewCell
-
-            cell?.textLabel?.text = "存在しないモード"
 
             return cell!
         }
@@ -143,7 +121,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
             inputTVC.categoryIndex = categoryIndex
             inputTVC.editItem = appDelegate?.itemArray[categoryIndex!] // editItemの初期化
-            print("editItemの初期化")
 
         case .repeatSelect:
 
@@ -156,20 +133,16 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             switch inputTVC.inputMode {
             case .add:
                 inputTVC.addItem.isWeekCheck = weekArray.isWeekCheck
-                print("add")
             case .edit:
                 inputTVC.editItem?.isWeekCheck = weekArray.isWeekCheck
-                print("edit")
             }
-
-        case .taskSelect:
-            print("タスクの時の処理　今のところ使わない")
         }
         tableView.reloadData()
     }
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let detailInputMode = detailInputMode else { return nil }
         switch detailInputMode {
         case .categorySelect:
             // 選択済のカテゴリーの場合は選択不可にする
@@ -181,12 +154,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
         case .repeatSelect:
             return indexPath // セルを選択可能に変更
-
-        case .taskSelect:
-            return nil // セルを選択不可に変更
-        default:
-            print("存在しないモードが選択されている")
-            return nil // セルを選択不可に変更
         }
     }
 

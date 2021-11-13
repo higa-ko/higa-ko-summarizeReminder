@@ -20,8 +20,8 @@ enum TransitionSource {
 
 class TaskViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var doneButtonItem: UIBarButtonItem!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var doneButtonItem: UIBarButtonItem!
     @IBOutlet private weak var deleteButton: UIButton!
     @IBOutlet private weak var addButton: UIButton!
 

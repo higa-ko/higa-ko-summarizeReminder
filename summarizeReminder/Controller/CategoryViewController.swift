@@ -30,6 +30,9 @@ class CategoryViewController: UIViewController {
         // ボタンの書式を変更
         Buttonformat().underButtonformat(button: underButton)
 
+        // テスト用のデータを配列に入れる
+        ProcessArray().settingArray()
+
         print("カテゴリービューを表示")
 
         // トラッキングの許可

@@ -14,20 +14,20 @@ enum InputMode {
 
 class InputTableViewController: UITableViewController {
 
-    @IBOutlet weak var newCategoryCheckSwitch: UISwitch!
-    @IBOutlet weak var categoryCell: UITableViewCell!
-    @IBOutlet weak var categoryChangeTextField: UITextField!
-    @IBOutlet weak var categoryChoiceLabel: UILabel!
-    @IBOutlet weak var noticeCheckSwitch: UISwitch!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var pushLabel: UILabel!
-    @IBOutlet weak var timePickerView: UIPickerView!
-    @IBOutlet weak var repeatCell: UITableViewCell!
-    @IBOutlet weak var repeatLabel: UILabel!
-    @IBOutlet weak var weekLabel: UILabel!
-    @IBOutlet weak var taskCell: UITableViewCell!
-    @IBOutlet weak var taskLabel: UILabel!
-    @IBOutlet weak var taskNumberLabel: UILabel!
+    @IBOutlet private weak var newCategoryCheckSwitch: UISwitch!
+    @IBOutlet private weak var categoryCell: UITableViewCell!
+    @IBOutlet private weak var categoryChangeTextField: UITextField!
+    @IBOutlet private weak var categoryChoiceLabel: UILabel!
+    @IBOutlet private weak var noticeCheckSwitch: UISwitch!
+    @IBOutlet private weak var timeLabel: UILabel!
+    @IBOutlet private weak var pushLabel: UILabel!
+    @IBOutlet private weak var timePickerView: UIPickerView!
+    @IBOutlet private weak var repeatCell: UITableViewCell!
+    @IBOutlet private weak var repeatLabel: UILabel!
+    @IBOutlet private weak var weekLabel: UILabel!
+    @IBOutlet private weak var taskCell: UITableViewCell!
+    @IBOutlet private weak var taskLabel: UILabel!
+    @IBOutlet private weak var taskNumberLabel: UILabel!
 
     private(set) var inputMode: InputMode = .add
 
@@ -275,7 +275,7 @@ class InputTableViewController: UITableViewController {
             detailInputMode = .repeatSelect
             performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
         case 5:
-            detailInputMode = .taskSelect
+            detailInputMode = .repeatSelect
             performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
         default:
             detailInputMode = .none
