@@ -20,6 +20,7 @@ class InputTableViewController: UITableViewController {
     @IBOutlet weak var categoryChoiceLabel: UILabel!
     @IBOutlet weak var noticeCheckSwitch: UISwitch!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var pushLabel: UILabel!
     @IBOutlet weak var timePickerView: UIPickerView!
     @IBOutlet weak var repeatCell: UITableViewCell!
     @IBOutlet weak var repeatLabel: UILabel!
@@ -102,6 +103,18 @@ class InputTableViewController: UITableViewController {
         case .edit:
             editItem?.isNoticeCheck = noticeCheckSwitch.isOn
         }
+
+        if noticeCheckSwitch.isOn {
+            timePickerView.alpha = 1
+            timeLabel.alpha = 1
+            repeatLabel.alpha = 1
+            weekLabel.alpha = 1
+        } else {
+            timePickerView.alpha = 0.5
+            timeLabel.alpha = 0.5
+            repeatLabel.alpha = 0.5
+            weekLabel.alpha = 0.5
+        }
     }
 
     // 画面推移の時の処理
@@ -170,14 +183,30 @@ class InputTableViewController: UITableViewController {
         // 未設定かどうかで処理を変える部分
         if item == nil {
             categoryChoiceLabel.text = "未選択"
+            noticeCheckSwitch.isEnabled = false
             timePickerView.isUserInteractionEnabled = false
             repeatCell.accessoryType = .none
             taskCell.accessoryType = .none
+            pushLabel.alpha = 0.5
+            timePickerView.alpha = 0.5
+            timeLabel.alpha = 0.5
+            repeatLabel.alpha = 0.5
+            weekLabel.alpha = 0.5
+            taskLabel.alpha = 0.5
+            taskNumberLabel.alpha = 0.5
         } else {
             categoryChoiceLabel.text = ""
+            noticeCheckSwitch.isEnabled = true
             timePickerView.isUserInteractionEnabled = true
             repeatCell.accessoryType = .disclosureIndicator
             taskCell.accessoryType = .disclosureIndicator
+            pushLabel.alpha = 1
+            timePickerView.alpha = 1
+            timeLabel.alpha = 1
+            repeatLabel.alpha = 1
+            weekLabel.alpha = 1
+            taskLabel.alpha = 1
+            taskNumberLabel.alpha = 1
         }
 
         // カテゴリー名
@@ -185,6 +214,18 @@ class InputTableViewController: UITableViewController {
 
         // プッシュ通知
         noticeCheckSwitch.isOn = setItem.isNoticeCheck
+
+        if noticeCheckSwitch.isOn {
+            timePickerView.alpha = 1
+            timeLabel.alpha = 1
+            repeatLabel.alpha = 1
+            weekLabel.alpha = 1
+        } else {
+            timePickerView.alpha = 0.5
+            timeLabel.alpha = 0.5
+            repeatLabel.alpha = 0.5
+            weekLabel.alpha = 0.5
+        }
 
         // 時間
         timePickerView.selectRow(setItem.hour + hours.count * max / 2, inComponent: 0, animated: false)

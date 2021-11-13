@@ -531,6 +531,7 @@
                         <outlet property="categoryChoiceLabel" destination="cLy-g2-n6y" id="wCP-2V-gPK"/>
                         <outlet property="newCategoryCheckSwitch" destination="tiK-JG-MOj" id="gtI-f6-NXj"/>
                         <outlet property="noticeCheckSwitch" destination="KYh-2V-Gp7" id="jUL-cY-EXv"/>
+                        <outlet property="pushLabel" destination="j58-7E-gBF" id="V7a-st-kUc"/>
                         <outlet property="repeatCell" destination="HYC-K2-CYu" id="jQ6-cd-yu3"/>
                         <outlet property="repeatLabel" destination="GAD-TF-i1f" id="aBU-yw-CQy"/>
                         <outlet property="taskCell" destination="JBY-dZ-dwP" id="YJ4-NJ-rAp"/>
