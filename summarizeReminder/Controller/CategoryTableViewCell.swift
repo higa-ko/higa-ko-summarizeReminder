@@ -28,17 +28,4 @@ class CategoryTableViewCell: UITableViewCell {
         numberLabel.text = String(item.task.count)
     }
 
-    // あとで調べる
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    // あとで調べる
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

@@ -38,7 +38,6 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationController?.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
 
@@ -71,8 +70,6 @@ class TaskViewController: UIViewController {
 
     // バーボタン(完了)
     @IBAction func doneActionButtonItem(_ sender: UIBarButtonItem) {
-
-        print("-------バーボタン（完了）--------")
 
         // 配列の編集と新規追加
         guard let mode = taskMode else { return }
@@ -239,14 +236,12 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         // 選択されているモードに合わせてセルの表示数を変更
+        guard let taskMode = taskMode else { return 0 }
         switch taskMode {
         case .check:
             return existingTaskArray.count - 1
         case .add:
             return existingTaskArray.count
-        default:
-            print("存在しないモードが選択されている")
-            return 0
         }
     }
 
@@ -302,13 +297,11 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルが選択されそうな時の処理
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let taskMode = taskMode else { return nil }
         switch taskMode {
         case .check:
             return indexPath // セルを選択可能に変更
         case .add:
-            return nil // セルを選択不可に変更
-        default:
-            print("存在しないモードが選択されている")
             return nil // セルを選択不可に変更
         }
     }
@@ -353,13 +346,11 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルの削除許可を設定
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 
+        guard let taskMode = taskMode else { return false }
         switch taskMode {
         case .check:
             return true
         case .add:
-            return false
-        case .none:
-            print("存在しないモードが選択されている")
             return false
         }
     }

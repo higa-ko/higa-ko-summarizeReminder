@@ -111,24 +111,21 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
 
         tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
+        // InputTableViewControllerを呼び出し
+        guard let navigation = self.navigationController else { return }
+        guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
+
         guard let detailInputMode = detailInputMode else { return }
         switch detailInputMode {
         case .categorySelect:
             categoryIndex = indexPath.row
 
-            // InputViewControllerに値を渡す
-            guard let navigation = self.navigationController else { return }
-            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
             inputTVC.categoryIndex = categoryIndex
             inputTVC.editItem = appDelegate?.itemArray[categoryIndex!] // editItemの初期化
 
         case .repeatSelect:
 
             weekArray.isWeekCheck[indexPath.row].toggle()
-
-            // InputTableViewControllerに値を渡す
-            guard let navigation = self.navigationController else { return }
-            guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
 
             switch inputTVC.inputMode {
             case .add:
