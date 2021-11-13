@@ -23,4 +23,8 @@ struct K {
         static let InputToSelect = "InputToSelect"
         static let InputToTask = "InputToTask"
     }
+
+    struct SavingKey {
+        static let ItemArrayKey = "ItemArrayKey"
+    }
 }

@@ -7,11 +7,6 @@
 
 import UIKit
 
-//enum InputMode {
-//    case add
-//    case edit
-//}
-
 class InputViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!

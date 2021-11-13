@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Item {
+struct Item: Codable {
     var category: String
     var task: [String]
     var isTaskCheck: [Bool]
@@ -29,10 +29,13 @@ struct ProcessArray {
 
         // アイテム配列へのカテゴリー追加
         appDelegate.itemArray.append(item)
+
+        // アイテム配列の保存
+        savingArray()
     }
 
     // 既存カテゴリーのカテゴリーを編集
-    func editCategory(item: Item, categoryIndex: Int) {
+    func editArray(item: Item, categoryIndex: Int) {
         // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
@@ -41,6 +44,36 @@ struct ProcessArray {
 
         // アイテム配列へのカテゴリー追加
         appDelegate.itemArray[categoryIndex] = item
+
+        // アイテム配列の保存
+        savingArray()
+    }
+
+    // 保存
+    func savingArray() {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        // `JSONEncoder` で `Data` 型へエンコードし、UserDefaultsに追加する
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+        guard let data = try? jsonEncoder.encode(appDelegate.itemArray) else { return }
+
+        UserDefaults.standard.set(data, forKey: K.SavingKey.ItemArrayKey)
+    }
+
+    // 呼び出し
+    func loadingArray() {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        // `JSONDecoder` で `Data` 型を自作した構造体へデコードする
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        guard let data = UserDefaults.standard.data(forKey: K.SavingKey.ItemArrayKey),
+              let itemArray = try? jsonDecoder.decode([Item].self, from: data) else { return }
+
+        appDelegate.itemArray = itemArray
     }
 
     // テスト用のデータを配列に入れる

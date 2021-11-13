@@ -31,7 +31,10 @@ class CategoryViewController: UIViewController {
         Buttonformat().underButtonformat(button: underButton)
 
         // テスト用のデータを配列に入れる
-        ProcessArray().settingArray()
+//        ProcessArray().settingArray()
+
+        // 保存しているアイテム配列の呼び出し
+        ProcessArray().loadingArray()
 
         print("カテゴリービューを表示")
 
@@ -100,7 +103,7 @@ class CategoryViewController: UIViewController {
             guard let editItem = inputTVC.editItem else { return }
             guard let categoryIndex = inputTVC.categoryIndex else { return }
 
-            ProcessArray().editCategory(item: editItem, categoryIndex: categoryIndex)
+            ProcessArray().editArray(item: editItem, categoryIndex: categoryIndex)
         }
 
         tableView.reloadData()

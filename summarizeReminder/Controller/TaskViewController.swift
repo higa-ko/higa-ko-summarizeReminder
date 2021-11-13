@@ -207,7 +207,7 @@ class TaskViewController: UIViewController {
         switch transitionSource {
         case .categoryEdit(let categoryIndex):
             // 既存の配列への設定変更の場合のみ処理を実行
-            ProcessArray().editCategory(item: item, categoryIndex: categoryIndex) // 関数呼び出し
+            ProcessArray().editArray(item: item, categoryIndex: categoryIndex) // 関数呼び出し
             print("共有のアイテム更新完了")
 
         case .inputAdd:
