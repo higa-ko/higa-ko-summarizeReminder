@@ -9,7 +9,14 @@ import UIKit
 import AppTrackingTransparency  // トラッキングの許可
 import AdSupport    // トラッキングの許可
 
+enum CategoryMode {
+    case standard
+    case edit
+}
+
 class CategoryViewController: UIViewController {
+
+    @IBOutlet private weak var editBarButton: UIBarButtonItem!
 
     @IBOutlet private weak var tableView: UITableView!
 
@@ -18,6 +25,8 @@ class CategoryViewController: UIViewController {
 
     // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+
+    private var categoryMode: CategoryMode = .standard
 
     private var categoryIndex: Int?
 
@@ -29,9 +38,6 @@ class CategoryViewController: UIViewController {
 
         // ボタンの書式を変更
         Buttonformat().underButtonformat(button: underButton)
-
-        // テスト用のデータを配列に入れる
-//        ProcessArray().settingArray()
 
         // 保存しているアイテム配列の呼び出し
         ProcessArray().loadingArray()
@@ -65,6 +71,10 @@ class CategoryViewController: UIViewController {
         super.viewWillAppear(animated)
 
         print("カテゴリーに戻ってきた※タスク数が変化しているか確認")
+
+        categoryMode = .standard
+        setUpMode(mode: categoryMode)
+
         tableView.reloadData()
     }
 
@@ -78,6 +88,18 @@ class CategoryViewController: UIViewController {
             taskVC.beforeExistingItem = appDelegate?.itemArray[categoryIndex]
             taskVC.taskMode = .check
             taskVC.transitionSource = .categoryEdit(categoryIndex)
+
+        case K.SegueIdentifier.CategoryToInput:
+            if case .edit = categoryMode {
+                print("カテゴリーから1")
+                guard let navigation = segue.destination as? UINavigationController else { return }
+                guard let inputTVC = navigation.topViewController as? InputTableViewController else { return }
+                guard let categoryIndex = categoryIndex else { return }
+                inputTVC.editItem = appDelegate?.itemArray[categoryIndex]
+                inputTVC.inputMode = .edit
+                inputTVC.categoryIndex = categoryIndex
+                print("エディットから推移")
+            }
 
         default:
             break
@@ -110,6 +132,37 @@ class CategoryViewController: UIViewController {
 
         print("配列への追加処理完了")
     }
+
+    @IBAction func changeMode(_ sender: UIBarButtonItem) {
+
+        if tableView.isEditing {
+            categoryMode = .standard
+        } else {
+            categoryMode = .edit
+        }
+        setUpMode(mode: categoryMode)
+    }
+
+    @IBAction func shiftUnderButton(_ sender: UIButton) {
+        // Inputビューへの推移
+        performSegue(withIdentifier: K.SegueIdentifier.CategoryToInput, sender: nil)
+    }
+
+    private func setUpMode(mode: CategoryMode) {
+        switch mode {
+        case .standard:
+            editBarButton.title = "編集"
+            tableView.setEditing(false, animated: true)
+            underButton.isEnabled = true
+            underButton.alpha = 1
+        case .edit:
+            editBarButton.title = "完了"
+            tableView.setEditing(true, animated: true)
+            underButton.isEnabled = false
+            underButton.alpha = 0.5
+        }
+    }
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -135,11 +188,17 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
-
         categoryIndex = indexPath.row
 
-        // タスクビューへの推移
-        performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
+        switch categoryMode {
+        case .standard:
+            // タスクビューへの推移
+            performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
+        case .edit:
+            // Inputビューへの推移
+            performSegue(withIdentifier: K.SegueIdentifier.CategoryToInput, sender: nil)
+        }
+
     }
 
     // セルを削除(カテゴリー削除)
@@ -149,6 +208,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 
         if editingStyle == .delete {
             appDelegate?.itemArray.remove(at: indexPath.row)
+            ProcessArray().savingArray()
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }

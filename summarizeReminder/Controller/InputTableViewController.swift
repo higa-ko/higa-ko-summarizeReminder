@@ -29,7 +29,7 @@ class InputTableViewController: UITableViewController {
     @IBOutlet private weak var taskLabel: UILabel!
     @IBOutlet private weak var taskNumberLabel: UILabel!
 
-    private(set) var inputMode: InputMode = .add
+    var inputMode: InputMode = .add
 
     private var detailInputMode: DetailInputMode?
 
@@ -57,6 +57,11 @@ class InputTableViewController: UITableViewController {
 
         timePickerView.dataSource = self
         timePickerView.delegate = self
+
+        if case .edit = inputMode {
+            newCategoryCheckSwitch.isOn = false
+            setUpCell(item: editItem, inputMode: inputMode)
+        }
 
         print("いんぽーとビュー起動")
 

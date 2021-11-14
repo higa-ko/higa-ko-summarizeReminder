@@ -20,6 +20,7 @@ struct K {
 
     struct SegueIdentifier {
         static let CategoryToTask = "CategoryToTask"
+        static let CategoryToInput = "CategoryToInput"
         static let InputToSelect = "InputToSelect"
         static let InputToTask = "InputToTask"
     }

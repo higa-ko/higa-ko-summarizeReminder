@@ -71,7 +71,11 @@ struct ProcessArray {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         guard let data = UserDefaults.standard.data(forKey: K.SavingKey.ItemArrayKey),
-              let itemArray = try? jsonDecoder.decode([Item].self, from: data) else { return }
+              let itemArray = try? jsonDecoder.decode([Item].self, from: data) else {
+                  // 失敗した時の処理を入れる
+                  settingArray()
+                  return
+              }
 
         appDelegate.itemArray = itemArray
     }
