@@ -28,7 +28,7 @@ class DetailInputViewController: UIViewController {
     var categoryIndex: Int?
 
     var weekArray: Week = Week(
-        dayOfWeek: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+        dayOfWeek: ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"],
         isWeekCheck: [false, false, false, false, false, false, false])
 
     // AppDelegateの呼び出し

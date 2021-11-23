@@ -28,6 +28,7 @@ class InputTableViewController: UITableViewController {
     @IBOutlet private weak var taskCell: UITableViewCell!
     @IBOutlet private weak var taskLabel: UILabel!
     @IBOutlet private weak var taskNumberLabel: UILabel!
+    @IBOutlet private weak var deleteButton: UIButton!
 
     var inputMode: InputMode = .add
 
@@ -45,12 +46,12 @@ class InputTableViewController: UITableViewController {
 
     var categoryIndex: Int?
 
-    private let weeks = ["日", "月", "火", "水", "木", "金", "土"]
+    private let weeks = ["月", "火", "水", "木", "金", "土", "日"]
 
     private let hours = [Int](0...23)
     private let minutes = [Int](0...59)
 
-    private let max = 100
+    private let magnification = 100
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +59,15 @@ class InputTableViewController: UITableViewController {
         timePickerView.dataSource = self
         timePickerView.delegate = self
 
-        if case .edit = inputMode {
-            newCategoryCheckSwitch.isOn = false
+        switch inputMode {
+        case .add:
+            setUpCell(item: addItem, inputMode: inputMode)
+        case .edit:
             setUpCell(item: editItem, inputMode: inputMode)
         }
+
+        deleteButton.layer.borderWidth = 0.5
+        deleteButton.layer.cornerRadius = 10 // 角を丸く
 
         print("いんぽーとビュー起動")
 
@@ -72,6 +78,8 @@ class InputTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         print("インポートビューに戻ってきた")
+
+        categoryChangeTextField.becomeFirstResponder() // テキストフィールドにフォーカス
 
         switch inputMode {
         case .add:
@@ -159,10 +167,28 @@ class InputTableViewController: UITableViewController {
         }
     }
 
-    // ピッカービューの初期値を設定
-    private func defaultSelectRow(hour: Int, minute: Int) {
-        timePickerView.selectRow(hour + hours.count * max / 2, inComponent: 0, animated: false)
-        timePickerView.selectRow(minute + minutes.count * max / 2, inComponent: 1, animated: false)
+    @IBAction func deleteActionButton(_ sender: UIButton) {
+        // アラート作成
+        guard let category = editItem?.category else { return }
+        guard let categoryIndex = categoryIndex else { return }
+        let alert = UIAlertController(title: "カテゴリーを削除",
+                                      message: "\"\(category)\"を削除しますか？",
+                                      preferredStyle: .alert)
+
+        // ボタンの作成、追加
+        let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
+            ProcessArray().removeCategory(categoryIndex: categoryIndex)
+            self.editItem = nil
+            self.categoryIndex = nil
+            self.setUpCell(item: self.editItem, inputMode: self.inputMode)
+        }
+        alert.addAction(deleteButton)
+
+        let cancelButton = UIAlertAction(title: "キャンセル", style: .cancel)
+        alert.addAction(cancelButton)
+
+        // アラートの表示
+        present(alert, animated: true, completion: nil)
     }
 
     // アイテムの情報をテーブルビューへ反映
@@ -178,11 +204,24 @@ class InputTableViewController: UITableViewController {
 
         var weekValue = ""
 
+        // セルのアクセサリーの有無、削除ボタンの選択状態の有無
         switch inputMode {
         case .add:
+            newCategoryCheckSwitch.isOn = true
             categoryCell.accessoryType = .none
+            deleteButton.isEnabled = false
+            deleteButton.alpha = 0.5
         case .edit:
+            newCategoryCheckSwitch.isOn = false
             categoryCell.accessoryType = .disclosureIndicator
+
+            if item == nil {
+                deleteButton.isEnabled = false
+                deleteButton.alpha = 0.5
+            } else {
+                deleteButton.isEnabled = true
+                deleteButton.alpha = 1
+            }
         }
 
         // 未設定かどうかで処理を変える部分
@@ -220,7 +259,8 @@ class InputTableViewController: UITableViewController {
         // プッシュ通知
         noticeCheckSwitch.isOn = setItem.isNoticeCheck
 
-        if noticeCheckSwitch.isOn {
+        // プッシュ通知のステータスに合わせて設定を変更
+        if setItem.isNoticeCheck {
             timePickerView.alpha = 1
             timeLabel.alpha = 1
             repeatLabel.alpha = 1
@@ -233,8 +273,8 @@ class InputTableViewController: UITableViewController {
         }
 
         // 時間
-        timePickerView.selectRow(setItem.hour + hours.count * max / 2, inComponent: 0, animated: false)
-        timePickerView.selectRow(setItem.minute + minutes.count * max / 2, inComponent: 1, animated: false)
+        timePickerView.selectRow(setItem.hour + hours.count * magnification / 2, inComponent: 0, animated: false)
+        timePickerView.selectRow(setItem.minute + minutes.count * magnification / 2, inComponent: 1, animated: false)
 
         // 繰り返し
         // isWeekCheck の内容に合わせて日付を表示　どこにもチェックがない場合は"未選択"で表示
@@ -248,6 +288,7 @@ class InputTableViewController: UITableViewController {
 
         // タスク
         taskNumberLabel.text = String(setItem.task.count)
+
     }
 
     private func changeAccessoryType(isStatus: Bool) {
@@ -258,7 +299,6 @@ class InputTableViewController: UITableViewController {
             repeatCell.accessoryType = .none
             taskCell.accessoryType = .none
         }
-//        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -335,12 +375,12 @@ class InputTableViewController: UITableViewController {
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
             switch component {
             case 0:
-                return hours.count * max
+                return hours.count * magnification
             case 1:
-                return minutes.count * max
+                return minutes.count * magnification
             default:
                 print("存在しない列が指定されている(行数)")
-                return hours.count
+                return 0
             }
         }
 
@@ -366,7 +406,7 @@ class InputTableViewController: UITableViewController {
             switch component {
             case 0:
                 let hour = hours[row % hours.count]
-                self.timePickerView.selectRow(hour + hours.count * max / 2, inComponent: 0, animated: false)
+                self.timePickerView.selectRow(hour + hours.count * magnification / 2, inComponent: 0, animated: false)
 
                 switch inputMode {
                 case .add:
@@ -377,7 +417,7 @@ class InputTableViewController: UITableViewController {
 
             case 1:
                 let minute = minutes[row % minutes.count]
-                self.timePickerView.selectRow(minute + minutes.count * max / 2, inComponent: 1, animated: false)
+                self.timePickerView.selectRow(minute + minutes.count * magnification / 2, inComponent: 1, animated: false)
 
                 switch inputMode {
                 case .add:
@@ -389,6 +429,5 @@ class InputTableViewController: UITableViewController {
             default:
                 print("存在しない列が指定されている(選択された時の挙動)")
             }
-
         }
     }

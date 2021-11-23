@@ -207,8 +207,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
-            appDelegate?.itemArray.remove(at: indexPath.row)
-            ProcessArray().savingArray()
+            ProcessArray().removeCategory(categoryIndex: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }

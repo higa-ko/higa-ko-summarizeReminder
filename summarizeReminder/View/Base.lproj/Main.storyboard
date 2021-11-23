@@ -119,6 +119,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="dMC-Lo-pcz">
+                            <rect key="frame" x="0.0" y="328" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" systemColor="systemRedColor"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title=""/>
+                            <connections>
+                                <action selector="deleteActionButton:" destination="P6m-Au-SVj" eventType="touchUpInside" id="fNa-ZF-cYJ"/>
+                            </connections>
+                        </button>
                         <sections>
                             <tableViewSection id="SpT-cc-Qq8">
                                 <cells>
@@ -291,6 +301,7 @@
                         <outlet property="categoryCell" destination="3ux-9Q-P2i" id="hyt-zm-aD3"/>
                         <outlet property="categoryChangeTextField" destination="IWt-e4-Res" id="C59-IP-nRX"/>
                         <outlet property="categoryChoiceLabel" destination="cLy-g2-n6y" id="wCP-2V-gPK"/>
+                        <outlet property="deleteButton" destination="dMC-Lo-pcz" id="NcC-Er-aGw"/>
                         <outlet property="newCategoryCheckSwitch" destination="tiK-JG-MOj" id="gtI-f6-NXj"/>
                         <outlet property="noticeCheckSwitch" destination="KYh-2V-Gp7" id="jUL-cY-EXv"/>
                         <outlet property="pushLabel" destination="j58-7E-gBF" id="V7a-st-kUc"/>
@@ -309,7 +320,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNC-HO-Aia" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="aw5-kA-xY0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3017" y="459"/>
+            <point key="canvasLocation" x="3015.9420289855075" y="458.70535714285711"/>
         </scene>
         <!--Detail Input View Controller-->
         <scene sceneID="xGU-LL-4BE">
@@ -414,12 +425,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aEk-5V-eQ3">
-                                                    <rect key="frame" x="20.5" y="12.5" width="20" height="19"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UbG-Qx-EX3">
-                                                    <rect key="frame" x="48" y="5" width="366" height="34"/>
+                                                    <rect key="frame" x="20" y="5" width="394" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -431,7 +438,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="inputTaskImage" destination="aEk-5V-eQ3" id="McZ-D1-3M9"/>
                                             <outlet property="inputTaskTextField" destination="UbG-Qx-EX3" id="Maf-d5-oUV"/>
                                         </connections>
                                     </tableViewCell>
@@ -453,6 +459,7 @@
                                 <rect key="frame" x="20" y="756" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="tintColor" systemColor="systemRedColor"/>
                                 <state key="normal">
                                     <imageReference key="image" image="trash" catalog="system" symbolScale="large"/>
                                 </state>
@@ -480,7 +487,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KxJ-JO-rw1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3974" y="-230"/>
+            <point key="canvasLocation" x="3973.913043478261" y="-230.35714285714283"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="meP-5l-snv">
@@ -521,17 +528,19 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="seM-b6-OZA"/>
+        <segue reference="vEE-SQ-g9t"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bell" catalog="system" width="128" height="124"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
-        <image name="circle" catalog="system" width="128" height="121"/>
         <image name="largecircle.fill.circle" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

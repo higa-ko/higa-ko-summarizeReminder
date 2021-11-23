@@ -49,6 +49,17 @@ struct ProcessArray {
         savingArray()
     }
 
+    // 既存カテゴリーの削除
+    func removeCategory(categoryIndex: Int) {
+        // AppDelegateの呼び出し
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+        appDelegate.itemArray.remove(at: categoryIndex)
+
+        // アイテム配列の保存
+        savingArray()
+    }
+
     // 保存
     func savingArray() {
         // AppDelegateの呼び出し
