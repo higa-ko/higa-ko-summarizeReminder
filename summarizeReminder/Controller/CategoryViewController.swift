@@ -91,7 +91,6 @@ class CategoryViewController: UIViewController {
 
         case K.SegueIdentifier.CategoryToInput:
             if case .edit = categoryMode {
-                print("カテゴリーから1")
                 guard let navigation = segue.destination as? UINavigationController else { return }
                 guard let inputTVC = navigation.topViewController as? InputTableViewController else { return }
                 guard let categoryIndex = categoryIndex else { return }

@@ -20,10 +20,10 @@ class CategoryTableViewCell: UITableViewCell {
 
         if item.isNoticeCheck {
             alertLabel.text = "アラートあり"
-            alertImage.image = UIImage(systemName: "bell")
+            alertImage.image = UIImage(systemName: "flag")
         } else {
             alertLabel.text = "アラートなし"
-            alertImage.image = UIImage(systemName: "bell.slash")
+            alertImage.image = UIImage(systemName: "flag.slash")
         }
         numberLabel.text = String(item.task.count)
     }

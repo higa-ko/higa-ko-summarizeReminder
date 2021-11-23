@@ -208,17 +208,25 @@ class InputTableViewController: UITableViewController {
         switch inputMode {
         case .add:
             newCategoryCheckSwitch.isOn = true
+            categoryChangeTextField.placeholder = "カテゴリーを入力"
+            categoryChangeTextField.isEnabled = true
+            categoryChangeTextField.borderStyle = .roundedRect
             categoryCell.accessoryType = .none
             deleteButton.isEnabled = false
             deleteButton.alpha = 0.5
         case .edit:
             newCategoryCheckSwitch.isOn = false
+            categoryChangeTextField.placeholder = "カテゴリーを選択"
             categoryCell.accessoryType = .disclosureIndicator
 
             if item == nil {
+                categoryChangeTextField.isEnabled = false
+                categoryChangeTextField.borderStyle = .none
                 deleteButton.isEnabled = false
                 deleteButton.alpha = 0.5
             } else {
+                categoryChangeTextField.isEnabled = true
+                categoryChangeTextField.borderStyle = .roundedRect
                 deleteButton.isEnabled = true
                 deleteButton.alpha = 1
             }
