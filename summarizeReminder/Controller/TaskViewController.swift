@@ -136,7 +136,7 @@ class TaskViewController: UIViewController {
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
         guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
-        cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+        cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
         print("スクロール完了")
     }
 
@@ -247,22 +247,23 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let identifier = K.CellIdentifier.TaskCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
+
         // 選択されているモードに合わせてセルの表示内容を変更
+        guard let taskMode = taskMode else { return cell! }
         switch taskMode {
         case .check:
-            let identifier = K.CellIdentifier.DisplayTaskyCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
-            let text =  NSMutableAttributedString(string: beforeExistingItem!.task[indexPath.row])
+            let text =  beforeExistingItem!.task[indexPath.row]
             let isTaskCheck = beforeExistingItem!.isTaskCheck[indexPath.row]
 
             // 表示用のセルを表示
-            cell?.configureDisplayTask(text: text, isTaskCheck: isTaskCheck)
+            cell?.configureDisplayTask(text: text, taskMode: taskMode, isTaskCheck: isTaskCheck)
 
             return cell!
 
         case .add:
-            let identifier = K.CellIdentifier.InputTaskCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
             let max = existingTaskArray.count
             let text: String?
 
@@ -279,18 +280,12 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 }
 
             } else {
-                text = existingTaskArray[indexPath.row]
+                text = existingTaskArray[indexPath.row]!
             }
 
-            cell?.configureInputTask(text: text!)
+            cell?.configureDisplayTask(text: text!, taskMode: taskMode, isTaskCheck: true)
             cell?.taskTextFieldDelegate = self
 
-            return cell!
-
-        default:
-            print("存在しないモードが選択されている")
-            let identifier = K.CellIdentifier.InputTaskCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
             return cell!
         }
     }
@@ -366,7 +361,7 @@ extension TaskViewController: TaskTextFieldDelegate {
         if case .add = mode {
 
             guard let indexPath = tableView.indexPath(for: cell) else { return }
-            guard let task = cell.inputTaskTextField.text  else { return }
+            guard let task = cell.taskTextField.text  else { return }
             existingTaskArray[indexPath.row] = task
         }
     }
@@ -386,7 +381,7 @@ extension TaskViewController: TaskTextFieldDelegate {
                 tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                 tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
                 guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
-                cell.inputTaskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+                cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
                 print("改行")
             }
         }

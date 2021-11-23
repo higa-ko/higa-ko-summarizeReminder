@@ -12,8 +12,7 @@ struct K {
     struct CellIdentifier {
         static let CategoryCell = "CategoryCell"
 
-        static let DisplayTaskyCell = "DisplayTaskCell"
-        static let InputTaskCell = "InputTaskCell"
+        static let TaskCell = "TaskCell"
 
         static let DetailInputLabelCell = "DetailInputLabelCell"
     }
