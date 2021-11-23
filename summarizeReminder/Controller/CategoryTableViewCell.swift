@@ -22,7 +22,11 @@ class CategoryTableViewCell: UITableViewCell {
         var weekValue = ""
 
         categoryLabel.text = item.category
-        timeLabel.text = "\(item.hour)：\(item.minute)"
+        let time = TimeInterval(item.hour * 3600 + item.minute * 60) // 時と分を秒に変換して足す
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        timeLabel.text = time == 0 ? "0:00" : formatter.string(from: time)
+//        timeLabel.text = "\(item.hour)：\(item.minute)"
 
         for weekNumber in 0 ..< item.isWeekCheck.count where item.isWeekCheck[weekNumber] {
             weekValue += weeks[weekNumber] + " "
