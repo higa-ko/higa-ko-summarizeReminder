@@ -59,7 +59,6 @@ class CategoryViewController: UIViewController {
               }
            })
         }
-
     }
 
     @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
@@ -179,6 +178,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         let item = appDelegate!.itemArray[indexPath.row]
 
         cell?.configureCategory(item: item)
+        cell?.categoryButtonDelegate = self
 
         return cell!
     }
@@ -211,4 +211,19 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
+}
+
+// MARK: - CategoryButtonDelegate
+extension CategoryViewController: CategoryButtonDelegate {
+    func changeButton(cell: CategoryTableViewCell) {
+        print("フラグボタンが押された")
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        switch categoryMode {
+        case .standard:
+            appDelegate!.itemArray[indexPath.row].isNoticeCheck.toggle()
+            tableView.reloadRows(at: [indexPath], with: .none)
+        case .edit:
+            break
+        }
+    }
 }
