@@ -61,10 +61,6 @@ class CategoryViewController: UIViewController {
         }
     }
 
-    @IBAction func tapImage(_ sender: UITapGestureRecognizer) {
-        print("イメージが押された")
-    }
-
     // カテゴリー画面に戻ってきた時の処理
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

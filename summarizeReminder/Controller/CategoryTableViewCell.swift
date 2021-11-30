@@ -13,7 +13,7 @@ protocol CategoryButtonDelegate: AnyObject {
 
 class CategoryTableViewCell: UITableViewCell {
 
-    @IBOutlet private weak var flagButton: UIButton!
+    @IBOutlet private weak var bellButton: UIButton!
     @IBOutlet private weak var categoryLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
     @IBOutlet private weak var weekLabel: UILabel!
@@ -40,19 +40,19 @@ class CategoryTableViewCell: UITableViewCell {
         weekLabel.text = weekValue
 
         if item.isNoticeCheck {
-            flagButton.setImage(UIImage(systemName: "flag"), for: .normal)
+            bellButton.setImage(UIImage(systemName: "bell"), for: .normal)
             timeLabel.alpha = 1
             weekLabel.alpha = 1
         } else {
-            flagButton.setImage(UIImage(systemName: "flag.slash"), for: .normal)
+            bellButton.setImage(UIImage(systemName: "bell.slash"), for: .normal)
             timeLabel.alpha = 0.5
             weekLabel.alpha = 0.5
         }
 
         // ボタンのイメージのサイズを変更
-        flagButton.imageView?.contentMode = .scaleAspectFit
-        flagButton.contentHorizontalAlignment = .fill
-        flagButton.contentVerticalAlignment = .fill
+        bellButton.imageView?.contentMode = .scaleAspectFit
+        bellButton.contentHorizontalAlignment = .fill
+        bellButton.contentVerticalAlignment = .fill
 
         numberLabel.text = String(item.task.count)
     }
