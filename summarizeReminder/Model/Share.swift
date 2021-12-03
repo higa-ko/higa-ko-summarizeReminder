@@ -140,7 +140,8 @@ struct Buttonformat {
         button.contentHorizontalAlignment = .fill
         button.contentVerticalAlignment = .fill
 
-        button.layer.borderWidth = 0.1   // 罫線の太さ
+        button.layer.borderWidth = 0.5   // 罫線の太さ
+        button.layer.borderColor = UIColor.gray.cgColor // 枠線をグレー
         button.layer.cornerRadius = button.bounds.width / 2   // ボタンを丸く(高さに対して半分)
     }
 }

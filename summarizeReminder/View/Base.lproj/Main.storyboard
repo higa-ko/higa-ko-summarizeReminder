@@ -284,14 +284,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="繰り返し" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GAD-TF-i1f">
-                                                    <rect key="frame" x="16" y="15" width="49.5" height="14.5"/>
+                                                    <rect key="frame" x="16" y="12" width="69.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="未選択" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lNo-b3-bh0">
-                                                    <rect key="frame" x="304.5" y="15" width="37" height="14.5"/>
+                                                    <rect key="frame" x="304.5" y="17" width="37" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                                     <nil key="textColor"/>
@@ -308,14 +308,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="タスク" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gzf-4M-Z8q">
-                                                    <rect key="frame" x="16" y="15" width="37" height="14.5"/>
+                                                    <rect key="frame" x="16" y="12" width="52" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nr1-hN-tSe">
-                                                    <rect key="frame" x="333.5" y="15" width="8" height="14.5"/>
+                                                    <rect key="frame" x="333.5" y="17" width="8" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                                     <nil key="textColor"/>

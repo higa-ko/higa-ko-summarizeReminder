@@ -85,9 +85,12 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             cell?.detailInputLabel?.text = appDelegate?.itemArray[indexPath.row].category
 
             if indexPath.row == categoryIndex {
+                cell?.detailInputImage.image = UIImage(systemName: "checkmark")
                 cell?.detailInputImage.tintColor = .orange
+                cell?.detailInputImage.alpha = 1
             } else {
-                cell?.detailInputImage.tintColor = .white
+                cell?.detailInputImage.image = nil
+                cell?.detailInputImage.alpha = 0
             }
 
             return cell!
@@ -97,10 +100,13 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             cell?.detailInputLabel?.text = weekArray.dayOfWeek[indexPath.row]
 
             if weekArray.isWeekCheck[indexPath.row] {
+                cell?.detailInputImage.image = UIImage(systemName: "checkmark")
                 cell?.detailInputImage.tintColor = .orange
+                cell?.detailInputImage.alpha = 1
             } else {
-                cell?.detailInputImage.tintColor = .white
-            }
+                cell?.detailInputImage.image = nil
+                cell?.detailInputImage.alpha = 0
+           }
 
             return cell!
         }
