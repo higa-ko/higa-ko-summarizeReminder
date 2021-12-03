@@ -45,25 +45,15 @@ class TaskViewController: UIViewController {
         Buttonformat().underButtonformat(button: deleteButton)
         Buttonformat().underButtonformat(button: addButton)
 
-        // 選択状態に合わせてボタンの有無を切り替え
-        switch taskMode {
-        case .check:
-            deleteButton.isEnabled = true
-            addButton.isEnabled = true
-            doneButtonItem.isEnabled = false
-        case .add:
-            deleteButton.isEnabled = false
-            addButton.isEnabled = false
-            doneButtonItem.isEnabled = true
-        case .none:
-            print("存在しないモードが選択されている")
-        }
-
         // ナビゲーションバーのタイトルをカテゴリーに変更
         self.navigationItem.title = beforeExistingItem?.category
 
         // existingTaskArrayの初期化
         initializationTaskArray()
+
+        // 選択状態に合わせてボタンの有無を切り替え
+        guard let taskMode = taskMode else { return }
+        setMode(mode: taskMode)
 
         print("タスクビューを表示")
     }
@@ -93,7 +83,7 @@ class TaskViewController: UIViewController {
             guard let transitionSource = self.transitionSource else { return }
             shareItem(item: item, transitionSource: transitionSource)
         }
-        changeMode(mode: mode)
+        changeMode()
         tableView.reloadData()
     }
 
@@ -127,32 +117,37 @@ class TaskViewController: UIViewController {
 
     // タスク追加ボタン
     @IBAction func addActionButton(_ sender: UIButton) {
-        guard let mode = taskMode else { return }
-        changeMode(mode: mode)
+        changeMode()
         tableView.reloadData()
 
-        // 一番下のセルまでスクロールする
-        let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
-        guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
-        cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
-        print("スクロール完了")
+        scrollFocus()
     }
 
-    private func changeMode(mode: TaskMode) {
+    private func changeMode() {
+        switch taskMode {
+        case .check:
+            self.taskMode = .add
+        case .add:
+            self.taskMode = .check
+        case .none:
+            break
+        }
+
+        guard let taskMode = taskMode else { return }
+        setMode(mode: taskMode)
+    }
+
+    private func setMode(mode: TaskMode) {
         // 選択状態に合わせてボタンの有無を切り替え
         switch mode {
         case .check:
-            self.taskMode = .add
-            deleteButton.isEnabled = false
-            addButton.isEnabled = false
-            doneButtonItem.isEnabled = true
-        case .add:
-            self.taskMode = .check
             deleteButton.isEnabled = true
             addButton.isEnabled = true
             doneButtonItem.isEnabled = false
+        case .add:
+            deleteButton.isEnabled = false
+            addButton.isEnabled = false
+            doneButtonItem.isEnabled = true
         }
     }
 
@@ -200,6 +195,16 @@ class TaskViewController: UIViewController {
         for _ in 0 ... existingCount {
             existingTaskArray.append(nil)
         }
+    }
+
+    private func scrollFocus() {
+        // 一番下のセルまでスクロールする
+        let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
+        guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
+        cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+        print("スクロール&フォーカス完了")
     }
 
     // 更新したタスクの情報をAppDelegateと元のビューコントローラに通知
@@ -274,6 +279,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
                 if max - 1 == indexPath.row {
                     text = ""
                     existingTaskArray[indexPath.row] = text
+                    cell?.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
                 } else {
                     text = beforeExistingItem!.task[indexPath.row]
                     existingTaskArray[indexPath.row] = text // 表示しているセルを配列に入れる
@@ -376,12 +382,7 @@ extension TaskViewController: TaskTextFieldDelegate {
                 existingTaskArray.append("")
                 tableView.reloadData()
 
-                // 一番下のセルまでスクロールする
-                let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
-                tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
-                guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
-                cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
+                scrollFocus()
                 print("改行")
             }
         }
