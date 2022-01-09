@@ -37,7 +37,12 @@ class CategoryTableViewCell: UITableViewCell {
         for weekNumber in 0 ..< item.isWeekCheck.count where item.isWeekCheck[weekNumber] {
             weekValue += weeks[weekNumber] + " "
         }
-        weekLabel.text = weekValue
+
+        if weekValue == "" {
+            weekLabel.text = "未設定"
+        } else {
+            weekLabel.text = weekValue
+        }
 
         if item.isNoticeCheck {
             bellButton.setImage(UIImage(systemName: "bell"), for: .normal)
@@ -60,5 +65,4 @@ class CategoryTableViewCell: UITableViewCell {
     @IBAction func changeButton(_ sender: UIButton) {
         categoryButtonDelegate?.changeButton(cell: self)
     }
-
 }

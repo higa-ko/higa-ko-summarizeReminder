@@ -42,6 +42,9 @@ class CategoryViewController: UIViewController {
         // 保存しているアイテム配列の呼び出し
         ProcessArray().loadingArray()
 
+        // 通知の許可
+        ProcessPush().goPush()
+
         print("カテゴリービューを表示")
 
         // トラッキングの許可
