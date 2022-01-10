@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    // swiftlint:disable line_length
+    var window: UIWindow?
 
     // ーーーーーーーーーー共通変数ーーーーーーーーーー
 
@@ -21,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        IQKeyboardManager.shared.enable = true
 
         return true
     }

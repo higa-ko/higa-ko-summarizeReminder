@@ -202,6 +202,7 @@ class TaskViewController: UIViewController {
         let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
+        print("最後の行までスクロール完了")
         guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
         cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
         print("スクロール&フォーカス完了")

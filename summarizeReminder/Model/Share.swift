@@ -239,10 +239,10 @@ struct ProcessPush {
                 }
         }
 
-        // 登録されている通知確認
-        UNUserNotificationCenter.current().getPendingNotificationRequests {
-            print("Pending requests :", $0)
-        }
+        // 登録されている通知確認（テスト用）
+//        UNUserNotificationCenter.current().getPendingNotificationRequests {
+//            print("Pending requests :", $0)
+//        }
     }
 }
 

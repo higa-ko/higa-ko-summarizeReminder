@@ -6,6 +6,7 @@ target 'summarizeReminder' do
   use_frameworks!
 
   # Pods for summarizeReminder
-  pod 'SwiftLint'
+#  pod 'SwiftLint'
+  pod 'IQKeyboardManagerSwift'
 
 end
