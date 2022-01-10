@@ -54,8 +54,6 @@ class TaskViewController: UIViewController {
         // 選択状態に合わせてボタンの有無を切り替え
         guard let taskMode = taskMode else { return }
         setMode(mode: taskMode)
-
-        print("タスクビューを表示")
     }
 
     // バーボタン(完了)
@@ -220,17 +218,13 @@ class TaskViewController: UIViewController {
             // InputTableViewControllerに値を渡す
             guard let navigation = self.navigationController else { return }
             guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
-            print("テーブルビュー生成成功")
             inputTVC.addItem = item
-            print("元のデータに変更完了")
 
         case .inputEdit:
             // InputTableViewControllerに値を渡す
             guard let navigation = self.navigationController else { return }
             guard let inputTVC = navigation.viewControllers[0] as? InputTableViewController else { return }
-            print("テーブルビュー生成成功")
             inputTVC.editItem = item
-            print("元のデータに変更完了")
         }
     }
 

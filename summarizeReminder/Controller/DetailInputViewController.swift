@@ -49,7 +49,6 @@ class DetailInputViewController: UIViewController {
             self.navigationItem.title = "繰り返し設定"
 
         }
-        print("入力詳細画面を表示")
     }
 
 }

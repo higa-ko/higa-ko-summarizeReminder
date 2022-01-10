@@ -45,8 +45,6 @@ class CategoryViewController: UIViewController {
         // 通知の許可
         ProcessPush().goPush()
 
-        print("カテゴリービューを表示")
-
         // トラッキングの許可
         if #available(iOS 14, *) {
            ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
@@ -67,8 +65,6 @@ class CategoryViewController: UIViewController {
     // カテゴリー画面に戻ってきた時の処理
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        print("カテゴリーに戻ってきた※タスク数が変化しているか確認")
 
         categoryMode = .standard
         setUpMode(mode: categoryMode)
@@ -95,7 +91,6 @@ class CategoryViewController: UIViewController {
                 inputTVC.editItem = appDelegate?.itemArray[categoryIndex]
                 inputTVC.inputMode = .edit
                 inputTVC.categoryIndex = categoryIndex
-                print("エディットから推移")
             }
 
         default:

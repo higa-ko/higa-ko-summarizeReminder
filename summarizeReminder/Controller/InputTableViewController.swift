@@ -69,15 +69,11 @@ class InputTableViewController: UITableViewController {
         deleteButton.layer.borderWidth = 0.5
         deleteButton.layer.cornerRadius = 10 // 角を丸く
 
-        print("いんぽーとビュー起動")
-
     }
 
     // Input画面に戻ってきた時の処理（初回表示も含む）
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        print("インポートビューに戻ってきた")
 
         categoryChangeTextField.becomeFirstResponder() // テキストフィールドにフォーカス
 
