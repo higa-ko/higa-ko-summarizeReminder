@@ -121,8 +121,6 @@ class CategoryViewController: UIViewController {
         }
 
         tableView.reloadData()
-
-        print("配列への追加処理完了")
     }
 
     @IBAction func changeMode(_ sender: UIBarButtonItem) {
@@ -210,7 +208,6 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - CategoryButtonDelegate
 extension CategoryViewController: CategoryButtonDelegate {
     func changeButton(cell: CategoryTableViewCell) {
-        print("フラグボタンが押された")
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         switch categoryMode {
         case .standard:

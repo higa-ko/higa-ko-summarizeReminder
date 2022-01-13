@@ -328,7 +328,6 @@ class InputTableViewController: UITableViewController {
             performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
         default:
             detailInputMode = .none
-            print("指定外のindexPathが指定された")
         }
     }
 
@@ -383,7 +382,6 @@ class InputTableViewController: UITableViewController {
             case 1:
                 return minutes.count * magnification
             default:
-                print("存在しない列が指定されている(行数)")
                 return 0
             }
         }
@@ -397,7 +395,6 @@ class InputTableViewController: UITableViewController {
             case 1:
                 return String(minutes[row % minutes.count])
             default:
-                print("存在しない列が指定されている(表示内容)")
                 return String(hours[row])
             }
         }
@@ -431,7 +428,7 @@ class InputTableViewController: UITableViewController {
                 }
 
             default:
-                print("存在しない列が指定されている(選択された時の挙動)")
+                break
             }
         }
     }

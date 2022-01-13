@@ -64,7 +64,6 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
         case .repeatSelect:
             return weekArray.dayOfWeek.count
         default:
-            print("存在しないモードが指定されている")
             return 0
         }
     }

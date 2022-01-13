@@ -200,10 +200,8 @@ class TaskViewController: UIViewController {
         let indexPath = IndexPath(row: existingTaskArray.count - 1, section: 0)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         tableView.reloadRows(at: [indexPath], with: .none) // 最後の行をリロード
-        print("最後の行までスクロール完了")
         guard let cell = tableView.cellForRow(at: indexPath) as? TaskTableViewCell else { return }
         cell.taskTextField.becomeFirstResponder() // 最後のセルにフォーカス
-        print("スクロール&フォーカス完了")
     }
 
     // 更新したタスクの情報をAppDelegateと元のビューコントローラに通知
@@ -212,7 +210,6 @@ class TaskViewController: UIViewController {
         case .categoryEdit(let categoryIndex):
             // 既存の配列への設定変更の場合のみ処理を実行
             ProcessArray().editArray(item: item, categoryIndex: categoryIndex) // 関数呼び出し
-            print("共有のアイテム更新完了")
 
         case .inputAdd:
             // InputTableViewControllerに値を渡す
@@ -317,7 +314,6 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 
         // タップしたセルのみを更新
         tableView.reloadRows(at: [indexPath], with: .fade)
-        print("タスクタブのテーブル選択")
     }
 
     // セルを削除(タスク削除)
@@ -378,7 +374,6 @@ extension TaskViewController: TaskTextFieldDelegate {
                 tableView.reloadData()
 
                 scrollFocus()
-                print("改行")
             }
         }
     }
