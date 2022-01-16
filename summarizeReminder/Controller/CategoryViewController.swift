@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import AppTrackingTransparency  // トラッキングの許可
-import AdSupport    // トラッキングの許可
 
 enum CategoryMode {
     case standard
@@ -44,22 +42,6 @@ class CategoryViewController: UIViewController {
 
         // 通知の許可
         ProcessPush().goPush()
-
-        // トラッキングの許可
-        if #available(iOS 14, *) {
-           ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-              switch status {
-              case .authorized:
-                 // IDFA取得
-                 print("IDFA: \(ASIdentifierManager.shared().advertisingIdentifier)")
-                 print("success")
-              case .denied, .restricted, .notDetermined:
-                 print("failure")
-              @unknown default:
-                 fatalError()
-              }
-           })
-        }
     }
 
     // カテゴリー画面に戻ってきた時の処理

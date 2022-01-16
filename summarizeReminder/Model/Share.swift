@@ -146,81 +146,84 @@ struct ProcessPush {
     }
 
     func setPush() {
-        // AppDelegateの呼び出し
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let itemArray = appDelegate.itemArray
 
-        let content = UNMutableNotificationContent()
-        content.sound = UNNotificationSound.default
+        DispatchQueue.main.async(execute: {
+            // AppDelegateの呼び出し
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let itemArray = appDelegate.itemArray
 
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests() // 通知設定の削除
-
-        var dateComponentsDay = DateComponents()
-
-        // アイテム配列分確認 // 通知が必要なアイテムか確認
-        for itemIndex in 0..<itemArray.count
-        where itemArray[itemIndex].isNoticeCheck {
-
-            var task = ""
-            // 表示内容の作成
-            content.title = itemArray[itemIndex].category
-
-            for taskIndex in 0..<itemArray[itemIndex].task.count
-            where itemArray[itemIndex].isTaskCheck[taskIndex] {
-                if task != "" {
-                    task += "\n"
-                }
-                task += itemArray[itemIndex].task[taskIndex]
-            }
-
-            content.body = task
+            let content = UNMutableNotificationContent()
             content.sound = UNNotificationSound.default
 
-            // 表示時間の設定
-            dateComponentsDay.hour = itemArray[itemIndex].hour
-            dateComponentsDay.minute = itemArray[itemIndex].minute
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.removeAllPendingNotificationRequests() // 通知設定の削除
 
-            // isWeekCheckの配列の中に曜日の設定があるか確認
-            if appDelegate.itemArray[itemIndex].isWeekCheck.contains(true) {
-                // 曜日の設定がある場合
-                for weeyIndex in 0..<itemArray[itemIndex].isWeekCheck.count
-                where itemArray[itemIndex].isWeekCheck[weeyIndex] {
-                    switch weeyIndex {
-                    case 0: dateComponentsDay.weekday = monday
-                    case 1: dateComponentsDay.weekday = tuesday
-                    case 2: dateComponentsDay.weekday = wednesday
-                    case 3: dateComponentsDay.weekday = thursday
-                    case 4: dateComponentsDay.weekday = friday
-                    case 5: dateComponentsDay.weekday = saturday
-                    case 6: dateComponentsDay.weekday = sunday
-                    default: break
+            var dateComponentsDay = DateComponents()
+
+            // アイテム配列分確認 // 通知が必要なアイテムか確認
+            for itemIndex in 0..<itemArray.count
+            where itemArray[itemIndex].isNoticeCheck {
+
+                var task = ""
+                // 表示内容の作成
+                content.title = itemArray[itemIndex].category
+
+                for taskIndex in 0..<itemArray[itemIndex].task.count
+                where itemArray[itemIndex].isTaskCheck[taskIndex] {
+                    if task != "" {
+                        task += "\n"
                     }
+                    task += itemArray[itemIndex].task[taskIndex]
+                }
 
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponentsDay,
-                                                                repeats: true) // トリガーを生成
+                content.body = task
+                content.sound = UNNotificationSound.default
 
-                    let identifier = String(itemIndex) + "-" + String(weeyIndex) // identifierを生成
-                    let request = UNNotificationRequest(identifier: identifier,
-                                                        content: content,
-                                                        trigger: trigger) // 通知データを作成
+                // 表示時間の設定
+                dateComponentsDay.hour = itemArray[itemIndex].hour
+                dateComponentsDay.minute = itemArray[itemIndex].minute
 
-                    // 通知予約
-                    notificationCenter.add(request) { (error) in
-                        if error != nil {
-                            print(error.debugDescription)
+                // isWeekCheckの配列の中に曜日の設定があるか確認
+                if itemArray[itemIndex].isWeekCheck.contains(true) {
+                    // 曜日の設定がある場合
+                    for weeyIndex in 0..<itemArray[itemIndex].isWeekCheck.count
+                    where itemArray[itemIndex].isWeekCheck[weeyIndex] {
+                        switch weeyIndex {
+                        case 0: dateComponentsDay.weekday = monday
+                        case 1: dateComponentsDay.weekday = tuesday
+                        case 2: dateComponentsDay.weekday = wednesday
+                        case 3: dateComponentsDay.weekday = thursday
+                        case 4: dateComponentsDay.weekday = friday
+                        case 5: dateComponentsDay.weekday = saturday
+                        case 6: dateComponentsDay.weekday = sunday
+                        default: break
+                        }
+
+                        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponentsDay,
+                                                                    repeats: true) // トリガーを生成
+
+                        let identifier = String(itemIndex) + "-" + String(weeyIndex) // identifierを生成
+                        let request = UNNotificationRequest(identifier: identifier,
+                                                            content: content,
+                                                            trigger: trigger) // 通知データを作成
+
+                        // 通知予約
+                        notificationCenter.add(request) { (error) in
+                            if error != nil {
+                                print(error.debugDescription)
+                            }
                         }
                     }
+                } else {
+                    // 曜日設定がない場合の処理 ★初回実装見送り
                 }
-            } else {
-                // 曜日設定がない場合の処理 ★初回実装見送り
             }
-        }
 
-        // 登録されている通知確認（テスト用）
-        //        UNUserNotificationCenter.current().getPendingNotificationRequests {
-        //            print("Pending requests :", $0)
-        //        }
+            // 登録されている通知確認（テスト用）
+            UNUserNotificationCenter.current().getPendingNotificationRequests {
+                print("Pending requests :", $0)
+            }
+        })
     }
 }
 
