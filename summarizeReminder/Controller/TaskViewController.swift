@@ -31,7 +31,6 @@ class TaskViewController: UIViewController {
     var beforeExistingItem: Item?
     private var existingTaskArray: [String?] = [] // タスクの編集内容を格納する配列　編集対象のタスク数+1の要素数
 
-    // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     // 画面実行時の処理

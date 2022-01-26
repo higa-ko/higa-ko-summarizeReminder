@@ -21,7 +21,6 @@ struct ProcessArray {
 
     // 新規カテゴリーを配列へ追加
     func addCategory(item: Item) {
-        // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // 新規追加のパターン以外を弾く
@@ -39,7 +38,6 @@ struct ProcessArray {
 
     // 既存カテゴリーのカテゴリーを編集
     func editArray(item: Item, categoryIndex: Int) {
-        // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // 新規追加のパターン以外を弾く
@@ -57,7 +55,6 @@ struct ProcessArray {
 
     // 既存カテゴリーの削除
     func removeCategory(categoryIndex: Int) {
-        // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         appDelegate.itemArray.remove(at: categoryIndex)
@@ -71,7 +68,6 @@ struct ProcessArray {
 
     // 保存
     func savingArray() {
-        // AppDelegateの呼び出し
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // `JSONEncoder` で `Data` 型へエンコードし、UserDefaultsに追加する
@@ -220,9 +216,9 @@ struct ProcessPush {
             }
 
             // 登録されている通知確認（テスト用）
-            UNUserNotificationCenter.current().getPendingNotificationRequests {
-                print("Pending requests :", $0)
-            }
+//            UNUserNotificationCenter.current().getPendingNotificationRequests {
+//                print("Pending requests :", $0)
+//            }
         })
     }
 }

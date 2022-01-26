@@ -18,21 +18,19 @@ class CategoryViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
 
-    // 下にある+ボタン
     @IBOutlet private weak var underButton: UIButton!
 
-    // AppDelegateの呼び出し
     private weak var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
 
     private var categoryMode: CategoryMode = .standard
 
     private var categoryIndex: Int?
 
-    // 画面実行時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.tableFooterView = UIView()  // 空のセルの区切り線だけ消す。
+        // 空のセルの区切り線だけ消す。
+        tableView.tableFooterView = UIView()
 
         // ボタンの書式を変更
         Buttonformat().underButtonformat(button: underButton)

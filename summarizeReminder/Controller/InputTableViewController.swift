@@ -407,6 +407,7 @@ class InputTableViewController: UITableViewController {
             switch component {
             case 0:
                 let hour = hours[row % hours.count]
+                // PickerViewの選択が全体の半分くらいの位置にくるように調整
                 self.timePickerView.selectRow(hour + hours.count * magnification / 2, inComponent: 0, animated: false)
 
                 switch inputMode {
@@ -418,6 +419,7 @@ class InputTableViewController: UITableViewController {
 
             case 1:
                 let minute = minutes[row % minutes.count]
+                // PickerViewの選択が全体の半分くらいの位置にくるように調整
                 self.timePickerView.selectRow(minute + minutes.count * magnification / 2, inComponent: 1, animated: false)
 
                 switch inputMode {
