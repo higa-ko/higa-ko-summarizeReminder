@@ -18,4 +18,3 @@ https://www.higako-portfolio.tech/?p=54
 # アプリケーション内で使用している技術一覧
 - Swift
 - Xcode
-- 
