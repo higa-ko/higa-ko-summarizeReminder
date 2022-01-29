@@ -38,7 +38,7 @@ class InputTableViewController: UITableViewController {
                              task: [],
                              isTaskCheck: [],
                              isNoticeCheck: false,
-                             isWeekCheck: [false, false, false, false, false, false, false],
+                             isWeekCheck: [true, true, true, true, true, true, true],
                              hour: 0,
                              minute: 0)
 
