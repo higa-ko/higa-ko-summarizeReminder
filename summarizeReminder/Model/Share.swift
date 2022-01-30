@@ -7,6 +7,7 @@
 
 import UIKit
 
+// JSON形式に変換するためにCodable実装
 struct Item: Codable {
     var category: String
     var task: [String]
@@ -57,6 +58,7 @@ struct ProcessArray {
     func removeCategory(categoryIndex: Int) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
+        // カテゴリー削除
         appDelegate.itemArray.remove(at: categoryIndex)
 
         // アイテム配列の保存
@@ -75,7 +77,7 @@ struct ProcessArray {
         jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
         guard let data = try? jsonEncoder.encode(appDelegate.itemArray) else { return }
 
-        UserDefaults.standard.set(data, forKey: K.SavingKey.ItemArrayKey)
+        UserDefaults.standard.set(data, forKey: Constants.SavingKey.ItemArrayKey)
     }
 
     // 呼び出し
@@ -86,7 +88,7 @@ struct ProcessArray {
         // `JSONDecoder` で `Data` 型を自作した構造体へデコードする
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let data = UserDefaults.standard.data(forKey: K.SavingKey.ItemArrayKey),
+        guard let data = UserDefaults.standard.data(forKey: Constants.SavingKey.ItemArrayKey),
               let itemArray = try? jsonDecoder.decode([Item].self, from: data) else {
                   // 失敗した時の処理を入れる
                   settingArray()
@@ -126,8 +128,6 @@ struct ProcessPush {
 
                 // もし通知が許可されてないなら
             } else {
-                print("もし通知が許可されていないのであれば")
-
                 UNUserNotificationCenter.current().requestAuthorization(
                     options: [.sound, .badge, .alert], completionHandler: { (granted, error) in
 
@@ -143,27 +143,27 @@ struct ProcessPush {
 
     func setPush() {
 
+        // 非同期処理（裏側で処理）
         DispatchQueue.main.async(execute: {
             // AppDelegateの呼び出し
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let itemArray = appDelegate.itemArray
 
             let content = UNMutableNotificationContent()
-            content.sound = UNNotificationSound.default
 
             let notificationCenter = UNUserNotificationCenter.current()
             notificationCenter.removeAllPendingNotificationRequests() // 通知設定の削除
 
             var dateComponentsDay = DateComponents()
 
-            // アイテム配列分確認 // 通知が必要なアイテムか確認
+            // アイテム配列分確認、通知が必要なアイテムか確認
             for itemIndex in 0..<itemArray.count
             where itemArray[itemIndex].isNoticeCheck {
 
                 var task = ""
-                // 表示内容の作成
-                content.title = itemArray[itemIndex].category
+                content.title = itemArray[itemIndex].category // タイトルにカテゴリー名を入れる
 
+                // タスクの数分確認、チェックが入っているものは表示内容から省く
                 for taskIndex in 0..<itemArray[itemIndex].task.count
                 where itemArray[itemIndex].isTaskCheck[taskIndex] {
                     if task != "" {
@@ -172,8 +172,8 @@ struct ProcessPush {
                     task += itemArray[itemIndex].task[taskIndex]
                 }
 
-                content.body = task
-                content.sound = UNNotificationSound.default
+                content.body = task // 表示するタスクを設定
+                content.sound = UNNotificationSound.default // 通知音の設定
 
                 // 表示時間の設定
                 dateComponentsDay.hour = itemArray[itemIndex].hour

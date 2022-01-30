@@ -71,7 +71,7 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
     // セルに表示する内容
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let identifier = K.CellIdentifier.DetailInputLabelCell
+        let identifier = Constants.CellIdentifier.DetailInputLabelCell
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? DetailInputTableViewCell
 

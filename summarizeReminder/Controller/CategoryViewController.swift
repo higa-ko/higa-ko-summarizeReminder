@@ -56,14 +56,14 @@ class CategoryViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         switch segue.identifier ?? "" {
-        case K.SegueIdentifier.CategoryToTask:
+        case Constants.SegueIdentifier.CategoryToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
             guard let categoryIndex = categoryIndex else { return }
             taskVC.beforeExistingItem = appDelegate?.itemArray[categoryIndex]
             taskVC.taskMode = .check
             taskVC.transitionSource = .categoryEdit(categoryIndex)
 
-        case K.SegueIdentifier.CategoryToInput:
+        case Constants.SegueIdentifier.CategoryToInput:
             if case .edit = categoryMode {
                 guard let navigation = segue.destination as? UINavigationController else { return }
                 guard let inputTVC = navigation.topViewController as? InputTableViewController else { return }
@@ -115,7 +115,7 @@ class CategoryViewController: UIViewController {
 
     @IBAction func shiftUnderButton(_ sender: UIButton) {
         // Inputビューへの推移
-        performSegue(withIdentifier: K.SegueIdentifier.CategoryToInput, sender: nil)
+        performSegue(withIdentifier: Constants.SegueIdentifier.CategoryToInput, sender: nil)
     }
 
     private func setUpMode(mode: CategoryMode) {
@@ -145,7 +145,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let identifier = K.CellIdentifier.CategoryCell
+        let identifier = Constants.CellIdentifier.CategoryCell
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? CategoryTableViewCell
         let item = appDelegate!.itemArray[indexPath.row]
 
@@ -164,10 +164,10 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         switch categoryMode {
         case .standard:
             // タスクビューへの推移
-            performSegue(withIdentifier: K.SegueIdentifier.CategoryToTask, sender: nil)
+            performSegue(withIdentifier: Constants.SegueIdentifier.CategoryToTask, sender: nil)
         case .edit:
             // Inputビューへの推移
-            performSegue(withIdentifier: K.SegueIdentifier.CategoryToInput, sender: nil)
+            performSegue(withIdentifier: Constants.SegueIdentifier.CategoryToInput, sender: nil)
         }
 
     }

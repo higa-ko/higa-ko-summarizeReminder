@@ -244,7 +244,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
     // セルに表示するデータを指定
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let identifier = K.CellIdentifier.TaskCell
+        let identifier = Constants.CellIdentifier.TaskCell
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? TaskTableViewCell
 
         // 選択されているモードに合わせてセルの表示内容を変更

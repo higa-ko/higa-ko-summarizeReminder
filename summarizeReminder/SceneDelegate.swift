@@ -37,10 +37,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        
         // トラッキングの許可
         if #available(iOS 14, *) {
             if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+                // 0.5秒遅らせて実行
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // アプリ関連データにアクセスするためのユーザー認証のリクエスト
                     ATTrackingManager.requestTrackingAuthorization { _ in }
                 }
             }

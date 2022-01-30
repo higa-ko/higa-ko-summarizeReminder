@@ -130,7 +130,7 @@ class InputTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         switch segue.identifier ?? "" {
-        case K.SegueIdentifier.InputToSelect:
+        case Constants.SegueIdentifier.InputToSelect:
             guard let detailInputVC = segue.destination as? DetailInputViewController else { return }
             detailInputVC.detailInputMode = detailInputMode
             detailInputVC.categoryIndex = categoryIndex
@@ -143,7 +143,7 @@ class InputTableViewController: UITableViewController {
                 [false, false, false, false, false, false, false]
             }
 
-        case K.SegueIdentifier.InputToTask:
+        case Constants.SegueIdentifier.InputToTask:
             guard let taskVC = segue.destination as? TaskViewController else { return }
 
             switch inputMode {
@@ -319,13 +319,13 @@ class InputTableViewController: UITableViewController {
         switch indexPath.row {
         case 1:
             detailInputMode = .categorySelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+            performSegue(withIdentifier: Constants.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
         case 4:
             detailInputMode = .repeatSelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
+            performSegue(withIdentifier: Constants.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
         case 5:
             detailInputMode = .repeatSelect
-            performSegue(withIdentifier: K.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
+            performSegue(withIdentifier: Constants.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
         default:
             detailInputMode = .none
         }
