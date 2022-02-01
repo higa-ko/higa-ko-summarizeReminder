@@ -13,7 +13,6 @@
 		8C25590326F77D4500A0797A /* DetailInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C25590226F77D4500A0797A /* DetailInputViewController.swift */; };
 		8C25590526F77D5A00A0797A /* DetailInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C25590426F77D5A00A0797A /* DetailInputTableViewCell.swift */; };
 		8C2AAF6D26C95C5800B7D7CD /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */; };
-		8C8819F5275B576D00DCE1B5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8819F4275B576D00DCE1B5 /* GoogleService-Info.plist */; };
 		8C90EDE426DE15A50035870E /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90EDE326DE15A50035870E /* TaskTableViewCell.swift */; };
 		8C964BFD27276504005FFD44 /* InputTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C964BFC27276504005FFD44 /* InputTableViewController.swift */; };
 		8CAEF7F726C7E94F00F1168C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAEF7F626C7E94F00F1168C /* AppDelegate.swift */; };
@@ -33,7 +32,6 @@
 		8C25590426F77D5A00A0797A /* DetailInputTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInputTableViewCell.swift; sourceTree = "<group>"; };
 		8C2AAF6C26C95C5800B7D7CD /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		8C8338B0275E03C800DA3F12 /* summarizeReminder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = summarizeReminder.entitlements; sourceTree = "<group>"; };
-		8C8819F4275B576D00DCE1B5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C90EDE326DE15A50035870E /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		8C964BFC27276504005FFD44 /* InputTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTableViewController.swift; sourceTree = "<group>"; };
 		8CAEF7F326C7E94F00F1168C /* summarizeReminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = summarizeReminder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,7 +129,6 @@
 				8CAEF7FF26C7E95200F1168C /* Assets.xcassets */,
 				8CAEF80126C7E95200F1168C /* LaunchScreen.storyboard */,
 				8CAEF80426C7E95200F1168C /* Info.plist */,
-				8C8819F4275B576D00DCE1B5 /* GoogleService-Info.plist */,
 			);
 			path = summarizeReminder;
 			sourceTree = "<group>";
@@ -205,7 +202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CAEF80326C7E95200F1168C /* LaunchScreen.storyboard in Resources */,
-				8C8819F5275B576D00DCE1B5 /* GoogleService-Info.plist in Resources */,
 				8CAEF80026C7E95200F1168C /* Assets.xcassets in Resources */,
 				8CAEF7FE26C7E94F00F1168C /* Main.storyboard in Resources */,
 			);
@@ -438,7 +434,7 @@
 				CODE_SIGN_ENTITLEMENTS = summarizeReminder/summarizeReminder.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 6H7CM9RQ6P;
 				INFOPLIST_FILE = summarizeReminder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -446,6 +442,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.wangyuexing34.summarizeReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -463,7 +460,7 @@
 				CODE_SIGN_ENTITLEMENTS = summarizeReminder/summarizeReminder.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 6H7CM9RQ6P;
 				INFOPLIST_FILE = summarizeReminder/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -471,6 +468,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.wangyuexing34.summarizeReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

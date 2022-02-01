@@ -7,11 +7,13 @@
 
 import UIKit
 
+// TaskViewControllerの状態を管理
 enum TaskMode {
     case check
     case add
 }
 
+// 推移元のビューの情報を管理
 enum TransitionSource {
     case categoryEdit(Int)
     case inputEdit(Int)
@@ -208,7 +210,7 @@ class TaskViewController: UIViewController {
         switch transitionSource {
         case .categoryEdit(let categoryIndex):
             // 既存の配列への設定変更の場合のみ処理を実行
-            ProcessArray().editArray(item: item, categoryIndex: categoryIndex) // 関数呼び出し
+            ItemArrayProcessor().editArray(item: item, categoryIndex: categoryIndex) // 関数呼び出し
 
         case .inputAdd:
             // InputTableViewControllerに値を渡す
@@ -281,7 +283,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
             cell?.configureDisplayTask(text: text!, taskMode: taskMode, isTaskCheck: true)
-            cell?.taskTextFieldDelegate = self
+            cell?.taskTableViewCellDelegate = self
 
             return cell!
         }
@@ -349,7 +351,7 @@ extension TaskViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: - TaskTextFieldDelegate
-extension TaskViewController: TaskTextFieldDelegate {
+extension TaskViewController: TaskTableViewCellDelegate {
 
     // テキストフィールドが編集された時の処理
     func changedTextField(cell: TaskTableViewCell) {
@@ -357,7 +359,7 @@ extension TaskViewController: TaskTextFieldDelegate {
         if case .add = mode {
 
             guard let indexPath = tableView.indexPath(for: cell) else { return }
-            guard let task = cell.taskTextField.text  else { return }
+            let task = cell.getTaskText()
             existingTaskArray[indexPath.row] = task
         }
     }

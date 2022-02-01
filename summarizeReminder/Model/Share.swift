@@ -18,7 +18,7 @@ struct Item: Codable {
     var minute: Int
 }
 
-struct ProcessArray {
+struct ItemArrayProcessor {
 
     // 新規カテゴリーを配列へ追加
     func addCategory(item: Item) {
@@ -34,7 +34,7 @@ struct ProcessArray {
         savingArray()
 
         // プッシュ通知の設定
-        ProcessPush().goPush()
+        PushProcessor().goPush()
     }
 
     // 既存カテゴリーのカテゴリーを編集
@@ -51,7 +51,7 @@ struct ProcessArray {
         savingArray()
 
         // プッシュ通知の設定
-        ProcessPush().goPush()
+        PushProcessor().goPush()
     }
 
     // 既存カテゴリーの削除
@@ -65,7 +65,7 @@ struct ProcessArray {
         savingArray()
 
         // プッシュ通知の設定
-        ProcessPush().goPush()
+        PushProcessor().goPush()
     }
 
     // 保存
@@ -107,7 +107,7 @@ struct ProcessArray {
     }
 }
 
-struct ProcessPush {
+struct PushProcessor {
 
     // DateComponents()のweekdayに使用
     let sunday = 1 // 日曜日

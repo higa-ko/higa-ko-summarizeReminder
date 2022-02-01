@@ -7,6 +7,7 @@
 
 import UIKit
 
+// InputTableViewControllerの状態管理
 enum InputMode {
     case add
     case edit
@@ -30,10 +31,16 @@ class InputTableViewController: UITableViewController {
     @IBOutlet private weak var taskNumberLabel: UILabel!
     @IBOutlet private weak var deleteButton: UIButton!
 
+    // セル番号
+    private let CategoryCellNumber = 1
+    private let repeatCellNumber = 4
+    private let taskCellNumber = 5
+
     var inputMode: InputMode = .add
 
     private var detailInputMode: DetailInputMode?
 
+    // カテゴリー追加の初期状態を入れる
     var addItem: Item = Item(category: "",
                              task: [],
                              isTaskCheck: [],
@@ -61,9 +68,9 @@ class InputTableViewController: UITableViewController {
 
         switch inputMode {
         case .add:
-            setUpCell(item: addItem, inputMode: inputMode)
+            settingCell(item: addItem, inputMode: inputMode)
         case .edit:
-            setUpCell(item: editItem, inputMode: inputMode)
+            settingCell(item: editItem, inputMode: inputMode)
         }
 
         deleteButton.layer.borderWidth = 0.5
@@ -79,19 +86,19 @@ class InputTableViewController: UITableViewController {
 
         switch inputMode {
         case .add:
-            setUpCell(item: addItem, inputMode: inputMode)
+            settingCell(item: addItem, inputMode: inputMode)
         case .edit:
-            setUpCell(item: editItem, inputMode: inputMode)
+            settingCell(item: editItem, inputMode: inputMode)
         }
     }
 
     @IBAction func newCategoryActionSwitch(_ sender: UISwitch) {
         if newCategoryCheckSwitch.isOn {
             inputMode = .add
-            setUpCell(item: addItem, inputMode: inputMode)
+            settingCell(item: addItem, inputMode: inputMode)
         } else {
             inputMode = .edit
-            setUpCell(item: editItem, inputMode: inputMode)
+            settingCell(item: editItem, inputMode: inputMode)
         }
     }
 
@@ -113,6 +120,7 @@ class InputTableViewController: UITableViewController {
             editItem?.isNoticeCheck = noticeCheckSwitch.isOn
         }
 
+        // リマインダーのON/OFFの状態に合わせてセルの透過度を変更
         if noticeCheckSwitch.isOn {
             timePickerView.alpha = 1
             timeLabel.alpha = 1
@@ -126,7 +134,7 @@ class InputTableViewController: UITableViewController {
         }
     }
 
-    // 画面推移の時の処理
+    // 画面推移時の処理
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         switch segue.identifier ?? "" {
@@ -173,10 +181,10 @@ class InputTableViewController: UITableViewController {
 
         // ボタンの作成、追加
         let deleteButton = UIAlertAction(title: "削除", style: .destructive) { _ in
-            ProcessArray().removeCategory(categoryIndex: categoryIndex)
+            ItemArrayProcessor().removeCategory(categoryIndex: categoryIndex)
             self.editItem = nil
             self.categoryIndex = nil
-            self.setUpCell(item: self.editItem, inputMode: self.inputMode)
+            self.settingCell(item: self.editItem, inputMode: self.inputMode)
         }
         alert.addAction(deleteButton)
 
@@ -188,7 +196,7 @@ class InputTableViewController: UITableViewController {
     }
 
     // アイテムの情報をテーブルビューへ反映
-    private func setUpCell(item: Item?, inputMode: InputMode) {
+    private func settingCell(item: Item?, inputMode: InputMode) {
         // 未設定の場合デフォルトの値を入れる
         let setItem = item ?? Item(category: "",
                                    task: [],
@@ -215,6 +223,7 @@ class InputTableViewController: UITableViewController {
             categoryChangeTextField.placeholder = "カテゴリーを選択"
             categoryCell.accessoryType = .disclosureIndicator
 
+            // 既存カテゴリーの選択の有無で表示を変更
             if item == nil {
                 categoryChangeTextField.isEnabled = false
                 categoryChangeTextField.borderStyle = .none
@@ -282,7 +291,8 @@ class InputTableViewController: UITableViewController {
 
         // 繰り返し
         // isWeekCheck の内容に合わせて日付を表示　どこにもチェックがない場合は"未選択"で表示
-        for weekNumber in 0 ..< setItem.isWeekCheck.count where setItem.isWeekCheck[weekNumber] {
+        for weekNumber in 0 ..< setItem.isWeekCheck.count
+        where setItem.isWeekCheck[weekNumber] {
             weekValue += weeks[weekNumber] + " "
         }
         if weekValue == "" {
@@ -290,7 +300,7 @@ class InputTableViewController: UITableViewController {
         }
         weekLabel.text = weekValue
 
-        // タスク
+        // タスク数
         taskNumberLabel.text = String(setItem.task.count)
 
     }
@@ -317,13 +327,13 @@ class InputTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true) // セルの選択を解除
 
         switch indexPath.row {
-        case 1:
+        case CategoryCellNumber:
             detailInputMode = .categorySelect
             performSegue(withIdentifier: Constants.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-        case 4:
+        case repeatCellNumber:
             detailInputMode = .repeatSelect
             performSegue(withIdentifier: Constants.SegueIdentifier.InputToSelect, sender: nil) // 詳細設定ビューへ移動
-        case 5:
+        case taskCellNumber:
             detailInputMode = .repeatSelect
             performSegue(withIdentifier: Constants.SegueIdentifier.InputToTask, sender: nil) // タスクビューへ移動
         default:
@@ -334,8 +344,9 @@ class InputTableViewController: UITableViewController {
     // セルが選択されそうな時の処理
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 
+        // inputModeの状態と既存カテゴリーの選択の有無でセルの選択可能状態を変更
         switch indexPath.row {
-        case 1:
+        case CategoryCellNumber:
             switch inputMode {
             case .add:
                 return nil
@@ -344,7 +355,7 @@ class InputTableViewController: UITableViewController {
                 return indexPath
             }
 
-        case 4, 5:
+        case repeatCellNumber, taskCellNumber:
             switch inputMode {
             case .add:
                 changeAccessoryType(isStatus: true)

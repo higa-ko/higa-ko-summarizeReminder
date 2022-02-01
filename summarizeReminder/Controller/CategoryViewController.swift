@@ -7,6 +7,7 @@
 
 import UIKit
 
+// CategoryViewControllerの状態を管理
 enum CategoryMode {
     case standard
     case edit
@@ -36,10 +37,10 @@ class CategoryViewController: UIViewController {
         Buttonformat().underButtonformat(button: underButton)
 
         // 保存しているアイテム配列の呼び出し
-        ProcessArray().loadingArray()
+        ItemArrayProcessor().loadingArray()
 
         // 通知の許可
-        ProcessPush().goPush()
+        PushProcessor().goPush()
     }
 
     // カテゴリー画面に戻ってきた時の処理
@@ -47,7 +48,7 @@ class CategoryViewController: UIViewController {
         super.viewWillAppear(animated)
 
         categoryMode = .standard
-        setUpMode(mode: categoryMode)
+        switchingMode(mode: categoryMode)
 
         tableView.reloadData()
     }
@@ -92,12 +93,12 @@ class CategoryViewController: UIViewController {
         case .add:
             let addItem = inputTVC.addItem
 
-            ProcessArray().addCategory(item: addItem)
+            ItemArrayProcessor().addCategory(item: addItem)
         case .edit:
             guard let editItem = inputTVC.editItem else { return }
             guard let categoryIndex = inputTVC.categoryIndex else { return }
 
-            ProcessArray().editArray(item: editItem, categoryIndex: categoryIndex)
+            ItemArrayProcessor().editArray(item: editItem, categoryIndex: categoryIndex)
         }
 
         tableView.reloadData()
@@ -110,7 +111,7 @@ class CategoryViewController: UIViewController {
         } else {
             categoryMode = .edit
         }
-        setUpMode(mode: categoryMode)
+        switchingMode(mode: categoryMode)
     }
 
     @IBAction func shiftUnderButton(_ sender: UIButton) {
@@ -118,7 +119,7 @@ class CategoryViewController: UIViewController {
         performSegue(withIdentifier: Constants.SegueIdentifier.CategoryToInput, sender: nil)
     }
 
-    private func setUpMode(mode: CategoryMode) {
+    private func switchingMode(mode: CategoryMode) {
         switch mode {
         case .standard:
             editBarButton.title = "編集"
@@ -150,7 +151,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         let item = appDelegate!.itemArray[indexPath.row]
 
         cell?.configureCategory(item: item)
-        cell?.categoryButtonDelegate = self
+        cell?.categoryTableViewCellDelegate = self
 
         return cell!
     }
@@ -178,7 +179,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
-            ProcessArray().removeCategory(categoryIndex: indexPath.row)
+            ItemArrayProcessor().removeCategory(categoryIndex: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -186,7 +187,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: - CategoryButtonDelegate
-extension CategoryViewController: CategoryButtonDelegate {
+extension CategoryViewController: CategoryTableViewCellDelegate {
     func changeButton(cell: CategoryTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         switch categoryMode {

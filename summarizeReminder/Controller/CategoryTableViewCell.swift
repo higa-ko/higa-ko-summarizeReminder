@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CategoryButtonDelegate: AnyObject {
+protocol CategoryTableViewCellDelegate: AnyObject {
     func changeButton(cell: CategoryTableViewCell)
  }
 
@@ -20,7 +20,7 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet private weak var numberLabel: UILabel!
 
     // デリゲートの設定
-    weak var categoryButtonDelegate: CategoryButtonDelegate?
+    weak var categoryTableViewCellDelegate: CategoryTableViewCellDelegate?
 
     // カテゴリービューに表示する用の関数
     func configureCategory(item: Item) {
@@ -32,13 +32,14 @@ class CategoryTableViewCell: UITableViewCell {
         formatter.allowedUnits = [.hour, .minute]
 
         categoryLabel.text = item.category
+        // 0:00の時のみ表示が崩れるため0のときのみ処理を変える
         timeLabel.text = time == 0 ? "0:00" : formatter.string(from: time)
 
         for weekNumber in 0 ..< item.isWeekCheck.count where item.isWeekCheck[weekNumber] {
             weekValue += weeks[weekNumber] + " "
         }
 
-        if weekValue == "" {
+        if weekValue.isEmpty {
             weekLabel.text = "未設定"
         } else {
             weekLabel.text = weekValue
@@ -59,10 +60,10 @@ class CategoryTableViewCell: UITableViewCell {
         bellButton.contentHorizontalAlignment = .fill
         bellButton.contentVerticalAlignment = .fill
 
-        numberLabel.text = String(item.task.count)
+        numberLabel.text = String(item.task.count) // セルにタスク数表示
     }
 
     @IBAction func changeButton(_ sender: UIButton) {
-        categoryButtonDelegate?.changeButton(cell: self)
+        categoryTableViewCellDelegate?.changeButton(cell: self)
     }
 }

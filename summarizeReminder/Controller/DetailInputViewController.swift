@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 詳細画面の状態を管理
 enum DetailInputMode {
     case categorySelect
     case repeatSelect
@@ -157,5 +158,4 @@ extension DetailInputViewController: UITableViewDataSource, UITableViewDelegate 
             return indexPath // セルを選択可能に変更
         }
     }
-
 }

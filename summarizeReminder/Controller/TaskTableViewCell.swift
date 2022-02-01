@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TaskTextFieldDelegate: AnyObject {
+protocol TaskTableViewCellDelegate: AnyObject {
     func endActionTextField()
     func changedTextField(cell: TaskTableViewCell)
  }
@@ -18,7 +18,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var taskTextField: UITextField!
 
     // デリゲートの設定
-    weak var taskTextFieldDelegate: TaskTextFieldDelegate?
+    weak var taskTableViewCellDelegate: TaskTableViewCellDelegate?
 
     // タスクビューのラベルに表示
     func configureDisplayTask(text: String, taskMode: TaskMode, isTaskCheck: Bool) {
@@ -56,16 +56,16 @@ class TaskTableViewCell: UITableViewCell {
 
     // テキストフィールドを編集した時の処理
     @IBAction func changedTextField(_ sender: UITextField) {
-        taskTextFieldDelegate?.changedTextField(cell: self)
+        taskTableViewCellDelegate?.changedTextField(cell: self)
     }
 
     // テキストフィールドを改行した時の処理
     @IBAction func endActionTextField(_ sender: UITextField) {
-        taskTextFieldDelegate?.endActionTextField()
+        taskTableViewCellDelegate?.endActionTextField()
     }
 
     // テキストフィールド内の文字を返す
-    func taskText() -> String {
+    func getTaskText() -> String {
         let text = taskTextField.text
         return text!
     }
